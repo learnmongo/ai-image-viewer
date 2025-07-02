@@ -49,12 +49,16 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
     <Box w="24px" h="24px" borderRadius="full" bg={color} border="2px solid white" boxShadow="md" title={color} />
   );
 
-  // Shared max width for image and info areas
-  const contentMaxW = ["100%", "95%", "1000px"];
-
   return (
     <Box minH="100vh" bg={background} color="white" px={[2, 4, 8]} py={[4, 8, 12]} display="flex" flexDirection="column" alignItems="center">
-      <Box w="100%" maxW={contentMaxW} mt={[2, 6, 10]} display="flex" flexDirection="column" alignItems="center">
+      <Box
+        w="100%"
+        maxW={['100vw', '75vw']}
+        mt={[2, 6, 10]}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
         <Heading size="4xl" mb={2} textShadow="0 2px 8px rgba(0,0,0,0.4)" textAlign="center">
           {imageDoc.title}
         </Heading>
@@ -66,13 +70,12 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
         <Image
           src={`/resources/${fileName}`}
           alt={imageDoc.title}
-          maxW={contentMaxW}
-          maxH={["60vh", "70vh", "80vh"]}
-          w="100%"
-          h="auto"
+          width="100%"
+          height="auto"
+          maxW="100%"
+          maxH="75vh"
           rounded="2xl"
           boxShadow="2xl"
-          objectFit="contain"
           title={imageDoc.title}
           mx="auto"
           my={0}
@@ -86,13 +89,13 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
           borderColor="whiteAlpha.300"
           boxShadow="md"
           w="100%"
-          maxW={contentMaxW}
+          maxW={['100vw', '75vw']}
           mx="auto"
         >
           <Text fontSize={["md", "lg"]}>{imageDoc.summary}</Text>
         </Box>
         {/* Info section as four columns */}
-        <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={contentMaxW} mx="auto" mt={4}>
+        <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
             <Wrap>
@@ -128,7 +131,7 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
         </SimpleGrid>
         {/* Raw model responses */}
         {imageDoc.raw && imageDoc.raw.length > 0 && (
-          <Box mt={8} w="100%" maxW={contentMaxW}>
+          <Box mt={8} w="100%" maxW={['100vw', '75vw']}>
             {/* Divider replacement */}
             <Box mb={4} h="1px" bg="whiteAlpha.400" w="100%" />
             <Heading size="md" mb={2} fontWeight="bold">Model Responses</Heading>
