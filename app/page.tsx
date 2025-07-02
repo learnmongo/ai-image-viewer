@@ -1,95 +1,38 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { Box, Heading, SimpleGrid, Wrap, Badge } from '@chakra-ui/react';
+import ImagePreview from '@/components/ImagePreview';
+import { getLatestImages } from '@/lib/image/queries';
+import { ImageDoc } from '@/types/image';
 
-export default function Home() {
+export default async function HomePage() {
+  const images: ImageDoc[] = await getLatestImages(25);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <Box px={[2, 4, 8]} py={[4, 8, 12]}>
+      <Heading size="lg" mb={6}>Latest Images</Heading>
+      <SimpleGrid columns={[1, 2, 3, 4]} gap={6}>
+        {images.map((img) => (
+          <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
+            <ImagePreview
+              id={img._id.toString()}
+              title={img.title}
+              summary={img.summary}
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            <Box p={3}>
+              <Wrap gap={2} align="center">
+                {img.tags?.slice(0, 1).map((tag: string) => (
+                  <Badge key={tag} colorScheme="whiteAlpha" fontSize="xs" px={3} py={1}>{tag}</Badge>
+                ))}
+                {img.feelings?.slice(0, 1).map((feeling: string) => (
+                  <Badge key={feeling} colorScheme="yellow" fontSize="xs" px={3} py={1}>{feeling}</Badge>
+                ))}
+                {img.colors?.slice(0, 3).map((color: string) => (
+                  <Box key={color} w="18px" h="18px" borderRadius="full" bg={color} border="1px solid white" title={color} />
+                ))}
+              </Wrap>
+            </Box>
+          </Box>
+        ))}
+      </SimpleGrid>
+    </Box>
   );
 }
