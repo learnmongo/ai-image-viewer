@@ -1,11 +1,13 @@
 import { getImagesByColorFuzzy } from '@/lib/image/queries';
-import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, Text, Wrap, Badge } from '@chakra-ui/react';
+import Link from 'next/link';
 import ImagePreview from '@/components/ImagePreview';
 import { offsetColor } from '@/lib/image/utils';
+import { ImageDoc } from '@/types/image';
 
 export default async function ColorPage({ params }: { params: { color: string } }) {
   const threshold = 60;
-  const images = await getImagesByColorFuzzy(params.color, threshold);
+  const images: ImageDoc[] = await getImagesByColorFuzzy(params.color, threshold);
 
   const color = params.color.startsWith('#') ? params.color : `#${params.color}`;
   const startColor = offsetColor(color, -30);
@@ -20,12 +22,32 @@ export default async function ColorPage({ params }: { params: { color: string } 
       ) : (
         <SimpleGrid columns={[1, 2, 3, 4]} gap={6}>
           {images.map((img) => (
-            <ImagePreview
-              key={img._id.toString()}
-              id={img._id.toString()}
-              title={img.title}
-              summary={img.summary}
-            />
+            <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
+              <ImagePreview
+                id={img._id.toString()}
+                title={img.title}
+                summary={img.summary}
+              />
+              <Box p={3}>
+                <Wrap gap={2} align="center">
+                  {img.tags?.slice(0, 1).map((tag: string) => (
+                    <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
+                      <Badge colorScheme="whiteAlpha" fontSize="xs" px={3} py={1} cursor="pointer" _hover={{ bg: 'whiteAlpha.300' }} transition="background 0.2s">{tag}</Badge>
+                    </Link>
+                  ))}
+                  {img.feelings?.slice(0, 1).map((feeling: string) => (
+                    <Link key={feeling} href={`/feeling/${encodeURIComponent(feeling)}`}>
+                      <Badge colorScheme="yellow" fontSize="xs" px={3} py={1} cursor="pointer" _hover={{ bg: 'yellow.400' }} transition="background 0.2s">{feeling}</Badge>
+                    </Link>
+                  ))}
+                  {img.colors?.slice(0, 3).map((color: string) => (
+                    <Link key={color} href={`/color/${encodeURIComponent(color)}`}>
+                      <Box w="18px" h="18px" borderRadius="full" bg={color} border="1px solid white" title={color} cursor="pointer" _hover={{ transform: 'scale(1.1)' }} transition="transform 0.2s" />
+                    </Link>
+                  ))}
+                </Wrap>
+              </Box>
+            </Box>
           ))}
         </SimpleGrid>
       )}
