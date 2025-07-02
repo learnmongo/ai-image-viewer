@@ -1,27 +1,11 @@
 import clientPromise from '@/lib/mongo';
-import { Box, Heading, Image, Stack, Text, Wrap, Badge, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, Image, Text, Wrap, Badge, SimpleGrid } from '@chakra-ui/react';
 import { ObjectId } from 'mongodb';
 import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
-
-// Extended type to match your data
-interface RawModelResponse {
-  model: string;
-  response: string;
-}
-
-type ImageDoc = {
-  _id: { $oid: string };
-  title: string;
-  description: string;
-  summary: string;
-  feelings?: string[];
-  hues?: string[];
-  colors: string[];
-  tags?: string[];
-  raw?: RawModelResponse[];
-};
+import ModelResponses from './components/ModelResponses';
+import { ImageDoc } from '@/types/image';
 
 export default async function ImagePage({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -35,7 +19,6 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
 
   const imageDoc = doc as unknown as ImageDoc;
 
-  // Always use id for the file name
   const fileName = `${id}.jpg`;
   const localImagePath = path.join(process.cwd(), 'public', 'resources', fileName);
   const fileExists = fs.existsSync(localImagePath);
@@ -94,7 +77,6 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
         >
           <Text fontSize={["md", "lg"]}>{imageDoc.summary}</Text>
         </Box>
-        {/* Info section as four columns */}
         <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
@@ -129,22 +111,7 @@ export default async function ImagePage({ params }: { params: { id: string } }) 
             </Wrap>
           </Box>
         </SimpleGrid>
-        {/* Raw model responses */}
-        {imageDoc.raw && imageDoc.raw.length > 0 && (
-          <Box mt={8} w="100%" maxW={['100vw', '75vw']}>
-            {/* Divider replacement */}
-            <Box mb={4} h="1px" bg="whiteAlpha.400" w="100%" />
-            <Heading size="md" mb={2} fontWeight="bold">Model Responses</Heading>
-            <Stack gap={4}>
-              {imageDoc.raw.map((r, i) => (
-                <Box key={i} bg="whiteAlpha.200" p={4} borderRadius="md" boxShadow="sm">
-                  <Text fontSize="sm" color="whiteAlpha.800" fontWeight="bold" mb={1}>{r.model}</Text>
-                  <Text fontSize="sm" color="whiteAlpha.900" whiteSpace="pre-line">{r.response}</Text>
-                </Box>
-              ))}
-            </Stack>
-          </Box>
-        )}
+        {imageDoc.raw && <ModelResponses responses={imageDoc.raw} />}
       </Box>
     </Box>
   );
