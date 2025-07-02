@@ -1,23 +1,15 @@
-import clientPromise from '@/lib/mongo';
 import { Box, Heading, Image, Text, Wrap, Badge, SimpleGrid } from '@chakra-ui/react';
-import { ObjectId } from 'mongodb';
 import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
 import ModelResponses from './components/ModelResponses';
-import { ImageDoc } from '@/types/image';
+import { getImageById } from '@/lib/image/queries';
 
-export default async function ImagePage({ params }: { params: { id: string } }) {
+export default async function ViewPage({ params }: { params: { id: string } }) {
   const id = params.id;
 
-  const client = await clientPromise;
-  const db = client.db('view_vector');
-  const collection = db.collection('images');
-
-  const doc = await collection.findOne({ _id: new ObjectId(id) });
-  if (!doc) return notFound();
-
-  const imageDoc = doc as unknown as ImageDoc;
+  const imageDoc = await getImageById(id);
+  if (!imageDoc) return notFound();
 
   const fileName = `${id}.jpg`;
   const localImagePath = path.join(process.cwd(), 'public', 'resources', fileName);
