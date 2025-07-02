@@ -1,4 +1,5 @@
 import { Box, Heading, Image, Text, Wrap, Badge, SimpleGrid } from '@chakra-ui/react';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
@@ -21,7 +22,9 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
 
   // Helper for color swatches
   const ColorSwatch = ({ color }: { color: string }) => (
-    <Box w="24px" h="24px" borderRadius="full" bg={color} border="2px solid white" boxShadow="md" title={color} />
+    <Link href={`/color/${encodeURIComponent(color)}`}>
+      <Box w="24px" h="24px" borderRadius="full" bg={color} border="2px solid white" boxShadow="md" title={color} cursor="pointer" _hover={{ transform: 'scale(1.1)' }} transition="transform 0.2s" />
+    </Link>
   );
 
   return (
@@ -74,7 +77,9 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
             <Wrap>
               {imageDoc.tags && imageDoc.tags.length > 0 ? imageDoc.tags.map((tag) => (
-                <Badge key={tag} colorScheme="whiteAlpha" px={2} py={1} borderRadius="md" fontSize="sm">{tag}</Badge>
+                <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
+                  <Badge colorScheme="whiteAlpha" px={2} py={1} borderRadius="md" fontSize="sm" cursor="pointer" _hover={{ bg: 'whiteAlpha.300' }} transition="background 0.2s">{tag}</Badge>
+                </Link>
               )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
             </Wrap>
           </Box>
@@ -82,7 +87,9 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
             <Text fontWeight="bold" mb={1} fontSize="sm">Feelings</Text>
             <Wrap>
               {imageDoc.feelings && imageDoc.feelings.length > 0 ? imageDoc.feelings.map((feeling) => (
-                <Badge key={feeling} colorScheme="yellow" px={2} py={1} borderRadius="md" fontSize="sm">{feeling}</Badge>
+                <Link key={feeling} href={`/feeling/${encodeURIComponent(feeling)}`}>
+                  <Badge colorScheme="yellow" px={2} py={1} borderRadius="md" fontSize="sm" cursor="pointer" _hover={{ bg: 'yellow.400' }} transition="background 0.2s">{feeling}</Badge>
+                </Link>
               )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
             </Wrap>
           </Box>
@@ -90,7 +97,9 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
             <Text fontWeight="bold" mb={1} fontSize="sm">Hues</Text>
             <Wrap>
               {imageDoc.hues && imageDoc.hues.length > 0 ? imageDoc.hues.map((hue) => (
-                <Badge key={hue} colorScheme="purple" px={2} py={1} borderRadius="md" fontSize="sm">{hue}</Badge>
+                <Link key={hue} href={`/hue/${encodeURIComponent(hue)}`}>
+                  <Badge colorScheme="purple" px={2} py={1} borderRadius="md" fontSize="sm" cursor="pointer" _hover={{ bg: 'purple.400' }} transition="background 0.2s">{hue}</Badge>
+                </Link>
               )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
             </Wrap>
           </Box>

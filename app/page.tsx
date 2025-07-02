@@ -1,4 +1,5 @@
 import { Box, Heading, SimpleGrid, Wrap, Badge } from '@chakra-ui/react';
+import Link from 'next/link';
 import ImagePreview from '@/components/ImagePreview';
 import { getLatestImages } from '@/lib/image/queries';
 import { ImageDoc } from '@/types/image';
@@ -20,13 +21,19 @@ export default async function HomePage() {
             <Box p={3}>
               <Wrap gap={2} align="center">
                 {img.tags?.slice(0, 1).map((tag: string) => (
-                  <Badge key={tag} colorScheme="whiteAlpha" fontSize="xs" px={3} py={1}>{tag}</Badge>
+                  <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
+                    <Badge colorScheme="whiteAlpha" fontSize="xs" px={3} py={1} cursor="pointer" _hover={{ bg: 'whiteAlpha.300' }} transition="background 0.2s">{tag}</Badge>
+                  </Link>
                 ))}
                 {img.feelings?.slice(0, 1).map((feeling: string) => (
-                  <Badge key={feeling} colorScheme="yellow" fontSize="xs" px={3} py={1}>{feeling}</Badge>
+                  <Link key={feeling} href={`/feeling/${encodeURIComponent(feeling)}`}>
+                    <Badge colorScheme="yellow" fontSize="xs" px={3} py={1} cursor="pointer" _hover={{ bg: 'yellow.400' }} transition="background 0.2s">{feeling}</Badge>
+                  </Link>
                 ))}
                 {img.colors?.slice(0, 3).map((color: string) => (
-                  <Box key={color} w="18px" h="18px" borderRadius="full" bg={color} border="1px solid white" title={color} />
+                  <Link key={color} href={`/color/${encodeURIComponent(color)}`}>
+                    <Box w="18px" h="18px" borderRadius="full" bg={color} border="1px solid white" title={color} cursor="pointer" _hover={{ transform: 'scale(1.1)' }} transition="transform 0.2s" />
+                  </Link>
                 ))}
               </Wrap>
             </Box>
