@@ -4,11 +4,12 @@ import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 
 export default async function HuePage({ params }: { params: { hue: string } }) {
-  const images = await getImagesByHue(params.hue);
+  const hue = params.hue.replace(/-/g, ' ');
+  const images = await getImagesByHue(hue);
 
   return (
     <Box px={[2, 4, 8]} py={[4, 8, 12]}>
-      <Heading size="lg" mb={6}>Images with hue &quot;{params.hue}&quot;</Heading>
+      <Heading size="lg" mb={6}>Images with hue &quot;{hue}&quot;</Heading>
       {images.length === 0 ? (
         <Text>No images found for this hue.</Text>
       ) : (
