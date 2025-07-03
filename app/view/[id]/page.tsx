@@ -20,11 +20,11 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
   const background = `linear-gradient(135deg, ${imageDoc.colors?.[0] || '#222'}cc, ${imageDoc.colors?.[1] || '#444'}cc, ${imageDoc.colors?.[2] || '#666'}cc)`;
 
   return (
-    <Box minH="100vh" bg={background} color="white" px={[2, 4, 8]} py={[4, 8, 12]} display="flex" flexDirection="column" alignItems="center">
+    <Box minH="100vh" bg={background} color="white" px={[2, 4, 8]} py={4} display="flex" flexDirection="column" alignItems="center">
       <Box
         w="100%"
         maxW={['100vw', '75vw']}
-        mt={[2, 6, 10]}
+        mt={4}
         display="flex"
         flexDirection="column"
         alignItems="center"
