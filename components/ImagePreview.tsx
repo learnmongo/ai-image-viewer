@@ -4,10 +4,10 @@ import NextLink from 'next/link';
 interface ImagePreviewProps {
   id: string;
   title: string;
-  summary?: string;
+  description?: string;
 }
 
-const ImagePreview = ({ id, title, summary }: ImagePreviewProps) => (
+const ImagePreview = ({ id, title, description }: ImagePreviewProps) => (
   <ChakraLink as={NextLink} href={`/view/${id}`} _hover={{ textDecoration: 'none' }}>
     <Box boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
       <Image
@@ -20,8 +20,8 @@ const ImagePreview = ({ id, title, summary }: ImagePreviewProps) => (
         borderTopRadius="lg"
       />
       <Box p={3}>
-        <Text fontWeight="bold" fontSize="md" truncate>{title}</Text>
-        {summary && <Text fontSize="sm" color="whiteAlpha.700" truncate>{summary}</Text>}
+        <Text fontWeight="bold" fontSize="md" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{title}</Text>
+        {description && <Text fontSize="sm" color="whiteAlpha.700" overflow="hidden" textOverflow="ellipsis" whiteSpace="normal" maxH="2.5em" lineHeight="1.25em">{description}</Text>}
       </Box>
     </Box>
   </ChakraLink>
