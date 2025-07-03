@@ -1,5 +1,5 @@
 import { Box, Button, Text, HStack } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 interface GlassyModalProps {
   isOpen: boolean;
@@ -9,6 +9,17 @@ interface GlassyModalProps {
 }
 
 export default function GlassyModal({ isOpen, onClose, title, children }: GlassyModalProps) {
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
