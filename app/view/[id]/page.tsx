@@ -8,6 +8,7 @@ import Tags from '@/components/Tags';
 import Feelings from '@/components/Feelings';
 import Hues from '@/components/Hues';
 import Colors from '@/components/Colors';
+import DocumentViewer from '@/components/DocumentViewer';
 
 export default async function ViewPage({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -22,8 +23,6 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
 
   // Dynamic background gradient
   const background = `linear-gradient(135deg, ${imageDoc.colors?.[0] || '#222'}cc, ${imageDoc.colors?.[1] || '#444'}cc, ${imageDoc.colors?.[2] || '#666'}cc)`;
-
-
 
   return (
     <Box minH="100vh" bg={background} color="white" px={[2, 4, 8]} py={[4, 8, 12]} display="flex" flexDirection="column" alignItems="center">
@@ -69,6 +68,9 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
           mx="auto"
         >
           <Text fontSize={["md", "lg"]}>{imageDoc.summary}</Text>
+        </Box>
+        <Box w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4} mb={4}>
+          <DocumentViewer data={imageDoc} title={imageDoc.title} />
         </Box>
         <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4}>
           <Box>
