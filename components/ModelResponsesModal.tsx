@@ -24,7 +24,6 @@ export default function ModelResponsesModal({ isOpen, onClose, responses }: Mode
           fontSize="md"
           boxShadow="md"
           w="100%"
-          h="500px"
           maxW="600px"
           overflowX="auto"
         >
@@ -37,7 +36,11 @@ export default function ModelResponsesModal({ isOpen, onClose, responses }: Mode
               ))}
             </Tabs.List>
             {responses.map((r) => (
-              <Tabs.Content key={r.model} value={r.model} style={{ minHeight: '180px', display: 'flex', alignItems: 'flex-start' }}>
+              <Tabs.Content
+                key={r.model}
+                value={r.model}
+                style={{ height: '480px', overflowY: 'auto', display: 'flex', alignItems: 'flex-start' }}
+              >
                 <Text whiteSpace="pre-wrap" p={4} w="100%">
                   {r.response}
                 </Text>
