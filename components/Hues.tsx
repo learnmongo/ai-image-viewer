@@ -21,7 +21,7 @@ const Hues = ({
   return (
     <Wrap gap={2} align="center">
       {displayHues.map((hue: string) => (
-        <Link key={hue} href={`/hue/${encodeURIComponent(hue)}`}>
+        <Link key={hue} href={`/hue/${hue.replace(/\s+/g, '-')}`}>
           <Badge 
             colorScheme="yellow" 
             fontSize={size} 

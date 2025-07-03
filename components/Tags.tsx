@@ -21,7 +21,7 @@ const Tags = ({
   return (
     <Wrap gap={2} align="center">
       {displayTags.map((tag: string) => (
-        <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
+        <Link key={tag} href={`/tag/${tag.replace(/\s+/g, '-')}`}>
           <Badge 
             colorScheme="yellow" 
             fontSize={size} 

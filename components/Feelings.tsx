@@ -21,7 +21,7 @@ const Feelings = ({
   return (
     <Wrap gap={2} align="center">
       {displayFeelings.map((feeling: string) => (
-        <Link key={feeling} href={`/feeling/${encodeURIComponent(feeling)}`}>
+        <Link key={feeling} href={`/feeling/${feeling.replace(/\s+/g, '-')}`}>
           <Badge 
             colorScheme="yellow" 
             fontSize={size} 
