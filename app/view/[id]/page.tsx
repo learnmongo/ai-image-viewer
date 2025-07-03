@@ -1,10 +1,13 @@
-import { Box, Heading, Image, Text, Wrap, Badge, SimpleGrid } from '@chakra-ui/react';
-import Link from 'next/link';
+import { Box, Heading, Image, Text, SimpleGrid } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
 import ModelResponses from './components/ModelResponses';
 import { getImageById } from '@/lib/image/queries';
+import Tags from '@/components/Tags';
+import Feelings from '@/components/Feelings';
+import Hues from '@/components/Hues';
+import Colors from '@/components/Colors';
 
 export default async function ViewPage({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -20,12 +23,7 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
   // Dynamic background gradient
   const background = `linear-gradient(135deg, ${imageDoc.colors?.[0] || '#222'}cc, ${imageDoc.colors?.[1] || '#444'}cc, ${imageDoc.colors?.[2] || '#666'}cc)`;
 
-  // Helper for color swatches
-  const ColorSwatch = ({ color }: { color: string }) => (
-    <Link href={`/color/${encodeURIComponent(color)}`}>
-      <Box w="24px" h="24px" borderRadius="full" bg={color} border="2px solid white" boxShadow="md" title={color} cursor="pointer" _hover={{ transform: 'scale(1.1)' }} transition="transform 0.2s" />
-    </Link>
-  );
+
 
   return (
     <Box minH="100vh" bg={background} color="white" px={[2, 4, 8]} py={[4, 8, 12]} display="flex" flexDirection="column" alignItems="center">
@@ -75,41 +73,35 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
         <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
-            <Wrap>
-              {imageDoc.tags && imageDoc.tags.length > 0 ? imageDoc.tags.map((tag) => (
-                <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
-                  <Badge colorScheme="whiteAlpha" px={2} py={1} borderRadius="md" fontSize="sm" cursor="pointer" _hover={{ bg: 'whiteAlpha.300' }} transition="background 0.2s">{tag}</Badge>
-                </Link>
-              )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
-            </Wrap>
+            {imageDoc.tags && imageDoc.tags.length > 0 ? (
+              <Tags tags={imageDoc.tags} size="sm" />
+            ) : (
+              <Text fontSize="sm" color="whiteAlpha.700">None</Text>
+            )}
           </Box>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Feelings</Text>
-            <Wrap>
-              {imageDoc.feelings && imageDoc.feelings.length > 0 ? imageDoc.feelings.map((feeling) => (
-                <Link key={feeling} href={`/feeling/${encodeURIComponent(feeling)}`}>
-                  <Badge colorScheme="yellow" px={2} py={1} borderRadius="md" fontSize="sm" cursor="pointer" _hover={{ bg: 'yellow.400' }} transition="background 0.2s">{feeling}</Badge>
-                </Link>
-              )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
-            </Wrap>
+            {imageDoc.feelings && imageDoc.feelings.length > 0 ? (
+              <Feelings feelings={imageDoc.feelings} size="sm" />
+            ) : (
+              <Text fontSize="sm" color="whiteAlpha.700">None</Text>
+            )}
           </Box>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Hues</Text>
-            <Wrap>
-              {imageDoc.hues && imageDoc.hues.length > 0 ? imageDoc.hues.map((hue) => (
-                <Link key={hue} href={`/hue/${encodeURIComponent(hue)}`}>
-                  <Badge colorScheme="purple" px={2} py={1} borderRadius="md" fontSize="sm" cursor="pointer" _hover={{ bg: 'purple.400' }} transition="background 0.2s">{hue}</Badge>
-                </Link>
-              )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
-            </Wrap>
+            {imageDoc.hues && imageDoc.hues.length > 0 ? (
+              <Hues hues={imageDoc.hues} size="sm" />
+            ) : (
+              <Text fontSize="sm" color="whiteAlpha.700">None</Text>
+            )}
           </Box>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Colors</Text>
-            <Wrap>
-              {imageDoc.colors && imageDoc.colors.length > 0 ? imageDoc.colors.map((color) => (
-                <ColorSwatch key={color} color={color} />
-              )) : <Text fontSize="sm" color="whiteAlpha.700">None</Text>}
-            </Wrap>
+            {imageDoc.colors && imageDoc.colors.length > 0 ? (
+              <Colors colors={imageDoc.colors} size="md" />
+            ) : (
+              <Text fontSize="sm" color="whiteAlpha.700">None</Text>
+            )}
           </Box>
         </SimpleGrid>
         {imageDoc.raw && <ModelResponses responses={imageDoc.raw} />}

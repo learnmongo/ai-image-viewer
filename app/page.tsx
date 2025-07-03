@@ -1,6 +1,6 @@
-import { Box, Heading, SimpleGrid, Wrap, Badge } from '@chakra-ui/react';
-import Link from 'next/link';
+import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
+import ImageMetadata from '@/components/ImageMetadata';
 import { getLatestImages } from '@/lib/image/queries';
 import { ImageDoc } from '@/types/image';
 
@@ -16,27 +16,18 @@ export default async function HomePage() {
             <ImagePreview
               id={img._id.toString()}
               title={img.title}
-              summary={img.summary}
+              description={img.description}
             />
-            <Box p={3}>
-              <Wrap gap={2} align="center">
-                {img.tags?.slice(0, 1).map((tag: string) => (
-                  <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}>
-                    <Badge colorScheme="whiteAlpha" fontSize="xs" px={3} py={1} cursor="pointer" _hover={{ bg: 'whiteAlpha.300' }} transition="background 0.2s">{tag}</Badge>
-                  </Link>
-                ))}
-                {img.feelings?.slice(0, 1).map((feeling: string) => (
-                  <Link key={feeling} href={`/feeling/${encodeURIComponent(feeling)}`}>
-                    <Badge colorScheme="yellow" fontSize="xs" px={3} py={1} cursor="pointer" _hover={{ bg: 'yellow.400' }} transition="background 0.2s">{feeling}</Badge>
-                  </Link>
-                ))}
-                {img.colors?.slice(0, 3).map((color: string) => (
-                  <Link key={color} href={`/color/${encodeURIComponent(color)}`}>
-                    <Box w="18px" h="18px" borderRadius="full" bg={color} border="1px solid white" title={color} cursor="pointer" _hover={{ transform: 'scale(1.1)' }} transition="transform 0.2s" />
-                  </Link>
-                ))}
-              </Wrap>
-            </Box>
+                          <Box p={3}>
+                <ImageMetadata 
+                  tags={img.tags}
+                  feelings={img.feelings}
+                  colors={img.colors}
+                  tagLimit={1}
+                  feelingLimit={1}
+                  colorLimit={3}
+                />
+              </Box>
           </Box>
         ))}
       </SimpleGrid>
