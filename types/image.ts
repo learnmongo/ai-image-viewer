@@ -2,7 +2,8 @@ import { ObjectId } from 'mongodb';
 
 export interface RawModelResponse {
   model: string;
-  response: string;
+  prompt?: string;
+  response?: string;
 }
 
 export interface ImageDoc {

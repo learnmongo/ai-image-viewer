@@ -28,8 +28,8 @@ const ImageMetadata = ({
 }: ImageMetadataProps) => {
   return (
     <Wrap gap={2} align="center">
-      <Tags tags={tags} limit={tagLimit} size={tagSize} />
       <Feelings feelings={feelings} limit={feelingLimit} size={feelingSize} />
+      <Tags tags={tags} limit={tagLimit} size={tagSize} />
       <Colors colors={colors} limit={colorLimit} size={colorSize} />
     </Wrap>
   );
