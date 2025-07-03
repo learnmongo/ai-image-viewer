@@ -2,26 +2,21 @@ import { Box, Heading, Image, Text, SimpleGrid } from '@chakra-ui/react';
 import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
-import ModelResponses from './components/ModelResponses';
 import { getImageById } from '@/lib/image/queries';
 import Tags from '@/components/Tags';
 import Feelings from '@/components/Feelings';
 import Hues from '@/components/Hues';
 import Colors from '@/components/Colors';
-import DocumentViewer from '@/components/DocumentViewer';
+import ViewerActions from '@/components/ViewerActions';
 
 export default async function ViewPage({ params }: { params: { id: string } }) {
   const id = params.id;
-
   const imageDoc = await getImageById(id);
   if (!imageDoc) return notFound();
-
   const fileName = `${id}.jpg`;
   const localImagePath = path.join(process.cwd(), 'public', 'resources', fileName);
   const fileExists = fs.existsSync(localImagePath);
   if (!fileExists) return notFound();
-
-  // Dynamic background gradient
   const background = `linear-gradient(135deg, ${imageDoc.colors?.[0] || '#222'}cc, ${imageDoc.colors?.[1] || '#444'}cc, ${imageDoc.colors?.[2] || '#666'}cc)`;
 
   return (
@@ -69,9 +64,6 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
         >
           <Text fontSize={["md", "lg"]}>{imageDoc.summary}</Text>
         </Box>
-        <Box w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4} mb={4}>
-          <DocumentViewer data={imageDoc} title={imageDoc.title} />
-        </Box>
         <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
@@ -106,7 +98,7 @@ export default async function ViewPage({ params }: { params: { id: string } }) {
             )}
           </Box>
         </SimpleGrid>
-        {imageDoc.raw && <ModelResponses responses={imageDoc.raw} />}
+        <ViewerActions document={imageDoc} responses={imageDoc.raw ?? []} />
       </Box>
     </Box>
   );
