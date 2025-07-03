@@ -9,6 +9,10 @@ interface DocumentModalProps {
 }
 
 export default function DocumentModal({ isOpen, onClose, data }: DocumentModalProps) {
+  // remove debug info from document
+  delete data?.file;
+  delete data?.raw;
+
   return (
     <GlassyModal isOpen={isOpen} onClose={onClose} title="Document">
       <Box w="100%" display="flex" justifyContent="center">

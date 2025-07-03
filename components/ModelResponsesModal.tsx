@@ -41,9 +41,23 @@ export default function ModelResponsesModal({ isOpen, onClose, responses }: Mode
                 value={r.model}
                 style={{ height: '480px', overflowY: 'auto', display: 'flex', alignItems: 'flex-start' }}
               >
-                <Text whiteSpace="pre-wrap" p={4} w="100%">
-                  {r.response}
-                </Text>
+                <Box w="100%" p={4}>
+                {r.response && (
+                    <Box>
+                      <Text fontWeight="bold" color="teal.200" mb={1}>Response</Text>
+                      <Text whiteSpace="pre-wrap" fontFamily="mono" fontSize="sm" bg="gray.800" p={3} borderRadius="md">{r.response}</Text>
+                    </Box>
+                  )}
+                  {r.prompt && (
+                    <Box mb={r.response ? 6 : 0}>
+                      <Text fontWeight="bold" color="teal.200" mb={1}>Prompt</Text>
+                      <Text whiteSpace="pre-wrap" fontFamily="mono" fontSize="sm" bg="gray.800" p={3} borderRadius="md">{r.prompt}</Text>
+                    </Box>
+                  )}
+                  {!(r.prompt || r.response) && (
+                    <Text color="gray.400">No prompt or response available.</Text>
+                  )}
+                </Box>
               </Tabs.Content>
             ))}
           </Tabs.Root>
