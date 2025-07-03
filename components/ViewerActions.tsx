@@ -28,7 +28,7 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
           onClick={() => setDocOpen(true)}
         >
           <ViewIcon boxSize={4} style={{ marginRight: 6 }} />
-          View Document
+          Document
         </Button>
         <Button
           size="sm"
@@ -39,7 +39,7 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
           onClick={() => setResponsesOpen(true)}
         >
           <ChatIcon boxSize={4} style={{ marginRight: 6 }} />
-          View Model Responses
+          Model Responses
         </Button>
       </HStack>
       <DocumentModal

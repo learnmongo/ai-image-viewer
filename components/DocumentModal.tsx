@@ -15,6 +15,7 @@ export default function DocumentModal({ isOpen, onClose, data }: DocumentModalPr
         <Box
           bg="gray.900"
           color="gray.100"
+          opacity={0.7}
           borderRadius="md"
           p={4}
           fontFamily="mono"
