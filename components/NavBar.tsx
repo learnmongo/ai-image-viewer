@@ -3,7 +3,7 @@ import { Box, Flex, Link } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import NextLink from 'next/link';
 
-const NAV_HEIGHT = '40px';
+const NAV_HEIGHT = '48px';
 
 export default function NavBar() {
   return (
@@ -21,7 +21,7 @@ export default function NavBar() {
         background: 'rgba(255,255,255,0.18)',
         backdropFilter: 'blur(24px) saturate(180%)',
         WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-        borderBottom: '1.5px solid rgba(255,255,255,0.4)',
+        borderBottom: '.5px solid rgba(48, 48, 48, 0.4)',
         boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
       }}
       color="white"
@@ -45,6 +45,7 @@ export default function NavBar() {
           </Link>
           {/* Add more navigation links here as needed */}
         </Flex>
+        <Box flex={1} />
       </Flex>
     </Box>
   );
