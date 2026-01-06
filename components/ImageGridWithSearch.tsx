@@ -34,13 +34,22 @@ export default function ImageGridWithSearch({ images }: Props) {
           <Heading size="lg" mb={6}>Latest Images</Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
             {images.map((img) => (
-              <Box key={img._id} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
+              <Box 
+                key={img._id} 
+                borderRadius="lg" 
+                overflow="hidden" 
+                bg="blackAlpha.700" 
+                boxShadow="md" 
+                height="100%" 
+                display="flex" 
+                flexDirection="column"
+              >
                 <ImagePreview
                   id={img._id}
                   title={img.title}
                   description={img.description}
                 />
-                <Box p={3}>
+                <Box p={3} flexGrow={1}>
                   <ImageMetadata 
                     tags={img.tags}
                     feelings={img.feelings}

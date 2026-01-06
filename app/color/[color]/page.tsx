@@ -26,13 +26,22 @@ export default async function ColorPage({ params }: ColorPageProps) {
       ) : (
         <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
           {images.map((img) => (
-            <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
+            <Box 
+              key={img._id.toString()} 
+              boxShadow="md" 
+              borderRadius="lg" 
+              overflow="hidden" 
+              bg="blackAlpha.700"
+              height="100%"
+              display="flex"
+              flexDirection="column"
+            >
               <ImagePreview
                 id={img._id.toString()}
                 title={img.title}
                 description={img.description}
               />
-              <Box p={3}>
+              <Box p={3} flexGrow={1}>
                 <ImageMetadata 
                   tags={img.tags}
                   feelings={img.feelings}
