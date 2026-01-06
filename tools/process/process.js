@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import { ASSETS_DIR, LLAMA_VISION_IMAGE_MODEL, INSTRUCT_MODEL } from './config.js';
 import { connect, close, insertImage } from './services/database.js';
-import { generateInfoForImage, generateStructuredMetadata } from './services/ai.js';
+import { generateInfoForImage, generateStructuredMetadata } from './services/ai/index.js';
 import { getGPSData } from './services/metadata.js';
 
 /**

@@ -1,18 +1,13 @@
-import ollama from 'ollama';
-import JSON5 from 'json5';
-import { join } from 'path';
-import { ASSETS_DIR, LLAMA_VISION_IMAGE_MODEL, INSTRUCT_MODEL } from '../config.js';
+/**
+ * Prompt templates for AI models
+ */
 
 /**
- * Generates initial image description using vision model
- * @param {string} imageName - Name of the image file
- * @param {string} model - Model name to use (defaults to LLAMA_VISION_IMAGE_MODEL)
- * @returns {Promise<{prompt: string, response: string}>}
+ * Prompt for vision model to generate initial image description
+ * @returns {string} Vision model prompt
  */
-export const generateInfoForImage = async (imageName, model = LLAMA_VISION_IMAGE_MODEL) => {
-    console.log(`🏃‍♂️ ${model} Processing: ${imageName}`);
-
-    const processingPrompt = `
+export const getVisionModelPrompt = () => {
+    return `
         Describe
         
         Title:
@@ -21,6 +16,7 @@ export const generateInfoForImage = async (imageName, model = LLAMA_VISION_IMAGE
         What you see in this image:
         - Include details about objects, people, actions, setting, and any text visible.
         - If you can clearly tell what or where something is in the image, include the name in the description.
+        - Don't guess without having evidence, but try your best to make an educated deduction.
         - If you can tell the location the image was taken, include it in the description.
 
         Feelings:
@@ -37,63 +33,15 @@ export const generateInfoForImage = async (imageName, model = LLAMA_VISION_IMAGE
         Feelings: "...", "...", "..."
         Colors: "#.......", "#......", "#......"
     `.trim();
-
-    try {
-        const imagePath = join(ASSETS_DIR, imageName);
-        const modalResponse = await ollama.chat({
-            model: model,
-            messages: [{
-                role: 'user',
-                content: processingPrompt,
-                images: [imagePath]
-            }]
-        });
-
-        console.log(`✅ ${model} Processed: ${imageName}`);
-
-        return {
-            prompt: processingPrompt,
-            response: modalResponse.message.content.trim()
-        };
-    } catch (error) {
-        console.error(`❌ Error processing image with ${model}:`, error.message);
-        throw error;
-    }
 };
 
 /**
- * Parses and cleans JSON response from AI model
- * @param {string} raw - Raw JSON string from model
- * @returns {Object} Parsed JSON object
- */
-const parseJsonResponse = (raw) => {
-    let cleanish = raw.startsWith('\n') ? raw.slice(1) : raw;
-    const jsonStart = cleanish.indexOf('{');
-    let jsonEnd = cleanish.lastIndexOf('}') + 1;
-
-    if (!jsonEnd) {
-        cleanish = cleanish + '}';
-        jsonEnd = cleanish.lastIndexOf('}') + 1;
-    }
-
-    const jsonStr = cleanish.slice(jsonStart, jsonEnd);
-
-    try {
-        return JSON5.parse(jsonStr);
-    } catch (error) {
-        throw new Error(`Failed to parse JSON response: ${error.message}\nRaw response: ${raw}`);
-    }
-};
-
-/**
- * Generates structured image document using instruction model
+ * Prompt for instruction model to generate structured metadata
  * @param {string} imageInfo - Initial image description from vision model
- * @returns {Promise<Object>} Structured image metadata
+ * @returns {string} Instruction model prompt
  */
-export const generateStructuredMetadata = async (imageInfo) => {
-    console.log(`🦚 Generating structured metadata...`);
-
-    const descriptionPrompt = `
+export const getInstructionModelPrompt = (imageInfo) => {
+    return `
         You are an AI model that processes image descriptions from another model and generates structured metadata.
     
         ### Keep these important instructions in mind:
@@ -142,29 +90,6 @@ export const generateStructuredMetadata = async (imageInfo) => {
         [END OF IMAGE DESCRIPTION]
         
     `.trim();
-
-    try {
-        const jsonOutput = await ollama.chat({
-            model: INSTRUCT_MODEL,
-            messages: [{
-                role: 'user',
-                content: descriptionPrompt,
-            }]
-        });
-
-        const raw = jsonOutput.message.content.trim();
-        console.log(`\n\n[${INSTRUCT_MODEL}] - ${raw}`);
-
-        const parsed = parseJsonResponse(raw);
-        console.log(`✨ Generated info for image: "${parsed.title}"`);
-
-        return {
-            parsed,
-            prompt: descriptionPrompt
-        };
-    } catch (error) {
-        console.error(`❌ Error generating structured metadata:`, error.message);
-        throw error;
-    }
 };
+
 
