@@ -4,7 +4,7 @@ import { ImageDoc } from '@/types/image';
 import { hexToRgb, colorDistance } from './utils';
 
 const COLLECTION = 'images';
-const DB = 'view_vector';
+const DB = 'seevector';
 
 async function getCollection() {
   const client = await clientPromise;
@@ -92,4 +92,47 @@ export async function getImagesByColorFuzzy(color: string, threshold = 60): Prom
 export async function getLatestImages(limit: number = 25): Promise<ImageDoc[]> {
   const col = await getCollection();
   return col.find({}).sort({ _id: -1 }).limit(limit).toArray() as Promise<ImageDoc[]>;
+}
+
+/**
+ * Search images using $search.
+ * @param {string} query - Search query text
+ * @param {number} limit - Maximum number of results to return
+ * @returns {Promise<ImageDoc[]>}
+ */
+export async function searchImages(query: string, limit: number = 25, textIndex: string = 'ix_text'): Promise<ImageDoc[]> {
+  const col = await getCollection();
+  
+  if (!query || query.trim().length === 0) {
+    return [];
+  }
+
+  const results = await col
+    .aggregate([
+      {
+        $search: {
+          index: textIndex,
+          text: {
+            query: query,
+            path: {
+              wildcard: '*' // Search all fields in the index
+            }
+          }
+        }
+      },
+      {
+        $addFields: {
+          score: { $meta: 'searchScore' }
+        }
+      },
+      {
+        $sort: { score: -1, _id: -1 }
+      },
+      {
+        $limit: limit
+      }
+    ])
+    .toArray() as (ImageDoc & { score: number })[];
+
+  return results;
 }

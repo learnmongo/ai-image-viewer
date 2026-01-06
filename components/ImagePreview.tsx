@@ -7,8 +7,21 @@ interface ImagePreviewProps {
   description?: string;
 }
 
-const ImagePreview = ({ id, title, description }: ImagePreviewProps) => (
-  <ChakraLink as={NextLink} href={`/view/${id}`} _hover={{ textDecoration: 'none' }}>
+function slugify(title: string, id: string) {
+  return (
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') +
+    '-' +
+    id
+  );
+}
+
+const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
+  const slug = slugify(title, id);
+  return (
+    <ChakraLink as={NextLink} href={`/view/${slug}`} _hover={{ textDecoration: 'none' }}>
     <Box boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
       <Box position="relative" width="100%" aspectRatio="16/9" maxHeight="300px">
         <Image
@@ -27,6 +40,7 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => (
       </Box>
     </Box>
   </ChakraLink>
-);
+  );
+};
 
 export default ImagePreview; 

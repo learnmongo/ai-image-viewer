@@ -9,8 +9,10 @@ import Hues from '@/components/Hues';
 import Colors from '@/components/Colors';
 import ViewerActions from '@/components/ViewerActions';
 
-export default async function ViewPage({ params }: { params: { id: string } }) {
-  const id = params.id;
+export default async function ViewPage({ params }: { params: { slug: string } }) {
+  // Extract the id from the end of the slug (after the last dash)
+  const slug = params.slug;
+  const id = slug.split('-').pop();
   const imageDoc = await getImageById(id);
   if (!imageDoc) return notFound();
   const fileName = `${id}.jpg`;
