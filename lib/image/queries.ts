@@ -18,7 +18,6 @@ async function getCollection(): Promise<Collection<ImageDoc>> {
   return client.db(DATABASE_NAME).collection<ImageDoc>(COLLECTION_NAME);
 }
 
-
 /**
  * Get a single image by its MongoDB ObjectId.
  * @param id - The image ObjectId as a string
@@ -26,7 +25,7 @@ async function getCollection(): Promise<Collection<ImageDoc>> {
  */
 export async function getImageById(id: string): Promise<ImageDoc | null> {
   const col = await getCollection();
-  return await col.findOne({ _id: new ObjectId(id) });
+  return col.findOne({ _id: new ObjectId(id) });
 }
 
 /**
@@ -36,27 +35,17 @@ export async function getImageById(id: string): Promise<ImageDoc | null> {
  */
 export async function getImagesByTag(tag: string): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return await col.find({ tags: tag }).toArray();
+  return col.find({ tags: tag }).toArray();
 }
 
-/**
- * Get images by feeling. Uses MongoDB array matching.
- * @param feeling - The feeling to search for
- * @returns Promise resolving to an array of images with the specified feeling
- */
 export async function getImagesByFeeling(feeling: string): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return await col.find({ feelings: feeling }).toArray();
+  return col.find({ feelings: feeling }).toArray();
 }
 
-/**
- * Get images by hue. Uses MongoDB array matching.
- * @param hue - The hue to search for
- * @returns Promise resolving to an array of images with the specified hue
- */
 export async function getImagesByHue(hue: string): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return await col.find({ hues: hue }).toArray();
+  return col.find({ hues: hue }).toArray();
 }
 
 /**
@@ -66,7 +55,7 @@ export async function getImagesByHue(hue: string): Promise<ImageDoc[]> {
  */
 export async function getImagesByExactColor(color: string): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return await col.find({ colors: color }).toArray();
+  return col.find({ colors: color }).toArray();
 }
 
 /**
@@ -100,7 +89,7 @@ export async function getImagesByColorFuzzy(
  */
 export async function getLatestImages(limit: number = DEFAULT_LIMIT): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return await col
+  return col
     .find({})
     .sort({ _id: -1 })
     .limit(limit)
@@ -124,7 +113,7 @@ export async function searchImages(
   }
 
   const col = await getCollection();
-  return await col
+  return col
     .aggregate<ImageDoc & { score: number }>([
       {
         $search: {

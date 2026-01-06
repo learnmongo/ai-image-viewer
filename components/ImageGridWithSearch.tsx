@@ -1,11 +1,11 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Box, Heading, SimpleGrid, Text, Link as ChakraLink } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 import SearchBox from '@/components/SearchBox';
-import { ImageItem } from '@/lib/image/serialize';
+import { ImageItem } from '@/types/image';
 
 interface Props {
   images: ImageItem[];
@@ -14,10 +14,11 @@ interface Props {
 export default function ImageGridWithSearch({ images }: Props) {
   const [searchActive, setSearchActive] = useState(false);
   const searchBoxRef = useRef<{ reset: () => void }>(null);
-  const resetSearch = () => {
+  
+  const resetSearch = useCallback(() => {
     searchBoxRef.current?.reset();
     setSearchActive(false);
-  };
+  }, []);
   return (
     <Box>
       <Box display="flex" flexDirection="column" alignItems="center" mb={8} mt={2}>

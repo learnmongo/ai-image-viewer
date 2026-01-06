@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchImages } from '@/lib/image/queries';
-import { toImageArray } from '@/lib/image/serialize';
+import { toImageArray } from '@/lib/image/utils';
 
 export async function POST(req: NextRequest) {
   try {

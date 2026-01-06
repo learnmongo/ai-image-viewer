@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { getLatestImages } from '@/lib/image/queries';
-import { toImageArray } from '@/lib/image/serialize';
+import { toImageArray } from '@/lib/image/utils';
 import ImageGridWithSearch from '@/components/ImageGridWithSearch';
 
 export default async function HomePage() {

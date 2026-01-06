@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { slugify } from '@/lib/utils/slugify';
-import { ImageItem } from '@/lib/image/serialize';
+import { ImageItem } from '@/types/image';
 
 interface SearchBoxProps {
   onActiveChange?: (active: boolean) => void;
@@ -39,9 +39,7 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
 
   // Update parent about search state
   useEffect(() => {
-    if (onActiveChange) {
-      onActiveChange(!!query && query.length >= 3 && !!results);
-    }
+    onActiveChange?.(!!query && query.length >= 3 && !!results);
   }, [query, results, onActiveChange]);
 
   useImperativeHandle(ref, () => ({
@@ -87,24 +85,20 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
 
   // Debounced search effect
   useEffect(() => {
-    // Clear previous timer
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    // If query is too short, clear results
     if (query.length < 3) {
       setResults(null);
       setLoading(false);
       return;
     }
 
-    // Set up debounced search
     debounceTimer.current = setTimeout(() => {
       performSearch(query);
-    }, 500); // Wait 500ms after user stops typing
+    }, 500);
 
-    // Cleanup
     return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
@@ -162,14 +156,13 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
         <Box maxW="1200px" w="100%" mt={8}>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} w="100%">
             {results.map((img) => {
-              const id = img._id.toString();
-              const slug = slugify(img.title, id);
+              const slug = slugify(img.title, img._id);
               return (
                 <ChakraLink
                   as={NextLink}
                   href={`/view/${slug}`}
                   _hover={{ textDecoration: 'none', bg: 'whiteAlpha.200' }}
-                  key={id}
+                  key={img._id}
                   borderRadius="lg"
                   display="block"
                   aria-label={`View ${img.title}`}
@@ -177,7 +170,7 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
                   <Box boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
                     <Box>
                       <Image
-                        src={`/resources/${id}.jpg`}
+                        src={`/resources/${img._id}.jpg`}
                         alt={img.title}
                         width="100%"
                         height="200px"
