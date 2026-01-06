@@ -26,7 +26,7 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
         aspectRatio={16 / 9}
         overflow="hidden"
         flexShrink={0}
-        borderRadius="lg"
+        borderTopRadius="lg"
       >
         <Image
           src={`/resources/${id}.jpg`}
@@ -35,7 +35,7 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
           height="100%"
           objectFit="cover"
           display="block"
-          borderRadius="lg"
+          borderTopRadius="lg"
           loading="lazy"
         />
       </Box>

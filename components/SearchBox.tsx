@@ -167,7 +167,20 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
                   display="block"
                   aria-label={`View ${img.title}`}
                 >
-                  <Box boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
+                  <Box 
+                    borderRadius="lg" 
+                    overflow="hidden" 
+                    bg="rgba(0, 0, 0, 0.25)"
+                    backdropFilter="blur(20px) saturate(200%)"
+                    borderWidth="1px"
+                    borderColor="rgba(255, 255, 255, 0.18)"
+                    boxShadow="0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+                    transition="all 0.2s ease"
+                    _hover={{
+                      boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.5)',
+                      borderColor: 'rgba(255, 255, 255, 0.25)',
+                    }}
+                  >
                     <Box>
                       <Image
                         src={`/resources/${img._id}.jpg`}

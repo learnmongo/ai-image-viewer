@@ -22,13 +22,21 @@ export default async function FeelingPage({ params }: FeelingPageProps) {
           {images.map((img) => (
             <Box 
               key={img._id.toString()} 
-              boxShadow="md" 
               borderRadius="lg" 
               overflow="hidden" 
-              bg="blackAlpha.700"
+              bg="rgba(0, 0, 0, 0.25)"
+              backdropFilter="blur(20px) saturate(200%)"
+              borderWidth="1px"
+              borderColor="rgba(255, 255, 255, 0.18)"
+              boxShadow="0 8px 32px 0 rgba(0, 0, 0, 0.37)"
               height="100%"
               display="flex"
               flexDirection="column"
+              transition="all 0.2s ease"
+              _hover={{
+                boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.5)',
+                borderColor: 'rgba(255, 255, 255, 0.25)',
+              }}
             >
               <ImagePreview
                 id={img._id.toString()}
