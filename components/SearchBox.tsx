@@ -1,28 +1,23 @@
 'use client';
-import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle, useRef, useCallback } from 'react';
 import { Box, Input, InputGroup, Text, Spinner, SimpleGrid, Image } from '@chakra-ui/react';
 import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import { Link as ChakraLink } from '@chakra-ui/react';
+import { slugify } from '@/lib/utils/slugify';
+import { SearchResult } from '@/types/image';
 
 interface SearchBoxProps {
   onActiveChange?: (active: boolean) => void;
 }
 
-function slugify(title: string, id: string) {
-  return (
-    title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '') +
-    '-' +
-    id
-  );
+interface SearchBoxHandle {
+  reset: () => void;
 }
 
-const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxProps, ref) {
+const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox({ onActiveChange }, ref) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[] | null>(null);
+  const [results, setResults] = useState<SearchResult[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const pathname = usePathname();
@@ -54,7 +49,7 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
     }
   }));
 
-  async function performSearch(searchQuery: string) {
+  const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery || searchQuery.length < 3) {
       setResults(null);
       setLoading(false);
@@ -69,15 +64,22 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: searchQuery }),
       });
+      
+      if (!res.ok) {
+        throw new Error(`Search failed: ${res.statusText}`);
+      }
+      
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      setResults(data.results);
-    } catch (err: any) {
-      setError(err.message || 'Search failed');
+      setResults(data.results || []);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Search failed';
+      setError(errorMessage);
+      setResults(null);
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   // Debounced search effect
   useEffect(() => {
@@ -104,15 +106,15 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
         clearTimeout(debounceTimer.current);
       }
     };
-  }, [query]);
+  }, [query, performSearch]);
 
-  async function handleSearch(e: React.FormEvent) {
+  const handleSearch = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
     await performSearch(query);
-  }
+  }, [query, performSearch]);
 
   return (
     <Box w="100%" display="flex" flexDirection="column" alignItems="center" mb={8} mt={2}>
@@ -123,7 +125,11 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
               placeholder="What sort of things do you want to see?"
               bg="whiteAlpha.800"
               _placeholder={{ color: 'blackAlpha.500', fontSize: 'lg' }}
-              _focus={{ bg: 'whiteAlpha.900', borderColor: 'whiteAlpha.300', boxShadow: '0 2px 12px rgba(0,0,0,0.10)' }}
+              _focus={{ 
+                bg: 'whiteAlpha.900', 
+                borderColor: 'whiteAlpha.300', 
+                boxShadow: '0 2px 12px rgba(0,0,0,0.10)' 
+              }}
               color="gray.900"
               borderRadius="xl"
               borderWidth="1.5px"
@@ -135,18 +141,23 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
               px={8}
               py={6}
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               disabled={loading}
+              aria-label="Search images"
             />
           </InputGroup>
         </form>
-        {error && <Text color="red.400" mt={4}>{error}</Text>}
+        {error && (
+          <Text color="red.400" mt={4} role="alert">
+            {error}
+          </Text>
+        )}
         {loading && <Spinner size="lg" mt={4} />}
       </Box>
-      {results && (
+      {results && results.length > 0 && (
         <Box maxW="1200px" w="100%" mt={8}>
-          <SimpleGrid columns={[1, 2, 3, 4]} gap={6} w="100%">
-            {results.map((img: any) => {
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} w="100%">
+            {results.map((img) => {
               const id = img._id.toString();
               const slug = slugify(img.title, id);
               return (
@@ -157,6 +168,7 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
                   key={id}
                   borderRadius="lg"
                   display="block"
+                  aria-label={`View ${img.title}`}
                 >
                   <Box boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
                     <Box>
@@ -169,12 +181,21 @@ const SearchBox = forwardRef(function SearchBox({ onActiveChange }: SearchBoxPro
                         display="block"
                         borderTopLeftRadius="8px"
                         borderTopRightRadius="8px"
+                        loading="lazy"
                       />
                     </Box>
                     <Box p={3}>
                       <Text fontWeight="bold" fontSize="md" mb={1}>{img.title}</Text>
-                      {img.summary && <Text fontSize="sm" color="whiteAlpha.700" mb={2}>{img.summary}</Text>}
-                      {typeof img.score !== 'undefined' && <Text fontSize="xs" color="teal.200">Score: {img.score.toFixed(3)}</Text>}
+                      {img.summary && (
+                        <Text fontSize="sm" color="whiteAlpha.700" mb={2} noOfLines={2}>
+                          {img.summary}
+                        </Text>
+                      )}
+                      {typeof img.score !== 'undefined' && (
+                        <Text fontSize="xs" color="teal.200">
+                          Score: {img.score.toFixed(3)}
+                        </Text>
+                      )}
                     </Box>
                   </Box>
                 </ChakraLink>

@@ -3,17 +3,22 @@ import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 
-export default async function FeelingPage({ params }: { params: { feeling: string } }) {
-  const feeling = params.feeling.replace(/-/g, ' ');
+interface FeelingPageProps {
+  params: Promise<{ feeling: string }>;
+}
+
+export default async function FeelingPage({ params }: FeelingPageProps) {
+  const { feeling: feelingParam } = await params;
+  const feeling = feelingParam.replace(/-/g, ' ');
   const images = await getImagesByFeeling(feeling);
 
   return (
-    <Box px={[2, 4, 8]} py={[4, 8, 12]}>
+    <Box px={{ base: 2, md: 4, lg: 8 }} py={{ base: 4, md: 8, lg: 12 }}>
       <Heading size="lg" mb={6}>Images with feeling &quot;{feeling}&quot;</Heading>
       {images.length === 0 ? (
         <Text>No images found for this feeling.</Text>
       ) : (
-        <SimpleGrid columns={[1, 2, 3, 4]} gap={6}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
           {images.map((img) => (
             <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
               <ImagePreview

@@ -31,7 +31,7 @@ export default function ImageGridWithSearch({ images }: Props) {
       {!searchActive && (
         <>
           <Heading size="lg" mb={6}>Latest Images</Heading>
-          <SimpleGrid columns={[1, 2, 3, 4]} gap={6}>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
             {images.map((img) => (
               <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
                 <ImagePreview

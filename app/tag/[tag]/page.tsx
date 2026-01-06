@@ -3,17 +3,22 @@ import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 
-export default async function TagPage({ params }: { params: { tag: string } }) {
-  const tag = params.tag.replace(/-/g, ' ');
+interface TagPageProps {
+  params: Promise<{ tag: string }>;
+}
+
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag: tagParam } = await params;
+  const tag = tagParam.replace(/-/g, ' ');
   const images = await getImagesByTag(tag);
 
   return (
-    <Box px={[2, 4, 8]} py={[4, 8, 12]}>
+    <Box px={{ base: 2, md: 4, lg: 8 }} py={{ base: 4, md: 8, lg: 12 }}>
       <Heading size="lg" mb={6}>Images tagged &quot;{tag}&quot;</Heading>
       {images.length === 0 ? (
         <Text>No images found for this tag.</Text>
       ) : (
-        <SimpleGrid columns={[1, 2, 3, 4]} gap={6}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
           {images.map((img) => (
             <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
               <ImagePreview

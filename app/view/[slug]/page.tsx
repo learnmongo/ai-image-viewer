@@ -3,29 +3,46 @@ import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
 import { getImageById } from '@/lib/image/queries';
+import { extractIdFromSlug } from '@/lib/utils/slugify';
 import Tags from '@/components/Tags';
 import Feelings from '@/components/Feelings';
 import Hues from '@/components/Hues';
 import Colors from '@/components/Colors';
 import ViewerActions from '@/components/ViewerActions';
 
-export default async function ViewPage({ params }: { params: { slug: string } }) {
-  // Extract the id from the end of the slug (after the last dash)
-  const slug = params.slug;
-  const id = slug.split('-').pop();
+interface ViewPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function ViewPage({ params }: ViewPageProps) {
+  const { slug } = await params;
+  const id = extractIdFromSlug(slug);
   const imageDoc = await getImageById(id);
+  
   if (!imageDoc) return notFound();
+  
   const fileName = `${id}.jpg`;
   const localImagePath = path.join(process.cwd(), 'public', 'resources', fileName);
   const fileExists = fs.existsSync(localImagePath);
+  
   if (!fileExists) return notFound();
+  
   const background = `linear-gradient(135deg, ${imageDoc.colors?.[0] || '#222'}cc, ${imageDoc.colors?.[1] || '#444'}cc, ${imageDoc.colors?.[2] || '#666'}cc)`;
 
   return (
-    <Box minH="100vh" bg={background} color="white" px={[2, 4, 8]} py={14} display="flex" flexDirection="column" alignItems="center">
+    <Box 
+      minH="100vh" 
+      bg={background} 
+      color="white" 
+      px={{ base: 2, md: 4, lg: 8 }} 
+      py={14} 
+      display="flex" 
+      flexDirection="column" 
+      alignItems="center"
+    >
       <Box
         w="100%"
-        maxW={['100vw', '75vw']}
+        maxW={{ base: '100vw', md: '75vw' }}
         mt={4}
         display="flex"
         flexDirection="column"
@@ -35,7 +52,13 @@ export default async function ViewPage({ params }: { params: { slug: string } })
           {imageDoc.title}
         </Heading>
         {imageDoc.description && (
-          <Text fontSize={["md", "lg"]} mb={4} color="whiteAlpha.900" textShadow="0 1px 4px rgba(0,0,0,0.3)" textAlign="center">
+          <Text 
+            fontSize={{ base: "md", md: "lg" }} 
+            mb={4} 
+            color="whiteAlpha.900" 
+            textShadow="0 1px 4px rgba(0,0,0,0.3)" 
+            textAlign="center"
+          >
             {imageDoc.description}
           </Text>
         )}
@@ -55,18 +78,18 @@ export default async function ViewPage({ params }: { params: { slug: string } })
         />
         <Box
           bg="blackAlpha.600"
-          p={[3, 5]}
+          p={{ base: 3, md: 5 }}
           borderRadius="md"
           borderWidth="1px"
           borderColor="whiteAlpha.300"
           boxShadow="md"
           w="100%"
-          maxW={['100vw', '75vw']}
+          maxW={{ base: '100vw', md: '75vw' }}
           mx="auto"
         >
-          <Text fontSize={["md", "lg"]}>{imageDoc.summary}</Text>
+          <Text fontSize={{ base: "md", md: "lg" }}>{imageDoc.summary}</Text>
         </Box>
-        <SimpleGrid columns={[1, 2, 4]} gap={6} w="100%" maxW={['100vw', '75vw']} mx="auto" mt={4}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="100%" maxW={{ base: '100vw', md: '75vw' }} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
             {imageDoc.tags && imageDoc.tags.length > 0 ? (
