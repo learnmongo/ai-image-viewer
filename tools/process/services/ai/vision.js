@@ -1,7 +1,7 @@
 import ollama from 'ollama';
 import { join } from 'path';
 import { ASSETS_DIR } from '../../config.js';
-import { getVisionModelPrompt } from './prompts.js';
+import { getVisionModelPrompt } from './prompts/index.js';
 import { runWithProgress } from '../ui/progress.js';
 
 /**

@@ -1,6 +1,6 @@
 import ollama from 'ollama';
 import { INSTRUCT_MODEL } from '../../config.js';
-import { getInstructionModelPrompt } from './prompts.js';
+import { getInstructionModelPrompt } from './prompts/index.js';
 import { parseJsonResponse } from '../utils/json-parser.js';
 import { runWithProgress } from '../ui/progress.js';
 
