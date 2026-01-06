@@ -17,13 +17,11 @@ export default function NavBar() {
       px={4}
       py={2}
       zIndex={1100}
-      style={{
-        background: 'rgba(255,255,255,0.18)',
-        backdropFilter: 'blur(24px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-        borderBottom: '.5px solid rgba(48, 48, 48, 0.4)',
-        boxShadow: '0 2px 16px 0 rgba(0,0,0,0.08)',
-      }}
+      bg="rgba(255,255,255,0.18)"
+      backdropFilter="blur(24px) saturate(180%)"
+      borderBottom=".5px solid"
+      borderColor="rgba(48, 48, 48, 0.4)"
+      boxShadow="0 2px 16px 0 rgba(0,0,0,0.08)"
       color="white"
       display="flex"
       alignItems="center"
@@ -41,7 +39,7 @@ export default function NavBar() {
             display="flex"
             alignItems="center"
           >
-            <HamburgerIcon boxSize={6} style={{ marginRight: 6 }} />
+            <HamburgerIcon boxSize={6} mr={1.5} />
           </Link>
           {/* Add more navigation links here as needed */}
         </Flex>

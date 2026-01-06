@@ -39,7 +39,10 @@ export default function ModelResponsesModal({ isOpen, onClose, responses }: Mode
               <Tabs.Content
                 key={r.model}
                 value={r.model}
-                style={{ height: '480px', overflowY: 'auto', display: 'flex', alignItems: 'flex-start' }}
+                h="480px"
+                overflowY="auto"
+                display="flex"
+                alignItems="flex-start"
               >
                 <Box w="100%" p={4}>
                 {r.response && (

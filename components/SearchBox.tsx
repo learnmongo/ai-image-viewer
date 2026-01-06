@@ -119,7 +119,7 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
   return (
     <Box w="100%" display="flex" flexDirection="column" alignItems="center" mb={8} mt={2}>
       <Box maxW="600px" w="100%">
-        <form onSubmit={handleSearch} style={{ width: '100%' }}>
+        <form onSubmit={handleSearch} style={{ width: '100%' }} aria-label="Search form">
           <InputGroup w="100%">
             <Input
               placeholder="What sort of things do you want to see?"

@@ -9,9 +9,8 @@ interface DocumentModalProps {
 }
 
 export default function DocumentModal({ isOpen, onClose, data }: DocumentModalProps) {
-  // remove debug info from document
-  delete data?.file;
-  delete data?.raw;
+  // Create a clean copy without debug info
+  const { file, raw, ...cleanData } = data;
 
   return (
     <GlassyModal isOpen={isOpen} onClose={onClose} title="Document">
@@ -29,7 +28,7 @@ export default function DocumentModal({ isOpen, onClose, data }: DocumentModalPr
           maxW="600px"
           overflowX="auto"
         >
-          <JsonViewer data={data} />
+          <JsonViewer data={cleanData} />
         </Box>
       </Box>
     </GlassyModal>

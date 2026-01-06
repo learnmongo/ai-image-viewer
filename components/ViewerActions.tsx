@@ -27,7 +27,7 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
           py={2}
           onClick={() => setDocOpen(true)}
         >
-          <ViewIcon boxSize={4} style={{ marginRight: 6 }} />
+          <ViewIcon boxSize={4} mr={1.5} />
           Document
         </Button>
         <Button
@@ -38,14 +38,14 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
           py={2}
           onClick={() => setResponsesOpen(true)}
         >
-          <ChatIcon boxSize={4} style={{ marginRight: 6 }} />
+          <ChatIcon boxSize={4} mr={1.5} />
           Model Responses
         </Button>
       </HStack>
       <DocumentModal
         isOpen={isDocOpen}
         onClose={() => setDocOpen(false)}
-        data={document as unknown as Record<string, unknown>}
+        data={document as Record<string, unknown>}
       />
       <ModelResponsesModal
         isOpen={isResponsesOpen}

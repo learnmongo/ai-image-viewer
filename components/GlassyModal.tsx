@@ -23,19 +23,20 @@ export default function GlassyModal({ isOpen, onClose, title, children }: Glassy
   if (!isOpen) return null;
 
   return (
-    <Box
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      bottom={0}
-      bg="blackAlpha.700"
-      zIndex={1000}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      p={[2, 4]}
-    >
+      <Box
+        position="fixed"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        bg="blackAlpha.700"
+        zIndex={1000}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        p={{ base: 2, md: 4 }}
+        onClick={onClose}
+      >
       <Box
         bg="rgba(255,255,255,0.18)"
         style={{ backdropFilter: 'blur(24px) saturate(180%)' }}
@@ -50,6 +51,7 @@ export default function GlassyModal({ isOpen, onClose, title, children }: Glassy
         borderColor="whiteAlpha.400"
         display="flex"
         flexDirection="column"
+        onClick={(e) => e.stopPropagation()}
       >
         <HStack justify="space-between" align="center" px={6} py={4} borderBottom="1px" borderColor="gray.200" bg="transparent">
           <Text fontSize="xl" fontWeight="bold" letterSpacing="tight" color="white">
@@ -82,23 +84,6 @@ export default function GlassyModal({ isOpen, onClose, title, children }: Glassy
         <Box flex={1} overflowY="auto" px={6} py={4} bg="transparent">
           {children}
         </Box>
-        <HStack justify="flex-end" px={6} py={3} borderTop="1px" borderColor="gray.200" bg="transparent">
-          <Button
-            colorScheme="gray"
-            onClick={onClose}
-            size="md"
-            borderRadius="lg"
-            boxShadow="sm"
-            fontWeight="semibold"
-            px={6}
-            bg="white"
-            color="gray.800"
-            _hover={{ bg: 'gray.200', color: 'gray.900', boxShadow: 'md' }}
-            _focus={{ boxShadow: 'outline', bg: 'gray.200', color: 'gray.900' }}
-          >
-            Close
-          </Button>
-        </HStack>
       </Box>
     </Box>
   );
