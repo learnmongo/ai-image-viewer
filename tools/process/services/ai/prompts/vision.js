@@ -12,7 +12,7 @@ export const getVisionModelPrompt = () => {
         What you see in this image:
         - Include details about objects, people, actions, setting, and any text visible.
         - If you can clearly tell what or where something is in the image, include the name in the description.
-        - Don't guess without having evidence, but try your best to make an educated deduction.
+        - Try your best to make an educated deduction, if you are guessing say so.
         - If you can tell the location the image was taken, include it in the description.
 
         Feelings:
