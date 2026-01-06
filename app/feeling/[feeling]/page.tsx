@@ -24,18 +24,18 @@ export default async function FeelingPage({ params }: FeelingPageProps) {
               key={img._id.toString()} 
               borderRadius="lg" 
               overflow="hidden" 
-              bg="rgba(0, 0, 0, 0.25)"
-              backdropFilter="blur(20px) saturate(200%)"
+              bg="rgba(255, 255, 255, 0.18)"
+              backdropFilter="blur(24px) saturate(180%)"
               borderWidth="1px"
-              borderColor="rgba(255, 255, 255, 0.18)"
-              boxShadow="0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+              borderColor="whiteAlpha.200"
+              boxShadow="2xl"
               height="100%"
               display="flex"
               flexDirection="column"
               transition="all 0.2s ease"
               _hover={{
-                boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.5)',
-                borderColor: 'rgba(255, 255, 255, 0.25)',
+                boxShadow: '2xl',
+                borderColor: 'whiteAlpha.300',
               }}
             >
               <ImagePreview

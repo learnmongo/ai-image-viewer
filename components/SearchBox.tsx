@@ -170,15 +170,15 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
                   <Box 
                     borderRadius="lg" 
                     overflow="hidden" 
-                    bg="rgba(0, 0, 0, 0.25)"
-                    backdropFilter="blur(20px) saturate(200%)"
+                    bg="rgba(255, 255, 255, 0.18)"
+                    backdropFilter="blur(24px) saturate(180%)"
                     borderWidth="1px"
-                    borderColor="rgba(255, 255, 255, 0.18)"
-                    boxShadow="0 8px 32px 0 rgba(0, 0, 0, 0.37)"
+                    borderColor="whiteAlpha.200"
+                    boxShadow="2xl"
                     transition="all 0.2s ease"
                     _hover={{
-                      boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.5)',
-                      borderColor: 'rgba(255, 255, 255, 0.25)',
+                      boxShadow: '2xl',
+                      borderColor: 'whiteAlpha.300',
                     }}
                   >
                     <Box>
@@ -194,15 +194,29 @@ const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox
                         loading="lazy"
                       />
                     </Box>
-                    <Box p={3}>
-                      <Text fontWeight="bold" fontSize="md" mb={1}>{img.title}</Text>
+                    <Box p={3} color="white">
+                      <Text 
+                        fontWeight="bold" 
+                        fontSize="md" 
+                        mb={1}
+                        color="white"
+                        textShadow="0 1px 3px rgba(0, 0, 0, 0.5)"
+                      >
+                        {img.title}
+                      </Text>
                       {img.summary && (
-                        <Text fontSize="sm" color="whiteAlpha.700" mb={2} noOfLines={2}>
+                        <Text 
+                          fontSize="sm" 
+                          color="whiteAlpha.900" 
+                          mb={2} 
+                          noOfLines={2}
+                          textShadow="0 1px 2px rgba(0, 0, 0, 0.5)"
+                        >
                           {img.summary}
                         </Text>
                       )}
                       {typeof img.score !== 'undefined' && (
-                        <Text fontSize="xs" color="teal.200">
+                        <Text fontSize="xs" color="teal.200" textShadow="0 1px 2px rgba(0, 0, 0, 0.5)">
                           Score: {img.score.toFixed(3)}
                         </Text>
                       )}

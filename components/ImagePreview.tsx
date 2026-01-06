@@ -39,7 +39,7 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
           loading="lazy"
         />
       </Box>
-      <Box p={3}>
+      <Box p={3} color="white">
         <Text 
           fontWeight="bold" 
           fontSize="md" 
@@ -47,18 +47,21 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
           textOverflow="ellipsis" 
           whiteSpace="nowrap"
           mb={1}
+          color="white"
+          textShadow="0 1px 3px rgba(0, 0, 0, 0.5)"
         >
           {title}
         </Text>
         {description && (
           <Text 
             fontSize="sm" 
-            color="whiteAlpha.700" 
+            color="whiteAlpha.900" 
             overflow="hidden" 
             textOverflow="ellipsis" 
             whiteSpace="normal" 
             maxH="2.5em" 
             lineHeight="1.25em"
+            textShadow="0 1px 2px rgba(0, 0, 0, 0.5)"
           >
             {description}
           </Text>
