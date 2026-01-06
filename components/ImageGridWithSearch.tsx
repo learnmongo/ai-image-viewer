@@ -31,7 +31,6 @@ export default function ImageGridWithSearch({ images }: Props) {
       </Box>
       {!searchActive && (
         <>
-          <Heading size="lg" mb={6}>Latest Images</Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
             {images.map((img) => (
               <Box 
