@@ -1,83 +1,92 @@
-import { ObjectId } from 'mongodb';
+import { ObjectId, Collection } from 'mongodb';
 import clientPromise from '../mongo';
 import { ImageDoc } from '@/types/image';
 import { hexToRgb, colorDistance } from './utils';
 
-const COLLECTION = 'images';
-const DB = 'seevector';
-
-async function getCollection() {
-  const client = await clientPromise;
-  return client.db(DB).collection(COLLECTION);
-}
+const COLLECTION_NAME = 'images';
+const DATABASE_NAME = 'seevector';
+const DEFAULT_LIMIT = 25;
+const DEFAULT_SEARCH_INDEX = 'ix_text';
+const DEFAULT_COLOR_THRESHOLD = 60;
 
 /**
- * Generic query for images by a single field value.
- * @param {string} field - The field name to query.
- * @param {string} value - The value to match.
- * @returns {Promise<ImageDoc[]>}
+ * Get the MongoDB collection for images.
+ * @returns Promise resolving to the images collection
  */
-async function getImagesByField(field: string, value: string): Promise<ImageDoc[]> {
-  const col = await getCollection();
-  return col.find({ [field]: value }).toArray() as Promise<ImageDoc[]>;
+async function getCollection(): Promise<Collection<ImageDoc>> {
+  const client = await clientPromise;
+  return client.db(DATABASE_NAME).collection<ImageDoc>(COLLECTION_NAME);
 }
+
 
 /**
  * Get a single image by its MongoDB ObjectId.
- * @param {string} id - The image ObjectId as a string.
- * @returns {Promise<ImageDoc | null>}
+ * @param id - The image ObjectId as a string
+ * @returns Promise resolving to the image document or null if not found
  */
 export async function getImageById(id: string): Promise<ImageDoc | null> {
   const col = await getCollection();
-  return col.findOne({ _id: new ObjectId(id) }) as Promise<ImageDoc | null>;
+  return await col.findOne({ _id: new ObjectId(id) });
 }
 
 /**
- * Get images by tag.
- * @param {string} tag
- * @returns {Promise<ImageDoc[]>}
+ * Get images by tag. Uses MongoDB array matching.
+ * @param tag - The tag to search for
+ * @returns Promise resolving to an array of images with the specified tag
  */
-export function getImagesByTag(tag: string) {
-  return getImagesByField('tags', tag);
+export async function getImagesByTag(tag: string): Promise<ImageDoc[]> {
+  const col = await getCollection();
+  return await col.find({ tags: tag }).toArray();
 }
 
 /**
- * Get images by feeling.
- * @param {string} feeling
- * @returns {Promise<ImageDoc[]>}
+ * Get images by feeling. Uses MongoDB array matching.
+ * @param feeling - The feeling to search for
+ * @returns Promise resolving to an array of images with the specified feeling
  */
-export function getImagesByFeeling(feeling: string) {
-  return getImagesByField('feelings', feeling);
+export async function getImagesByFeeling(feeling: string): Promise<ImageDoc[]> {
+  const col = await getCollection();
+  return await col.find({ feelings: feeling }).toArray();
 }
 
 /**
- * Get images by hue.
- * @param {string} hue
- * @returns {Promise<ImageDoc[]>}
+ * Get images by hue. Uses MongoDB array matching.
+ * @param hue - The hue to search for
+ * @returns Promise resolving to an array of images with the specified hue
  */
-export function getImagesByHue(hue: string) {
-  return getImagesByField('hues', hue);
+export async function getImagesByHue(hue: string): Promise<ImageDoc[]> {
+  const col = await getCollection();
+  return await col.find({ hues: hue }).toArray();
 }
 
 /**
  * Get images by exact color hex value.
- * @param {string} color - Hex color string (e.g. #FF0000)
- * @returns {Promise<ImageDoc[]>}
+ * @param color - Hex color string (e.g. #FF0000)
+ * @returns Promise resolving to an array of images with the exact color
  */
 export async function getImagesByExactColor(color: string): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return col.find({ colors: color }).toArray() as Promise<ImageDoc[]>;
+  return await col.find({ colors: color }).toArray();
 }
 
 /**
  * Get images by fuzzy color match (within a threshold in RGB space).
- * @param {string} color - Hex color string (e.g. #FF0000)
- * @param {number} [threshold=60] - RGB distance threshold
- * @returns {Promise<ImageDoc[]>}
+ * Note: This loads all images into memory for color comparison.
+ * For better performance with large datasets, consider using MongoDB aggregation.
+ * @param color - Hex color string (e.g. #FF0000)
+ * @param threshold - RGB distance threshold (default: 60)
+ * @returns Promise resolving to an array of images with similar colors
  */
-export async function getImagesByColorFuzzy(color: string, threshold = 60): Promise<ImageDoc[]> {
+export async function getImagesByColorFuzzy(
+  color: string, 
+  threshold: number = DEFAULT_COLOR_THRESHOLD
+): Promise<ImageDoc[]> {
   const col = await getCollection();
-  const all = (await col.find({ colors: { $exists: true, $ne: [] } }).toArray()) as ImageDoc[];
+  // Get all images with colors (this could be optimized with aggregation for large datasets)
+  const all = await col.find({ 
+    colors: { $exists: true, $ne: [] } 
+  }).toArray();
+  
   const targetRgb = hexToRgb(color);
   return all.filter(img =>
     img.colors?.some(c => colorDistance(hexToRgb(c), targetRgb) <= threshold)
@@ -86,34 +95,42 @@ export async function getImagesByColorFuzzy(color: string, threshold = 60): Prom
 
 /**
  * Get the latest images, sorted by _id descending.
- * @param {number} limit - Number of images to return
- * @returns {Promise<ImageDoc[]>}
+ * @param limit - Number of images to return (default: 25)
+ * @returns Promise resolving to an array of the latest images
  */
-export async function getLatestImages(limit: number = 25): Promise<ImageDoc[]> {
+export async function getLatestImages(limit: number = DEFAULT_LIMIT): Promise<ImageDoc[]> {
   const col = await getCollection();
-  return col.find({}).sort({ _id: -1 }).limit(limit).toArray() as Promise<ImageDoc[]>;
+  return await col
+    .find({})
+    .sort({ _id: -1 })
+    .limit(limit)
+    .toArray();
 }
 
 /**
- * Search images using $search.
- * @param {string} query - Search query text
- * @param {number} limit - Maximum number of results to return
- * @returns {Promise<ImageDoc[]>}
+ * Search images using Atlas Search $search aggregation stage.
+ * @param query - Search query text
+ * @param limit - Maximum number of results to return (default: 25)
+ * @param textIndex - Name of the Atlas Search index to use (default: 'ix_text')
+ * @returns Promise resolving to an array of images with search scores
  */
-export async function searchImages(query: string, limit: number = 25, textIndex: string = 'ix_text'): Promise<ImageDoc[]> {
-  const col = await getCollection();
-  
+export async function searchImages(
+  query: string, 
+  limit: number = DEFAULT_LIMIT, 
+  textIndex: string = DEFAULT_SEARCH_INDEX
+): Promise<(ImageDoc & { score: number })[]> {
   if (!query || query.trim().length === 0) {
     return [];
   }
 
-  const results = await col
-    .aggregate([
+  const col = await getCollection();
+  return await col
+    .aggregate<ImageDoc & { score: number }>([
       {
         $search: {
           index: textIndex,
           text: {
-            query: query,
+            query: query.trim(),
             path: {
               wildcard: '*' // Search all fields in the index
             }
@@ -132,7 +149,5 @@ export async function searchImages(query: string, limit: number = 25, textIndex:
         $limit: limit
       }
     ])
-    .toArray() as (ImageDoc & { score: number })[];
-
-  return results;
+    .toArray();
 }
