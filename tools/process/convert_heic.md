@@ -1,0 +1,1 @@
+magick *.HEIC -resize 2400x1600\> -quality 82 jpg/%03d.jpg

@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "exiftool-vendored": "^34.3.0",
+    "json5": "^2.2.3",
+    "mongodb": "^6.5.0",
+    "ollama": "^0.5.16"
+  }
+}

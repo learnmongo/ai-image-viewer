@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -44,3 +45,7 @@ next-env.d.ts
 # Ignore contents of public/resources but keep the folder
 public/resources/*
 !public/resources/.gitkeep
+
+# Ignore contents of assets but keep the folder
+assets/*
+!assets/.gitkeep
