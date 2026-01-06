@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import NextLink from 'next/link';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { slugify } from '@/lib/utils/slugify';
-import { SearchResult } from '@/types/image';
+import { ImageItem } from '@/lib/image/serialize';
 
 interface SearchBoxProps {
   onActiveChange?: (active: boolean) => void;
@@ -13,6 +13,10 @@ interface SearchBoxProps {
 
 interface SearchBoxHandle {
   reset: () => void;
+}
+
+interface SearchResult extends ImageItem {
+  score?: number;
 }
 
 const SearchBox = forwardRef<SearchBoxHandle, SearchBoxProps>(function SearchBox({ onActiveChange }, ref) {

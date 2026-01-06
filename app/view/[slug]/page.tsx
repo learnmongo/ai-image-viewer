@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { getImageById } from '@/lib/image/queries';
 import { extractIdFromSlug } from '@/lib/utils/slugify';
+import { toImage } from '@/lib/image/serialize';
 import Tags from '@/components/Tags';
 import Feelings from '@/components/Feelings';
 import Hues from '@/components/Hues';
@@ -123,7 +124,7 @@ export default async function ViewPage({ params }: ViewPageProps) {
             )}
           </Box>
         </SimpleGrid>
-        <ViewerActions document={imageDoc} responses={imageDoc.raw ?? []} />
+        <ViewerActions document={toImage(imageDoc)} responses={imageDoc.raw ?? []} />
       </Box>
     </Box>
   );

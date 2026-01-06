@@ -5,10 +5,11 @@ import { ViewIcon, ChatIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import DocumentModal from './DocumentModal';
 import ModelResponsesModal from './ModelResponsesModal';
-import { ImageDoc, RawModelResponse } from '@/types/image';
+import { RawModelResponse } from '@/types/image';
+import { ImageItem } from '@/lib/image/serialize';
 
 interface ViewerActionsProps {
-  document: ImageDoc;
+  document: ImageItem;
   responses: RawModelResponse[];
 }
 

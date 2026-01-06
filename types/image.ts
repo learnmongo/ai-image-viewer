@@ -16,8 +16,4 @@ export interface ImageDoc {
   colors: string[];
   tags?: string[];
   raw?: RawModelResponse[];
-}
-
-export interface SearchResult extends ImageDoc {
-  score?: number;
 } 

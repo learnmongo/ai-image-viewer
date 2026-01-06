@@ -5,10 +5,10 @@ import NextLink from 'next/link';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 import SearchBox from '@/components/SearchBox';
-import { ImageDoc } from '@/types/image';
+import { ImageItem } from '@/lib/image/serialize';
 
 interface Props {
-  images: ImageDoc[];
+  images: ImageItem[];
 }
 
 export default function ImageGridWithSearch({ images }: Props) {
@@ -33,9 +33,9 @@ export default function ImageGridWithSearch({ images }: Props) {
           <Heading size="lg" mb={6}>Latest Images</Heading>
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
             {images.map((img) => (
-              <Box key={img._id.toString()} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
+              <Box key={img._id} boxShadow="md" borderRadius="lg" overflow="hidden" bg="blackAlpha.700">
                 <ImagePreview
-                  id={img._id.toString()}
+                  id={img._id}
                   title={img.title}
                   description={img.description}
                 />
