@@ -1,5 +1,17 @@
 {
   "type": "module",
+  "name": "image-processor",
+  "version": "1.0.0",
+  "description": "Process images with AI and store metadata in MongoDB",
+  "main": "process.js",
+  "bin": {
+    "process": "./process.js",
+    "process-image": "./process.js"
+  },
+  "scripts": {
+    "process": "node cli.js",
+    "postinstall": "node -e \"const fs=require('fs'),path=require('path');const binDir=path.join(process.cwd(),'node_modules','.bin');if(!fs.existsSync(binDir))fs.mkdirSync(binDir,{recursive:true});const target=path.join(process.cwd(),'process.js');const link=path.join(binDir,'process');try{fs.unlinkSync(link);}catch(e){}fs.symlinkSync(path.relative(binDir,target),link,'file');\""
+  },
   "dependencies": {
     "dotenv": "^16.6.1",
     "exiftool-vendored": "^34.3.0",
