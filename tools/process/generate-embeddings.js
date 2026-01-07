@@ -20,8 +20,17 @@ const getLimit = () => {
   return idx !== -1 ? Number(process.argv[idx + 1]) : null;
 };
 
-// Pick the best text field for embedding
-const pickText = (doc) => doc?.summary || doc?.description || doc?.title || '';
+// Combine all text fields for embedding
+const buildText = (doc) => {
+  const parts = [
+    doc?.title,
+    doc?.description,
+    doc?.summary,
+    ...(doc?.tags || []),
+  ].filter(Boolean);
+  
+  return parts.join(' ');
+};
 
 async function main() {
   const limit = getLimit();
@@ -33,7 +42,7 @@ async function main() {
   // Find documents without embeddings
   const query = { embedding: { $exists: false } };
   const cursor = images.find(query, {
-    projection: { _id: 1, title: 1, description: 1, summary: 1 },
+    projection: { _id: 1, title: 1, description: 1, summary: 1, tags: 1 },
     ...(limit && { limit }),
   });
 
@@ -41,9 +50,8 @@ async function main() {
   const inputType = process.env.VOYAGE_EMBED_INPUT_TYPE || 'document';
   let count = 0;
 
-  while (await cursor.hasNext()) {
-    const doc = await cursor.next();
-    const text = pickText(doc);
+  for await (const doc of cursor) {
+    const text = buildText(doc);
     if (!text) continue;
 
     const embedding = await embedText(text, { model, inputType });
@@ -53,7 +61,7 @@ async function main() {
     );
 
     count++;
-    console.log(`✅ ${doc._id}`);
+    console.log(`✅ ${doc.title}`);
   }
 
   console.log(`\nDone! Embedded ${count} documents.`);
