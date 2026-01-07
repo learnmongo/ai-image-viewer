@@ -11,7 +11,7 @@
  */
 
 import { connect, close, getClient } from './services/database.js';
-import { DB_NAME, COLLECTION } from './config.js';
+import { DB_NAME, COLLECTION, VOYAGE_EMBED_MODEL, VOYAGE_EMBED_INPUT_TYPE } from './config.js';
 import { embedText } from './services/ai/embeddings.js';
 
 // Parse --limit argument
@@ -46,8 +46,8 @@ async function main() {
     ...(limit && { limit }),
   });
 
-  const model = process.env.VOYAGE_EMBED_MODEL || 'voyage-3.5';
-  const inputType = process.env.VOYAGE_EMBED_INPUT_TYPE || 'document';
+  const model = VOYAGE_EMBED_MODEL;
+  const inputType = VOYAGE_EMBED_INPUT_TYPE;
   let count = 0;
 
   for await (const doc of cursor) {
