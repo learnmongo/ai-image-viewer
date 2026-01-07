@@ -57,7 +57,13 @@ async function main() {
     const embedding = await embedText(text, { model, inputType });
     await images.updateOne(
       { _id: doc._id },
-      { $set: { embedding, embedding_model: model } }
+      { 
+        $set: { 
+          embedding, 
+          embedding_model: model,
+          embedding_date: new Date()
+        } 
+      }
     );
 
     count++;
