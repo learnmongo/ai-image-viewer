@@ -61,7 +61,7 @@ async function main() {
     );
 
     count++;
-    console.log(`✅ ${doc.title}`);
+    console.log(`✅ [${doc._id}] ${doc.title}`);
   }
 
   console.log(`\nDone! Embedded ${count} documents.`);
