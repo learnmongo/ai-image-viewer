@@ -6,17 +6,19 @@
   "main": "process.js",
   "bin": {
     "process": "./process.js",
-    "process-image": "./process.js"
+    "process-image": "./process.js",
+    "generate-embeddings": "./generate-embeddings.js"
   },
   "scripts": {
     "process": "node cli.js",
-    "postinstall": "node -e \"const fs=require('fs'),path=require('path');const binDir=path.join(process.cwd(),'node_modules','.bin');if(!fs.existsSync(binDir))fs.mkdirSync(binDir,{recursive:true});const target=path.join(process.cwd(),'process.js');const link=path.join(binDir,'process');try{fs.unlinkSync(link);}catch(e){}fs.symlinkSync(path.relative(binDir,target),link,'file');\""
+    "postinstall": "node -e \"const fs=require('fs'),path=require('path');const binDir=path.join(process.cwd(),'node_modules','.bin');if(!fs.existsSync(binDir))fs.mkdirSync(binDir,{recursive:true});const mk=(name, target)=>{const link=path.join(binDir,name);try{fs.unlinkSync(link);}catch(e){}fs.symlinkSync(path.relative(binDir,target),link,'file');};mk('process', path.join(process.cwd(),'process.js'));mk('generate-embeddings', path.join(process.cwd(),'generate-embeddings.js'));\""
   },
   "dependencies": {
     "dotenv": "^16.6.1",
     "exiftool-vendored": "^34.3.0",
     "json5": "^2.2.3",
     "mongodb": "^6.5.0",
-    "ollama": "^0.5.16"
+    "ollama": "^0.5.16",
+    "voyageai": "^0.1.0"
   }
 }

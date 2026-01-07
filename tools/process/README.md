@@ -14,7 +14,14 @@ Process images with AI vision models and store metadata in MongoDB.
    MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/
    ```
 
-3. Install dependencies (if not already installed):
+3. (Optional) Embeddings with Voyage AI:
+   ```
+   VOYAGE_API_KEY=your_voyage_api_key
+   VOYAGE_EMBED_MODEL=voyage-3.5
+   VOYAGE_EMBED_INPUT_TYPE=document
+   ```
+
+4. Install dependencies (if not already installed):
    ```bash
    npm install
    ```
@@ -43,6 +50,14 @@ npm run process <image-name>
 node process.js <image-name>
 ```
 
+### Embeddings: Generate and store Voyage embeddings
+```bash
+# Generate embeddings for documents missing the 'embedding' field
+# Add --limit N to cap processing
+# This will NOT overwrite embeddings that already exist.
+npx generate-embeddings --limit 50
+```
+
 ## Examples
 
 ```bash
@@ -65,6 +80,12 @@ All configuration is done via environment variables in `.env`:
 - `COLLECTION` (optional, default: `images`) - Collection name
 - `LLAMA_VISION_IMAGE_MODEL` (optional) - Vision model name
 - `INSTRUCT_MODEL` (optional) - Instruction model name
+- `VOYAGE_API_KEY` (optional) - API key for Voyage AI embeddings
+- `VOYAGE_EMBED_MODEL` (optional, default: `voyage-3.5`) - Voyage embedding model
+- `VOYAGE_EMBED_INPUT_TYPE` (optional, default: `document`) - Voyage input type (`document` or `query`)
+
+Notes:
+- For the general “create embeddings from existing data” workflow, see MongoDB’s guide: `https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/?embedding-model=voyage&data-source=existing&language-no-interface=nodejs`
 
 ## How it works
 

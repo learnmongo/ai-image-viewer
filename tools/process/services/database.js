@@ -3,6 +3,13 @@ import { getMongoUri, DB_NAME, COLLECTION } from '../config.js';
 
 let client = null;
 
+export const getClient = () => {
+    if (!client) {
+        throw new Error('Database not connected. Call connect() first.');
+    }
+    return client;
+};
+
 /**
  * Connects to MongoDB database
  * @returns {Promise<MongoClient>}
