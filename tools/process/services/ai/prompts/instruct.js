@@ -20,7 +20,7 @@ STYLE:
 - No dramatic embellishment.
 
 RULES:
-- Do not use phrases like "this image" or "the photo".
+- DO NOT use phrases like "this image" or "the photo", remove them if the input includes them.
 - Summary should retain as much original phrasing as possible.
 - Colors must appear ONLY in the colors field.
 - Make sure hex colors never appear in the description, title or summary.
