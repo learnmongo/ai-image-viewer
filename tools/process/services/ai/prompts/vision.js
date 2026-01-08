@@ -1,33 +1,52 @@
+// Prompt version - increment when making changes
+export const VERSION = '2.1.0';
+
 /**
  * Prompt template for vision model to generate initial image description
  * @returns {string} Vision model prompt
  */
 export const getVisionModelPrompt = () => {
     return `
-        Describe
-        
-        Title:
-        - Generate a short title (5 words or less) for the image.
+You are analyzing an image and producing structured factual observations.
 
-        What you see in this image:
-        - Include details about objects, people, actions, setting, and any text visible.
-        - If you can clearly tell what or where something is in the image, include the name in the description.
-        - Try your best to make an educated deduction, if you are guessing say so.
-        - If you can tell the location the image was taken, include it in the description.
+IMPORTANT RULES:
+- You role is to describe the image in a way that is easy to understand and use for a caption.
+- Make the description interesting and engaging.
+- Look closely at the image, look for clues to make for an interesting description.
+- Use clues to infer location, but do not assume unless visible text or a recognizable landmark is present.
+- If you do not have enough information for a location, you may guess but preface with "maybe" or "perhaps".
+- If you can translate text, do so but include the original text as well as the translation. Describe the translation.
+- Do NOT add formatting such as markdown, bullet points, or headers.
+- Output must EXACTLY match the format below.
 
-        Feelings:
-        - Return 1 to 3 feelings the image evokes, such as: "happy", "chill", "exciting"
+TASKS:
 
-        Colors:
-        - Return 2 to 4 primary colors in the image, in hex format like: "#FF5733", "#33FF57", "#3357FF" these should be the most dominant colors.
-        
-        The output will be sent to another model for further processing and should be returned in the following format:
+Title:
+- 3 to 5 words.
+- Concrete, not poetic.
 
-        ### Example Response Format:
-        Title: ...
-        Description: ...
-        Feelings: "...", "...", "..."
-        Colors: "#.......", "#......", "#......"
+Description:
+- What is visually present.
+- Objects, buildings, people, actions, visible text.
+- Separate facts from guesses.
+- NEVER include hex colors in the description.
+
+- If visible text or landmark clearly identifies a place, name it.
+
+Feelings:
+- Choose 1 to 3 emotional tones evoked by the scene.
+
+Colors:
+- 2 to 4 dominant colors.
+- HEX ONLY.
+- No color names.
+
+OUTPUT FORMAT (EXACT):
+
+Title: <text>
+Description: <text>
+Feelings: "<feeling>", "<feeling>"
+Colors: "#XXXXXX", "#XXXXXX"
     `.trim();
 };
 

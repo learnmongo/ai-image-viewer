@@ -4,6 +4,6 @@
  * This module exports all prompt templates used by the AI services.
  */
 
-export { getVisionModelPrompt } from './vision.js';
-export { getInstructionModelPrompt } from './instruct.js';
+export { getVisionModelPrompt, VERSION as VISION_VERSION } from './vision.js';
+export { getInstructionModelPrompt, VERSION as INSTRUCT_VERSION } from './instruct.js';
 

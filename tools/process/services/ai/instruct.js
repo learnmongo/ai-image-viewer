@@ -29,9 +29,11 @@ export const generateStructuredMetadata = async (imageInfo) => {
         );
 
         const raw = jsonOutput.message.content.trim();
-        console.log(`\n\n[${INSTRUCT_MODEL}] - ${raw}`);
-
         const parsed = parseJsonResponse(raw);
+        
+        // Pretty-print the parsed JSON
+        console.log(`\n[${INSTRUCT_MODEL}] Response:`);
+        console.log(JSON.stringify(parsed, null, 2));
         console.log(`✨ Generated info for image: "${parsed.title}"`);
 
         return {

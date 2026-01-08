@@ -5,6 +5,7 @@ import { join, basename } from 'path';
 import { ASSETS_DIR, INSTRUCT_MODEL, LLAMA_VISION_IMAGE_MODEL } from './config.js';
 import { connect, close, insertImage } from './services/database.js';
 import { generateInfoForImage, generateStructuredMetadata } from './services/ai/index.js';
+import { VISION_VERSION, INSTRUCT_VERSION } from './services/ai/prompts/index.js';
 import { getGPSData } from './services/metadata.js';
 
 const usage = () => `${basename(process.argv[1] || 'process')} <image-name>`;
@@ -25,12 +26,22 @@ const buildImageDoc = async (imageName) => {
   const location = await getGPSData(imageName);
 
   return {
+    ...parsed,
     file: imageName,
     location,
-    ...parsed,
-    raw: [
-      { model: LLAMA_VISION_IMAGE_MODEL, prompt: imageInfoPrompt, response: imageInfo },
-      { model: INSTRUCT_MODEL, prompt: descriptionPrompt },
+    prompt_debug: [
+       {
+        model: LLAMA_VISION_IMAGE_MODEL,
+        version: VISION_VERSION,
+        prompt: imageInfoPrompt,
+        response: imageInfo,
+      },
+      {
+        model: INSTRUCT_MODEL,
+        version: INSTRUCT_VERSION,
+        prompt: descriptionPrompt,
+        response: parsed,
+      },
     ],
   };
 };
