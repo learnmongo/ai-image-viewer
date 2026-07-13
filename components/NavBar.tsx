@@ -1,6 +1,6 @@
 'use client';
 import { Box, Flex, Link } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { IconHamburger } from './ui/inline-icons';
 import NextLink from 'next/link';
 
 const NAV_HEIGHT = '48px';
@@ -39,7 +39,7 @@ export default function NavBar() {
             display="flex"
             alignItems="center"
           >
-            <HamburgerIcon boxSize={6} mr={1.5} />
+            <IconHamburger boxSize={6} style={{ marginRight: '0.375rem' }} />
           </Link>
           {/* Add more navigation links here as needed */}
         </Flex>
@@ -47,4 +47,4 @@ export default function NavBar() {
       </Flex>
     </Box>
   );
-} 
+}

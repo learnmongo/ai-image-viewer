@@ -22,7 +22,7 @@ export const LLAMA_VISION_IMAGE_MODEL = process.env.LLAMA_VISION_IMAGE_MODEL || 
 export const INSTRUCT_MODEL = process.env.INSTRUCT_MODEL || 'mistral:7b-instruct';
 
 // Embedding configuration
-export const VOYAGE_EMBED_MODEL = process.env.VOYAGE_EMBED_MODEL || 'voyage-3.5';
+export const VOYAGE_EMBED_MODEL = process.env.VOYAGE_EMBED_MODEL || 'voyage-4';
 export const VOYAGE_EMBED_INPUT_TYPE = process.env.VOYAGE_EMBED_INPUT_TYPE || 'document';
 
 // Assets directory (resolved to absolute path)

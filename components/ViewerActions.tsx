@@ -1,7 +1,7 @@
 'use client';
 
 import { HStack, Button } from '@chakra-ui/react';
-import { ViewIcon, ChatIcon } from '@chakra-ui/icons';
+import { IconChat, IconEye } from './ui/inline-icons';
 import { useState } from 'react';
 import DocumentModal from './DocumentModal';
 import ModelResponsesModal from './ModelResponsesModal';
@@ -22,30 +22,32 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
         <Button
           size="sm"
           variant="ghost"
-          colorScheme="gray"
+          colorPalette="gray"
+          gap={2}
           px={5}
           py={2}
           onClick={() => setDocOpen(true)}
         >
-          <ViewIcon boxSize={4} mr={1.5} />
+          <IconEye boxSize={4} />
           Document
         </Button>
         <Button
           size="sm"
           variant="ghost"
-          colorScheme="gray"
+          colorPalette="gray"
+          gap={2}
           px={5}
           py={2}
           onClick={() => setResponsesOpen(true)}
         >
-          <ChatIcon boxSize={4} mr={1.5} />
+          <IconChat boxSize={4} />
           Model Responses
         </Button>
       </HStack>
       <DocumentModal
         isOpen={isDocOpen}
         onClose={() => setDocOpen(false)}
-        data={document as Record<string, unknown>}
+        data={document as unknown as Record<string, unknown>}
       />
       <ModelResponsesModal
         isOpen={isResponsesOpen}

@@ -1,26 +1,16 @@
-/**
- * MongoDB query examples for images.
- * 
- * This module provides clear, simple examples of different MongoDB query patterns:
- * 
- * Simple queries (using .find()):
- * - getImageById - Find one document by _id
- * - getImagesByTag - Array field matching
- * - getLatestImages - Simple find with sorting
- * 
- * Complex queries (using aggregation):
- * - searchImages - Atlas Search (requires aggregation)
- * - getImagesByColorFuzzy - Hybrid MongoDB + JavaScript processing
- * 
- * All queries use the shared MongoDB client connection from lib/mongo.ts
- */
+/** Re-exports for image MongoDB queries (see individual files for behavior). */
 
-// Base utilities and constants
 export { getCollection } from './base';
-export { 
-  DEFAULT_LIMIT, 
-  DEFAULT_SEARCH_INDEX, 
-  DEFAULT_COLOR_THRESHOLD 
+export {
+  DEFAULT_LIMIT,
+  DEFAULT_SEARCH_INDEX,
+  DEFAULT_VECTOR_INDEX,
+  DEFAULT_COLOR_THRESHOLD,
+  DEFAULT_HYBRID_NUM_CANDIDATES,
+  DEFAULT_HYBRID_BRANCH_LIMIT,
+  DEFAULT_HYBRID_MIN_VECTOR_SIMILARITY,
+  DEFAULT_HYBRID_VECTOR_MAX_GAP_FROM_BEST,
+  DEFAULT_HYBRID_MIN_BEST_VECTOR_SCORE,
 } from './base';
 
 // Query functions
@@ -34,3 +24,4 @@ export {
 export { getImagesByColorFuzzy } from './by-color';
 export { getLatestImages } from './latest';
 export { searchImages } from './search';
+export { searchImagesHybrid } from './hybrid-search';

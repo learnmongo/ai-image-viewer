@@ -17,7 +17,7 @@ Process images with AI vision models and store metadata in MongoDB.
 3. (Optional) Embeddings with Voyage AI:
    ```
    VOYAGE_API_KEY=your_voyage_api_key
-   VOYAGE_EMBED_MODEL=voyage-3.5
+   VOYAGE_EMBED_MODEL=voyage-4
    VOYAGE_EMBED_INPUT_TYPE=document
    ```
 
@@ -58,6 +58,20 @@ node process.js <image-name>
 npx generate-embeddings --limit 50
 ```
 
+### Vector search: pure `$vectorSearch` (demo / video)
+Runs Atlas Vector Search on `embedding` with a score floor. Index name, limits, and Voyage model are **plain literals in `vector-search.js`** (pipeline + `embedText`) for easy demos. Only CLI argument is the search text.
+
+```bash
+npx vector-search "sunset over mountains"
+```
+
+### Text search: Atlas `$search` (demo / video)
+Keyword relevance on **title**, **description**, **summary**, **tags** — same pipeline shape as `searchImages` in the app (`lib/image/queries/search.ts`). No embeddings. Index name and paths are literals in **`text-search.js`**. Requires an Atlas Search index (default name **`ix_text`**) on this collection.
+
+```bash
+npx text-search "beach sunset"
+```
+
 ## Examples
 
 ```bash
@@ -81,11 +95,11 @@ All configuration is done via environment variables in `.env`:
 - `LLAMA_VISION_IMAGE_MODEL` (optional) - Vision model name
 - `INSTRUCT_MODEL` (optional) - Instruction model name
 - `VOYAGE_API_KEY` (optional) - API key for Voyage AI embeddings
-- `VOYAGE_EMBED_MODEL` (optional, default: `voyage-3.5`) - Voyage embedding model
+- `VOYAGE_EMBED_MODEL` (optional, default: `voyage-4`) - Voyage embedding model
 - `VOYAGE_EMBED_INPUT_TYPE` (optional, default: `document`) - Voyage input type (`document` or `query`)
 
 Notes:
-- For the general “create embeddings from existing data” workflow, see MongoDB’s guide: `https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/?embedding-model=voyage&data-source=existing&language-no-interface=nodejs`
+- For the general “create embeddings from existing data” workflow, see MongoDB Vector Search — [Create embeddings](https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/?embedding-model=voyage&data-source=existing&language-no-interface=nodejs)
 
 ## How it works
 

@@ -1,32 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchImages } from '@/lib/image/queries';
+import { searchImages, searchImagesHybrid } from '@/lib/image/queries';
 import { toImageArray } from '@/lib/image/utils';
 
+/**
+ * POST body: `{ query: string, hybrid?: boolean }`
+ * - `hybrid === true` → `searchImagesHybrid` (vector + text, fused).
+ * - otherwise → `searchImages` (keywords only).
+ * JSON: `{ results: Image[] }` with each item’s `score` from the chosen pipeline.
+ */
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { query } = body;
-    
-    if (!query || typeof query !== 'string') {
-      return NextResponse.json(
-        { error: 'Missing or invalid query' }, 
-        { status: 400 }
-      );
-    }
-    
-    const results = await searchImages(query);
-    // Convert ObjectIds to strings for client components (Next.js requirement)
-    const images = toImageArray(results).map((img, index) => ({
-      ...img,
-      score: results[index]?.score
-    }));
-    
-    return NextResponse.json({ results: images });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    return NextResponse.json(
-      { error: message }, 
-      { status: 500 }
-    );
-  }
-} 
+  const { query, hybrid } = await req.json();
+  const results =
+    hybrid === true ? await searchImagesHybrid(query) : await searchImages(query);
+  const images = toImageArray(results).map((img, i) => ({
+    ...img,
+    score: results[i]?.score,
+  }));
+  return NextResponse.json({ results: images });
+}

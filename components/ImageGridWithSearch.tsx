@@ -1,7 +1,6 @@
 'use client';
-import { useState, useRef, useCallback } from 'react';
-import { Box, Heading, SimpleGrid, Text, Link as ChakraLink } from '@chakra-ui/react';
-import NextLink from 'next/link';
+import { useState } from 'react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 import SearchBox from '@/components/SearchBox';
@@ -13,63 +12,45 @@ interface Props {
 
 export default function ImageGridWithSearch({ images }: Props) {
   const [searchActive, setSearchActive] = useState(false);
-  const searchBoxRef = useRef<{ reset: () => void }>(null);
-  
-  const resetSearch = useCallback(() => {
-    searchBoxRef.current?.reset();
-    setSearchActive(false);
-  }, []);
+
   return (
-    <Box>
-      <Box display="flex" flexDirection="column" alignItems="center" mb={8} mt={2}>
-        <ChakraLink as={NextLink} href="/" _hover={{ textDecoration: 'none', color: 'teal.200' }} onClick={resetSearch}>
-          <Text fontSize="5xl" fontWeight="extralight" mb={4} letterSpacing="tight" textAlign="center">
-            SeeVector
-          </Text>
-        </ChakraLink>
-        <SearchBox onActiveChange={setSearchActive} ref={searchBoxRef} />
-      </Box>
+    <Box maxW="1280px" mx="auto" w="100%">
+      <SearchBox onActiveChange={setSearchActive} />
       {!searchActive && (
-        <>
-          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
-            {images.map((img) => (
-              <Box 
-                key={img._id} 
-                borderRadius="lg" 
-                overflow="hidden" 
-                bg="rgba(255, 255, 255, 0.18)"
-                backdropFilter="blur(24px) saturate(180%)"
-                borderWidth="1px"
-                borderColor="whiteAlpha.200"
-                boxShadow="2xl" 
-                height="100%" 
-                display="flex" 
-                flexDirection="column"
-                transition="all 0.2s ease"
-                _hover={{
-                  boxShadow: '2xl',
-                  borderColor: 'whiteAlpha.300',
-                }}
-              >
-                <ImagePreview
-                  id={img._id}
-                  title={img.title}
-                  description={img.description}
+        <SimpleGrid w="100%" columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} mt={4}>
+          {images.map((img) => (
+            <Box
+              key={img._id}
+              borderRadius="lg"
+              overflow="hidden"
+              bg="rgba(255, 255, 255, 0.18)"
+              backdropFilter="blur(24px) saturate(180%)"
+              borderWidth="1px"
+              borderColor="whiteAlpha.200"
+              boxShadow="2xl"
+              height="100%"
+              display="flex"
+              flexDirection="column"
+              transition="all 0.2s ease"
+              _hover={{
+                boxShadow: '2xl',
+                borderColor: 'whiteAlpha.300',
+              }}
+            >
+              <ImagePreview id={img._id} title={img.title} description={img.description} />
+              <Box p={3} flexGrow={1}>
+                <ImageMetadata
+                  tags={img.tags}
+                  feelings={img.feelings}
+                  colors={img.colors}
+                  tagLimit={1}
+                  feelingLimit={1}
+                  colorLimit={3}
                 />
-                <Box p={3} flexGrow={1}>
-                  <ImageMetadata 
-                    tags={img.tags}
-                    feelings={img.feelings}
-                    colors={img.colors}
-                    tagLimit={1}
-                    feelingLimit={1}
-                    colorLimit={3}
-                  />
-                </Box>
               </Box>
-            ))}
-          </SimpleGrid>
-        </>
+            </Box>
+          ))}
+        </SimpleGrid>
       )}
     </Box>
   );

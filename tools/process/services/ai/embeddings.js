@@ -2,13 +2,13 @@
  * Voyage AI embeddings helper.
  * 
  * Creates vector embeddings for text using Voyage AI.
- * See: https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/
+ * See MongoDB Vector Search — create embeddings: https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/
  */
 
 import { VoyageAIClient } from 'voyageai';
 
 const client = new VoyageAIClient({ apiKey: process.env.VOYAGE_API_KEY });
-const DEFAULT_MODEL = process.env.VOYAGE_EMBED_MODEL || 'voyage-3.5';
+const DEFAULT_MODEL = process.env.VOYAGE_EMBED_MODEL || 'voyage-4';
 const DEFAULT_INPUT_TYPE = process.env.VOYAGE_EMBED_INPUT_TYPE || 'document';
 
 /**

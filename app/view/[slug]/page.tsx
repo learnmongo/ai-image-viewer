@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
 import { getImageById } from '@/lib/image/queries';
+import { getModelResponseEntries } from '@/types/image';
 import { extractIdFromSlug } from '@/lib/utils/slugify';
 import { toImage } from '@/lib/image/utils';
 import Tags from '@/components/Tags';
@@ -10,6 +11,8 @@ import Feelings from '@/components/Feelings';
 import Hues from '@/components/Hues';
 import Colors from '@/components/Colors';
 import ViewerActions from '@/components/ViewerActions';
+import { ImageNarrativeCard } from '@/components/ImageNarrativeCard';
+import { hexWithAlpha } from '@/lib/utils/hex-alpha';
 
 interface ViewPageProps {
   params: Promise<{ slug: string }>;
@@ -28,7 +31,8 @@ export default async function ViewPage({ params }: ViewPageProps) {
   
   if (!fileExists) return notFound();
   
-  const background = `linear-gradient(135deg, ${imageDoc.colors?.[0] || '#222'}cc, ${imageDoc.colors?.[1] || '#444'}cc, ${imageDoc.colors?.[2] || '#666'}cc)`;
+  const c = imageDoc.colors ?? [];
+  const background = `linear-gradient(135deg, ${hexWithAlpha(c[0], '#2a3344')}, ${hexWithAlpha(c[1], '#3d4a5c')}, ${hexWithAlpha(c[2], '#4a5568')})`;
 
   return (
     <Box 
@@ -36,33 +40,22 @@ export default async function ViewPage({ params }: ViewPageProps) {
       bg={background} 
       color="white" 
       px={{ base: 2, md: 4, lg: 8 }} 
-      py={14} 
+      pt={{ base: 5, md: 6 }}
+      pb={{ base: 10, md: 12, lg: 14 }}
       display="flex" 
       flexDirection="column" 
       alignItems="center"
     >
       <Box
         w="100%"
-        maxW={{ base: '100vw', md: '75vw' }}
-        mt={4}
+        maxW={{ base: '100%', md: 'min(92vw, 90rem)' }}
         display="flex"
         flexDirection="column"
         alignItems="center"
       >
-        <Heading size="4xl" mb={2} textShadow="0 2px 8px rgba(0,0,0,0.4)" textAlign="center">
+        <Heading size="4xl" mb={{ base: 6, md: 8 }} textShadow="0 2px 8px rgba(0,0,0,0.4)" textAlign="center">
           {imageDoc.title}
         </Heading>
-        {imageDoc.description && (
-          <Text 
-            fontSize={{ base: "md", md: "lg" }} 
-            mb={4} 
-            color="whiteAlpha.900" 
-            textShadow="0 1px 4px rgba(0,0,0,0.3)" 
-            textAlign="center"
-          >
-            {imageDoc.description}
-          </Text>
-        )}
         <Image
           src={`/resources/${fileName}`}
           alt={imageDoc.title}
@@ -77,20 +70,8 @@ export default async function ViewPage({ params }: ViewPageProps) {
           my={0}
           mb={6}
         />
-        <Box
-          bg="blackAlpha.600"
-          p={{ base: 3, md: 5 }}
-          borderRadius="md"
-          borderWidth="1px"
-          borderColor="whiteAlpha.300"
-          boxShadow="md"
-          w="100%"
-          maxW={{ base: '100vw', md: '75vw' }}
-          mx="auto"
-        >
-          <Text fontSize={{ base: "md", md: "lg" }}>{imageDoc.summary}</Text>
-        </Box>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="100%" maxW={{ base: '100vw', md: '75vw' }} mx="auto" mt={4}>
+        <ImageNarrativeCard description={imageDoc.description} summary={imageDoc.summary} />
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="100%" maxW={{ base: '100%', md: 'min(92vw, 90rem)' }} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
             {imageDoc.tags && imageDoc.tags.length > 0 ? (
@@ -124,7 +105,10 @@ export default async function ViewPage({ params }: ViewPageProps) {
             )}
           </Box>
         </SimpleGrid>
-        <ViewerActions document={toImage(imageDoc)} responses={imageDoc.raw ?? []} />
+        <ViewerActions
+          document={toImage(imageDoc)}
+          responses={getModelResponseEntries(imageDoc)}
+        />
       </Box>
     </Box>
   );

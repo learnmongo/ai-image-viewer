@@ -1,7 +1,7 @@
 import { Providers } from './providers';
 import { Rubik } from 'next/font/google';
 import './globals.css';
-import NavBar from '@/components/NavBar';
+import ConditionalNavBar from '@/components/ConditionalNavBar';
 
 const rubik = Rubik({ subsets: ['latin'], weight: ['300', '400', '700', '900'] });
 
@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={rubik.className}>
       <body>
         <Providers>
-          <NavBar />
+          <ConditionalNavBar />
           {children}
         </Providers>
       </body>

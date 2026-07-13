@@ -17,12 +17,15 @@ const assertImageExists = (imageName) => {
 };
 
 const buildImageDoc = async (imageName) => {
+  // First: Use Llama Vision to anylize image
   const { prompt: imageInfoPrompt, response: imageInfo } = await generateInfoForImage(
     imageName,
     LLAMA_VISION_IMAGE_MODEL
   );
 
+  // Second: Make the output structured using Mistral Instruct
   const { parsed, prompt: descriptionPrompt } = await generateStructuredMetadata(imageInfo);
+  
   const location = await getGPSData(imageName);
 
   return {

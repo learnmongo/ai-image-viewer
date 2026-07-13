@@ -7,14 +7,16 @@ export default async function HomePage() {
   const images = await getLatestImages(25);
   const imageList = toImageArray(images);
 
-  const background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%)';
+  const background =
+    'linear-gradient(155deg, #04060a 0%, #0a0f18 28%, #0d1524 52%, #080c14 78%, #05070c 100%)';
 
   return (
     <Box 
       minH="100vh"
       bg={background}
       px={{ base: 2, md: 4, lg: 8 }} 
-      py={{ base: 4, md: 8, lg: 12 }}
+      pt={0}
+      pb={{ base: 4, md: 8, lg: 12 }}
       position="relative"
       _before={{
         content: '""',
@@ -23,7 +25,8 @@ export default async function HomePage() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: 'radial-gradient(circle at 20% 50%, rgba(30, 144, 255, 0.08) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.08) 0%, transparent 50%)',
+        background:
+          'radial-gradient(ellipse 80% 60% at 15% 40%, rgba(30, 41, 59, 0.45) 0%, transparent 55%), radial-gradient(ellipse 70% 50% at 88% 75%, rgba(15, 23, 42, 0.4) 0%, transparent 50%)',
         pointerEvents: 'none',
         zIndex: 0,
       }}

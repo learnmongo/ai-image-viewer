@@ -1,5 +1,7 @@
+'use client';
+
 import { Box, Code, IconButton, HStack } from '@chakra-ui/react';
-import { CopyIcon } from '@chakra-ui/icons';
+import { IconCopy } from './ui/inline-icons';
 import { Tooltip } from './ui/tooltip';
 import { useState } from 'react';
 
@@ -12,7 +14,7 @@ export default function JsonViewer({ data }: JsonViewerProps) {
   const jsonString = JSON.stringify(data, null, 2);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(jsonString);
+    void navigator.clipboard.writeText(jsonString);
     setCopied(true);
     setTimeout(() => setCopied(false), 1200);
   };
@@ -22,16 +24,16 @@ export default function JsonViewer({ data }: JsonViewerProps) {
       <HStack position="absolute" top={2} right={2} zIndex={1}>
         <Tooltip content={copied ? 'Copied!' : 'Copy to clipboard'}>
           <IconButton
-            aria-label="Copy raw document to clipboard"
+            aria-label="Copy JSON to clipboard"
             size="xs"
             variant="ghost"
-            colorScheme="gray"
+            colorPalette="gray"
             color="gray.300"
             _hover={{ color: 'white', bg: 'gray.700' }}
             onClick={handleCopy}
             borderRadius="full"
           >
-            <CopyIcon boxSize={4} />
+            <IconCopy boxSize={4} />
           </IconButton>
         </Tooltip>
       </HStack>
@@ -54,4 +56,4 @@ export default function JsonViewer({ data }: JsonViewerProps) {
       </Code>
     </Box>
   );
-} 
+}

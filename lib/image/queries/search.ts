@@ -1,73 +1,41 @@
 import { getCollection, DEFAULT_LIMIT, DEFAULT_SEARCH_INDEX } from './base';
+import { ATLAS_TEXT_SEARCH_PATHS } from './text-search-paths';
 import { ImageDoc } from '@/types/image';
 
 /**
- * Search images using MongoDB Atlas Search.
- * 
- * Example: Aggregation pipeline with Atlas Search $search stage.
- * Atlas Search requires aggregation and must be the first stage in the pipeline.
- * 
- * Requires an Atlas Search index named 'ix_text' (or custom index).
- * Set up in Atlas: Search > Create Search Index > Define on collection 'images'
- * 
- * @param query - Search query text
- * @param limit - Maximum number of results to return (default: 25)
- * @param textIndex - Name of the Atlas Search index to use (default: 'ix_text')
- * @returns Promise resolving to an array of images with search scores
- * 
- * @example
- * ```ts
- * // Basic search
- * const results = await searchImages('sunset nature');
- * 
- * // Search with custom limit and index
- * const results = await searchImages('beach', 50, 'my_custom_index');
- * ```
+ * Text-only image search — aggregation shape:
+ *
+ * 1. `$search` — score documents by keyword relevance on `ATLAS_TEXT_SEARCH_PATHS`.
+ * 2. `$addFields` — copy Atlas text relevance into `score` (`$meta: 'searchScore'`).
+ * 3. `$sort` / `$limit` — best matches first, then cap count.
+ *
+ * Use `textIndex` that matches your Search index definition (default `ix_text` in `base.ts`).
  */
 export async function searchImages(
   query: string,
   limit: number = DEFAULT_LIMIT,
   textIndex: string = DEFAULT_SEARCH_INDEX
 ): Promise<(ImageDoc & { score: number })[]> {
-  // Validate query
-  if (!query || query.trim().length === 0) {
-    return [];
-  }
+  const q = query?.trim() ?? '';
+  if (!q) return [];
 
   const col = await getCollection();
 
-  // Atlas Search requires aggregation pipeline
-  // The $search stage MUST be the first stage
   const pipeline = [
-    // Stage 1: Atlas Search - finds documents matching the text query
     {
       $search: {
         index: textIndex,
         text: {
-          query: query.trim(),
-          path: {
-            wildcard: '*' // Search all fields configured in the index
-          }
-        }
-      }
+          query: q,
+          path: [...ATLAS_TEXT_SEARCH_PATHS],
+        },
+      },
     },
-    // Stage 2: Add the search relevance score as a field
-    {
-      $addFields: {
-        score: { $meta: 'searchScore' }
-      }
-    },
-    // Stage 3: Sort by relevance (score), then by _id for consistency
-    {
-      $sort: { 
-        score: -1,  // Higher score = more relevant
-        _id: -1     // Tie-breaker: newest first
-      }
-    },
-    // Stage 4: Limit results
-    {
-      $limit: limit
-    }
+
+    { $addFields: { score: { $meta: 'searchScore' } } },
+
+    { $sort: { score: -1, _id: -1 } },
+    { $limit: limit },
   ];
 
   return col.aggregate<ImageDoc & { score: number }>(pipeline).toArray();

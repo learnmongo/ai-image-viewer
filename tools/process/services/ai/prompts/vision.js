@@ -34,6 +34,7 @@ Description:
 - Separate facts from guesses.
 - DO NOT use phrases like "this image" or "the photo"
 - NEVER include hex colors in the description.
+- NEVER include something like "The image appears to be a photograph of"
 
 Summary:
 - A longer, more detailed summary of the image.
@@ -41,6 +42,7 @@ Summary:
 - DO NOT include the feelings or colors.
 - DO NOT use phrases like "this image" or "the photo"
 - If visible text or landmark clearly identifies a place, name it.
+- NEVER include something like "The image appears to be a photograph of"
 
 Feelings:
 - Choose 1 to 3 emotional tones evoked by the scene.
@@ -50,6 +52,11 @@ Colors:
 - HEX ONLY.
 - No color names.
 
+Tags:
+- 1 to 3 tags that describe the image.
+- Tags should be short, descriptive, and not too specific.
+- Tags should be unique and not too generic.
+
 OUTPUT FORMAT (EXACT):
 
 Title: <text>
@@ -57,6 +64,7 @@ Description: <text>
 Summary: <text>
 Feelings: "<feeling>", "<feeling>"
 Colors: "#XXXXXX", "#XXXXXX"
+Tags: "<tag>", "<tag>"
     `.trim();
 };
 

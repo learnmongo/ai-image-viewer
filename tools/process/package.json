@@ -7,11 +7,13 @@
   "bin": {
     "process": "./process.js",
     "process-image": "./process.js",
-    "generate-embeddings": "./generate-embeddings.js"
+    "generate-embeddings": "./generate-embeddings.js",
+    "vector-search": "./vector-search.js",
+    "text-search": "./text-search.js"
   },
   "scripts": {
     "process": "node cli.js",
-    "postinstall": "node -e \"const fs=require('fs'),path=require('path');const binDir=path.join(process.cwd(),'node_modules','.bin');if(!fs.existsSync(binDir))fs.mkdirSync(binDir,{recursive:true});const mk=(name, target)=>{const link=path.join(binDir,name);try{fs.unlinkSync(link);}catch(e){}fs.symlinkSync(path.relative(binDir,target),link,'file');};mk('process', path.join(process.cwd(),'process.js'));mk('generate-embeddings', path.join(process.cwd(),'generate-embeddings.js'));\""
+    "postinstall": "node -e \"const fs=require('fs'),path=require('path');const binDir=path.join(process.cwd(),'node_modules','.bin');if(!fs.existsSync(binDir))fs.mkdirSync(binDir,{recursive:true});const mk=(name, target)=>{const link=path.join(binDir,name);try{fs.unlinkSync(link);}catch(e){}fs.symlinkSync(path.relative(binDir,target),link,'file');};mk('process', path.join(process.cwd(),'process.js'));mk('generate-embeddings', path.join(process.cwd(),'generate-embeddings.js'));mk('vector-search', path.join(process.cwd(),'vector-search.js'));mk('text-search', path.join(process.cwd(),'text-search.js'));\""
   },
   "dependencies": {
     "dotenv": "^16.6.1",

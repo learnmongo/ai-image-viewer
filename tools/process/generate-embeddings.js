@@ -7,7 +7,7 @@
  *   npx generate-embeddings
  *   npx generate-embeddings --limit 50
  * 
- * See: https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/
+ * See MongoDB Vector Search — create embeddings: https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/
  */
 
 import { connect, close, getClient } from './services/database.js';
@@ -55,6 +55,7 @@ async function main() {
     if (!text) continue;
 
     const embedding = await embedText(text, { model, inputType });
+    
     await images.updateOne(
       { _id: doc._id },
       { 

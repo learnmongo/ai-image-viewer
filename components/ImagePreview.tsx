@@ -1,6 +1,7 @@
-import { Box, Text, Link as ChakraLink, Image } from '@chakra-ui/react';
+import { Box, Text, Link as ChakraLink } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { slugify } from '@/lib/utils/slugify';
+import { ImageCardThumbnail } from '@/components/ImageCardThumbnail';
 
 interface ImagePreviewProps {
   id: string;
@@ -21,24 +22,7 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
       width="100%"
       height="100%"
     >
-      <Box 
-        width="100%" 
-        aspectRatio={16 / 9}
-        overflow="hidden"
-        flexShrink={0}
-        borderTopRadius="lg"
-      >
-        <Image
-          src={`/resources/${id}.jpg`}
-          alt={title}
-          width="100%"
-          height="100%"
-          objectFit="cover"
-          display="block"
-          borderTopRadius="lg"
-          loading="lazy"
-        />
-      </Box>
+      <ImageCardThumbnail id={id} title={title} />
       <Box p={3} color="white">
         <Text 
           fontWeight="bold" 

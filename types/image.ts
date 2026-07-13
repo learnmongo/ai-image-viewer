@@ -1,9 +1,13 @@
 import { ObjectId } from 'mongodb';
 
+/** One model call: legacy `raw[]` or newer `prompt_debug[]`. */
 export interface RawModelResponse {
   model: string;
+  /** Newer pipeline (e.g. process tool version). */
+  version?: string;
   prompt?: string;
-  response?: string;
+  /** Plain text or structured JSON object from the model. */
+  response?: string | Record<string, unknown> | unknown[];
 }
 
 export interface ImageDoc {
@@ -15,7 +19,19 @@ export interface ImageDoc {
   hues?: string[];
   colors: string[];
   tags?: string[];
+  /** Legacy model traces. */
   raw?: RawModelResponse[];
+  /** Newer model traces (same shape as `raw`, preferred when non-empty). */
+  prompt_debug?: RawModelResponse[];
+}
+
+/** Prefer `prompt_debug` when non-empty; otherwise legacy `raw`. */
+export function getModelResponseEntries(
+  doc: Pick<ImageDoc, 'raw' | 'prompt_debug'>,
+): RawModelResponse[] {
+  const { prompt_debug: debug, raw } = doc;
+  if (debug != null && debug.length > 0) return debug;
+  return raw ?? [];
 }
 
 /**
