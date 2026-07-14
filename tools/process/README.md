@@ -66,7 +66,7 @@ npx vector-search "sunset over mountains"
 ```
 
 ### Text search: Atlas `$search` (demo / video)
-Keyword relevance on **title**, **description**, **summary**, **tags** — same pipeline shape as `searchImages` in the app (`lib/image/queries/search.ts`). No embeddings. Index name and paths are literals in **`text-search.js`**. Requires an Atlas Search index (default name **`ix_text`**) on this collection.
+Keyword relevance on **title**, **description**, **summary**, **tags** — same pipeline shape as `searchImages` in the app (`lib/image/queries/search.ts`). No embeddings. Index name and paths are literals in **`text-search.js`**. Requires a MongoDB Search index (default name **`ix_text`**) on this collection.
 
 ```bash
 npx text-search "beach sunset"

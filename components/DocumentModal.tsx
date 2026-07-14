@@ -1,11 +1,12 @@
 import GlassyModal from './GlassyModal';
 import JsonViewer from './JsonViewer';
 import { Box } from '@chakra-ui/react';
+import type { ImageItem } from '@/types/image';
 
 interface DocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  data: Record<string, unknown>;
+  data: Partial<ImageItem>;
 }
 
 /** Keys omitted from the JSON view (noise, huge vectors, duplicate traces). */

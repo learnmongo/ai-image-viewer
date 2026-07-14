@@ -49,7 +49,7 @@ async function main() {
     const rows = await coll.aggregate(pipeline).toArray();
 
     if (rows.length === 0) {
-      console.log('No results. Check Atlas Search index name and mapped fields match this pipeline.');
+      console.log('No results. Check MongoDB Search index name and mapped fields match this pipeline.');
       return;
     }
 

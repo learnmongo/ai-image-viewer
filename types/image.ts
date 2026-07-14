@@ -10,6 +10,11 @@ export interface RawModelResponse {
   response?: string | Record<string, unknown> | unknown[];
 }
 
+export interface GeoJsonPoint {
+  type: 'Point';
+  coordinates: [number, number, number]; // [lng, lat, alt]
+}
+
 export interface ImageDoc {
   _id: ObjectId;
   title: string;
@@ -19,10 +24,18 @@ export interface ImageDoc {
   hues?: string[];
   colors: string[];
   tags?: string[];
+  /** Original image filename in assets. */
+  file: string;
+  /** GPS from EXIF when available. */
+  location: GeoJsonPoint | null;
   /** Legacy model traces. */
   raw?: RawModelResponse[];
   /** Newer model traces (same shape as `raw`, preferred when non-empty). */
   prompt_debug?: RawModelResponse[];
+  /** Present after running generate-embeddings. */
+  embedding?: number[];
+  embedding_model?: string;
+  embedding_date?: Date;
 }
 
 /** Prefer `prompt_debug` when non-empty; otherwise legacy `raw`. */

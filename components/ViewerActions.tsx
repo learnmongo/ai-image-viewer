@@ -47,7 +47,7 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
       <DocumentModal
         isOpen={isDocOpen}
         onClose={() => setDocOpen(false)}
-        data={document as unknown as Record<string, unknown>}
+        data={document}
       />
       <ModelResponsesModal
         isOpen={isResponsesOpen}
