@@ -24,7 +24,7 @@ export function useImageSearch(onActiveChange?: (active: boolean) => void) {
 
   useEffect(() => {
     if (pathname === '/') {
-      reset();
+      queueMicrotask(() => reset());
     }
   }, [pathname, reset]);
 
@@ -58,8 +58,10 @@ export function useImageSearch(onActiveChange?: (active: boolean) => void) {
     }
 
     if (query.length < MIN_QUERY_LEN) {
-      setResults(null);
-      setLoading(false);
+      queueMicrotask(() => {
+        setResults(null);
+        setLoading(false);
+      });
       return;
     }
 
