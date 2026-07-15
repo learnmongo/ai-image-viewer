@@ -1,274 +1,245 @@
 # Code Guide
 
-This guide is a technical tour of the AI Image Viewer repository. It focuses on where important behavior lives and why the project is structured this way.
+If you've watched the MongoDB tutorial, this guide will help you find the code behind each section of the project.
 
-## 1. Image ingestion
+Rather than documenting every file, this guide focuses on the parts of the repository that illustrate the core ideas.
 
-Start with [`tools/process/process.js`](tools/process/process.js).
+---
 
-The file coordinates the complete image-to-document pipeline:
+# Repository Overview
 
-```js
-const { prompt: imageInfoPrompt, response: imageInfo } = await generateInfoForImage(
-  imageName,
-  LLAMA_VISION_IMAGE_MODEL
-);
+The repository is organized into a few major areas.
 
-const { parsed, prompt: descriptionPrompt } = await generateStructuredMetadata(imageInfo);
-
-const location = await getGPSData(imageName);
+```
+app/
+lib/
+tools/
 ```
 
-The resulting document combines the parsed AI metadata, the image filename, optional GeoJSON location, and model traces:
+Each serves a different purpose.
 
-```js
-return {
-  ...parsed,
-  file: imageName,
-  location,
-  prompt_debug: [
-    {
-      model: LLAMA_VISION_IMAGE_MODEL,
-      version: VISION_VERSION,
-      prompt: imageInfoPrompt,
-      response: imageInfo,
-    },
-    {
-      model: INSTRUCT_MODEL,
-      version: INSTRUCT_VERSION,
-      prompt: descriptionPrompt,
-      response: parsed,
-    },
-  ],
-};
+| Directory | Purpose |
+|-----------|---------|
+| `tools/` | Offline processing and command-line tools. |
+| `lib/` | Shared application logic and MongoDB query pipelines. |
+| `app/` | Next.js frontend and API routes. |
+
+If you're following the tutorial, we'll move through these in roughly that order.
+
+---
+
+# Image Processing
+
+📺 Video: 4:44
+
+Start here:
+
+```
+tools/process/
 ```
 
-### Related files
+This is where raw images become MongoDB documents.
 
-- [`tools/process/services/ai/vision.js`](tools/process/services/ai/vision.js)
-- [`tools/process/services/ai/instruct.js`](tools/process/services/ai/instruct.js)
-- [`tools/process/services/ai/prompts/vision.js`](tools/process/services/ai/prompts/vision.js)
-- [`tools/process/services/ai/prompts/instruct.js`](tools/process/services/ai/prompts/instruct.js)
-- [`tools/process/services/metadata.js`](tools/process/services/metadata.js)
-- [`tools/process/services/database.js`](tools/process/services/database.js)
+The processing pipeline performs several steps:
 
-## 2. Prompt design
+1. Load an image
+2. Analyze it with a vision model
+3. Generate structured metadata
+4. Extract GPS information (if available)
+5. Store the document in MongoDB
 
-The vision prompt asks for human-readable observations in a fixed text format. The instruction prompt then transforms that result into JSON.
+The nice thing about this design is that every step has a single responsibility.
 
-The instruction schema in [`tools/process/services/ai/prompts/instruct.js`](tools/process/services/ai/prompts/instruct.js) is:
+---
 
-```js
-{
-  "title": "...",
-  "description": "...",
-  "summary": "...",
-  "feelings": ["...", "..."],
-  "hues": ["...", "..."],
-  "colors": ["#XXXXXX", "#XXXXXX"],
-  "tags": ["...", "..."]
-}
+## Configuration
+
+The first file worth opening is:
+
+```
+tools/process/config.js
 ```
 
-Separating image understanding from JSON formatting gives each model a narrower job.
+This controls things like:
 
-## 3. EXIF location data
+- MongoDB connection
+- Ollama models
+- Voyage AI
+- Processing options
 
-[`tools/process/services/metadata.js`](tools/process/services/metadata.js) stores GPS information in GeoJSON order:
+Most of the project can be customized from here.
 
-```js
-return {
-  type: "Point",
-  coordinates: [
-    tags.GPSLongitude,
-    tags.GPSLatitude,
-    tags.GPSAltitude || 0
-  ]
-};
+---
+
+## AI Services
+
+Next, look at:
+
+```
+tools/process/services/
 ```
 
-This means the same image document can support search, metadata browsing, and future geospatial features.
+You'll find the different services responsible for talking to the language models.
 
-## 4. MongoDB persistence
+Instead of mixing prompts throughout the application, they're isolated into their own files, making experimentation much easier.
 
-[`tools/process/services/database.js`](tools/process/services/database.js) inserts the assembled document directly:
+---
 
-```js
-const db = client.db(DB_NAME);
-const images = db.collection(COLLECTION);
-const result = await images.insertOne(imageDoc);
+## Prompt Files
+
+Prompt engineering is an important part of the project.
+
+Rather than hiding prompts inside the code, they're stored as separate files.
+
+That gives you a few advantages:
+
+- easier iteration
+- versioning
+- better readability
+- prompts can be stored alongside generated metadata
+
+See:
+
+```
+prompts/
 ```
 
-The application uses a separate shared client in [`lib/mongo.ts`](lib/mongo.ts), while collection configuration is centralized in [`lib/image/queries/base.ts`](lib/image/queries/base.ts).
+The accompanying `PROMPTS.md` document explains the philosophy behind them.
 
-## 5. Embedding generation
+---
 
-[`tools/process/generate-embeddings.js`](tools/process/generate-embeddings.js) only processes documents without an embedding:
+# MongoDB
 
-```js
-const query = { embedding: { $exists: false } };
+📺 Video: 8:33
+
+Once metadata has been generated, everything revolves around MongoDB.
+
+One of my goals was to avoid scattering information across multiple systems.
+
+Every image becomes a single MongoDB document that gradually grows as more information is added.
+
+Open:
+
+```
+lib/image/
 ```
 
-It combines several fields:
+Most of the application logic starts here.
 
-```js
-const parts = [
-  doc?.title,
-  doc?.description,
-  doc?.summary,
-  ...(doc?.tags || []),
-].filter(Boolean);
+---
 
-return parts.join(' ');
+# MongoDB Search
+
+MongoDB Search is the first search capability added to the application.
+
+Look at:
+
+```
+lib/image/queries/
 ```
 
-That combined text is embedded as a document and stored back on the same MongoDB document.
+You'll find aggregation pipelines dedicated to keyword search.
 
-Incoming search text is embedded as a query in [`lib/image/voyage-embed-query.ts`](lib/image/voyage-embed-query.ts):
+Rather than placing aggregation logic directly inside API routes, the queries live in their own layer.
 
-```ts
-body: JSON.stringify({
-  input: [text],
-  model,
-  input_type: 'query',
-}),
+This makes them easier to test, easier to read, and easier to evolve.
+
+---
+
+# MongoDB Vector Search
+
+📺 Video: 13:09
+
+Embeddings are intentionally generated in a separate process.
+
+Start with:
+
+```
+tools/process/generate-embeddings.js
 ```
 
-## 6. Query organization
+This script:
 
-The MongoDB query layer lives in [`lib/image/queries/`](lib/image/queries/).
+- reads existing MongoDB documents
+- creates embeddings with Voyage AI
+- stores those embeddings back into MongoDB
 
-- [`latest.ts`](lib/image/queries/latest.ts) loads the homepage collection
-- [`by-id.ts`](lib/image/queries/by-id.ts) loads an individual image
-- [`by-array-field.ts`](lib/image/queries/by-array-field.ts) handles tags, feelings, hues, and exact colors
-- [`by-color.ts`](lib/image/queries/by-color.ts) supports fuzzy color matching
-- [`search.ts`](lib/image/queries/search.ts) handles keyword search
-- [`hybrid-search.ts`](lib/image/queries/hybrid-search.ts) handles vector plus keyword search
-- [`text-search-paths.ts`](lib/image/queries/text-search-paths.ts) centralizes searchable fields
-- [`base.ts`](lib/image/queries/base.ts) centralizes collection and search configuration
+Separating this from image analysis means embeddings can always be regenerated later using a newer model.
 
-## 7. Keyword search
+---
 
-[`lib/image/queries/search.ts`](lib/image/queries/search.ts) uses `$search`, captures `searchScore`, then sorts and limits the results:
+# Hybrid Search
 
-```ts
-{
-  $search: {
-    index: textIndex,
-    text: {
-      query: q,
-      path: [...ATLAS_TEXT_SEARCH_PATHS],
-    },
-  },
-},
-{ $addFields: { score: { $meta: 'searchScore' } } },
-{ $sort: { score: -1, _id: -1 } },
-{ $limit: limit },
+📺 Video: 20:25
+
+Hybrid search combines MongoDB Search with MongoDB Vector Search.
+
+The interesting part isn't that both searches run.
+
+The interesting part is how they're combined.
+
+Look inside:
+
+```
+lib/image/queries/
 ```
 
-A standalone command-line demo is available in [`tools/process/text-search.js`](tools/process/text-search.js).
+You'll see pipelines using MongoDB's `$rankFusion` stage to merge the results into a single ranked list.
 
-## 8. Vector search
+This is where the application starts to feel much more natural.
 
-[`tools/process/vector-search.js`](tools/process/vector-search.js) is the clearest focused example:
+---
 
-```js
-{
-  $vectorSearch: {
-    index: 'vector_index',
-    path: 'embedding',
-    queryVector,
-    numCandidates: 100,
-    limit: 80,
-  },
-},
-{
-  $addFields: {
-    vectorSearchScore: { $meta: 'vectorSearchScore' },
-  },
-},
-{
-  $match: {
-    vectorSearchScore: { $gte: 0.6 },
-  },
-},
+# API Routes
+
+The Next.js API routes stay intentionally thin.
+
+Their primary job is to:
+
+- validate requests
+- call the appropriate query
+- return results
+
+Keeping business logic inside `lib/` makes the routes easy to follow.
+
+See:
+
+```
+app/api/
 ```
 
-This script is intentionally direct, making it useful for demonstrations and experimentation.
+---
 
-## 9. Hybrid search
+# React Components
 
-[`lib/image/queries/hybrid-search.ts`](lib/image/queries/hybrid-search.ts) is the most advanced query in the repository.
+Finally, explore:
 
-It does two things in parallel:
-
-1. Runs a vector search to capture the raw vector similarity for each candidate
-2. Runs `$rankFusion` across vector and keyword pipelines
-
-The fusion weights are currently equal:
-
-```ts
-combination: {
-  weights: { vectorPipeline: 0.5, fullTextPipeline: 0.5 },
-},
+```
+app/
 ```
 
-After fusion, the code applies semantic quality gates using the raw vector scores. The defaults are defined in [`lib/image/queries/base.ts`](lib/image/queries/base.ts):
+The frontend is intentionally simple.
 
-```ts
-export const DEFAULT_HYBRID_MIN_VECTOR_SIMILARITY = 0.52;
-export const DEFAULT_HYBRID_VECTOR_MAX_GAP_FROM_BEST = 0.05;
-export const DEFAULT_HYBRID_MIN_BEST_VECTOR_SCORE = 0.58;
-```
+Its purpose isn't to demonstrate React architecture.
 
-These are overrideable through environment variables.
+Its purpose is to make it easy to experiment with the different search techniques.
 
-## 10. Search API
+That keeps the focus on MongoDB rather than UI complexity.
 
-[`app/api/search/route.ts`](app/api/search/route.ts) keeps the API route small:
+---
 
-```ts
-const results =
-  hybrid === true ? await searchImagesHybrid(query) : await searchImages(query);
-```
+# Suggested Reading Order
 
-The route converts MongoDB documents into client-safe objects and preserves the score from the selected pipeline.
+If you're exploring the repository for the first time, I'd recommend this order:
 
-## 11. Search UI
+1. README.md
+2. ARCHITECTURE.md
+3. tools/process/
+4. MongoDB documents
+5. generate-embeddings.js
+6. lib/image/queries/
+7. SEARCH.md
+8. OLLAMA.md
+9. PROMPTS.md
 
-The client logic lives in [`components/search/useImageSearch.ts`](components/search/useImageSearch.ts).
-
-It debounces queries, sends the selected search mode to the API, and offers hybrid search when keyword search returns no results.
-
-```ts
-body: JSON.stringify({ query: searchQuery, hybrid }),
-```
-
-The toggle UI lives in [`components/search/SearchInputBar.tsx`](components/search/SearchInputBar.tsx), while result scores and ranks are displayed by [`components/search/SearchResultCard.tsx`](components/search/SearchResultCard.tsx).
-
-## 12. Client-safe MongoDB documents
-
-Next.js client components cannot receive MongoDB `ObjectId` values directly. [`lib/image/utils.ts`](lib/image/utils.ts) handles the conversion:
-
-```ts
-export function toImage(doc: ImageDoc): ImageItem {
-  return {
-    ...doc,
-    _id: doc._id.toString(),
-  };
-}
-```
-
-## Suggested reading path
-
-A useful order for exploring the project is:
-
-1. [`tools/process/process.js`](tools/process/process.js)
-2. [`tools/process/services/ai/prompts/`](tools/process/services/ai/prompts/)
-3. [`tools/process/generate-embeddings.js`](tools/process/generate-embeddings.js)
-4. [`tools/process/text-search.js`](tools/process/text-search.js)
-5. [`tools/process/vector-search.js`](tools/process/vector-search.js)
-6. [`lib/image/queries/search.ts`](lib/image/queries/search.ts)
-7. [`lib/image/queries/hybrid-search.ts`](lib/image/queries/hybrid-search.ts)
-8. [`app/api/search/route.ts`](app/api/search/route.ts)
-9. [`components/search/`](components/search/)
+That mirrors the progression of the MongoDB tutorial and builds the project one concept at a time.

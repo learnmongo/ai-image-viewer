@@ -1,123 +1,207 @@
-# Prompts
+# Prompt Engineering
 
-The project uses two versioned prompts rather than one model call.
+One of the goals of this project wasn't simply to analyze images.
 
-- [`../tools/process/services/ai/prompts/vision.js`](../tools/process/services/ai/prompts/vision.js) controls image analysis
-- [`../tools/process/services/ai/prompts/instruct.js`](../tools/process/services/ai/prompts/instruct.js) converts that analysis into JSON
+It was to build a processing pipeline that was easy to understand, easy to experiment with, and easy to improve over time.
 
-## Vision prompt
+Prompt engineering ended up being a much bigger part of that than I expected.
 
-The vision prompt asks for factual observation while still producing useful, readable metadata.
+This document explains some of the design decisions behind the prompts and a few of the lessons I learned while building the project.
 
-Its tasks include:
+---
 
-- A short title
-- A direct description
-- A longer summary
-- Feelings
-- Dominant colors
-- Tags
+# Prompts Are Code
 
-The prompt also contains constraints such as:
+One of the biggest mindset shifts when working with LLMs is realizing that prompts deserve the same care as application code.
 
-```text
-- Separate facts from guesses.
-- DO NOT use phrases like "this image" or "the photo"
-- NEVER include hex colors in the description.
+They evolve.
+
+They get refactored.
+
+They introduce bugs.
+
+They improve over time.
+
+Rather than hiding prompts inside source files, this project keeps them separate, versioned, and easy to modify.
+
+That makes experimentation much easier.
+
+---
+
+# Separate Responsibilities
+
+Early on, I experimented with asking a single vision model to do everything.
+
+Analyze the image.
+
+Generate JSON.
+
+Produce titles.
+
+Generate tags.
+
+Extract colors.
+
+Identify emotions.
+
+It worked... sometimes.
+
+But the results weren't nearly as consistent as I wanted.
+
+Instead, the project eventually settled on two distinct prompts.
+
+```
+Image
+   │
+   ▼
+Vision Prompt
+   │
+Natural Language Description
+   │
+   ▼
+Instruction Prompt
+   │
+Structured Metadata
 ```
 
-Source: [`../tools/process/services/ai/prompts/vision.js`](../tools/process/services/ai/prompts/vision.js)
+Each prompt now has one clear responsibility.
 
-The prompt version is stored as a constant:
+The first understands the image.
 
-```js
-export const VERSION = '2.1.1';
+The second organizes that understanding into a predictable MongoDB document.
+
+That separation made a much bigger difference than changing models.
+
+---
+
+# Structure Beats Creativity
+
+When generating metadata, consistency is usually more valuable than creativity.
+
+For example, these two descriptions both describe the same image.
+
+```
+A peaceful beach during sunset.
 ```
 
-## Instruction prompt
-
-The second prompt receives the vision model's text and returns a strict schema:
-
-```json
-{
-  "title": "...",
-  "description": "...",
-  "summary": "...",
-  "feelings": ["...", "..."],
-  "hues": ["...", "..."],
-  "colors": ["#XXXXXX", "#XXXXXX"],
-  "tags": ["...", "..."]
-}
+```
+Golden sunlight reflects across a calm shoreline as gentle waves reach the sand.
 ```
 
-Source: [`../tools/process/services/ai/prompts/instruct.js`](../tools/process/services/ai/prompts/instruct.js)
+Both are correct.
 
-Important constraints include:
+For search, though, we want predictable fields.
 
-```text
-- Do NOT add new facts.
-- Preserve uncertainty exactly as stated.
-- Return only valid JSON.
-```
+Titles.
 
-The second model is not supposed to reinterpret the image. It should normalize the first model's analysis into fields the application can query and display.
+Descriptions.
 
-## Prompt version tracking
+Tags.
 
-Both version numbers are imported into [`../tools/process/process.js`](../tools/process/process.js):
+Colors.
 
-```js
-import { VISION_VERSION, INSTRUCT_VERSION } from './services/ai/prompts/index.js';
-```
+Feelings.
 
-They are then stored with each model trace:
+Summaries.
 
-```js
-{
-  model: LLAMA_VISION_IMAGE_MODEL,
-  version: VISION_VERSION,
-  prompt: imageInfoPrompt,
-  response: imageInfo,
-}
-```
+The instruction prompt focuses on creating consistent structure rather than interesting prose.
 
-This provides context when prompts or models change over time.
+That makes the resulting MongoDB documents much easier to search.
 
-## Inspecting prompts in the viewer
+---
 
-The application supports both the newer `prompt_debug` array and the older `raw` array:
+# Keep Prompts Focused
 
-```ts
-export function getModelResponseEntries(
-  doc: Pick<ImageDoc, 'raw' | 'prompt_debug'>,
-): RawModelResponse[] {
-  const { prompt_debug: debug, raw } = doc;
-  if (debug != null && debug.length > 0) return debug;
-  return raw ?? [];
-}
-```
+Large prompts often try to solve too many problems.
 
-Source: [`../types/image.ts`](../types/image.ts)
+Instead, I found it helpful to ask one prompt to perform one job well.
 
-[`../components/ModelResponsesModal.tsx`](../components/ModelResponsesModal.tsx) displays the response and prompt in separate model tabs.
+Examples include:
 
-## Editing prompts
+- Describe the image.
+- Generate structured metadata.
+- Create embeddings.
 
-When changing a prompt:
+Breaking responsibilities apart also makes it much easier to swap individual pieces later.
 
-1. Update the prompt text
-2. Increment its `VERSION`
-3. Process a small set of representative images
-4. Compare the stored prompt and response traces
-5. Review both factual accuracy and JSON consistency
+---
 
-Because model output is non-deterministic, one result is not enough to evaluate a prompt change.
+# Store Prompt Versions
 
-## Why keep the prompts separate?
+Prompt engineering is iterative.
 
-The separation makes experimentation easier:
+As prompts improve, results change.
 
-- Improve image observation without changing the JSON schema
-- Improve schema compliance without repeating image analysis
-- Swap one model without replacing both
-- Compare failures from the vision and formatting stages independently
+For that reason, this project stores prompt information alongside the generated metadata.
+
+That makes it possible to understand how a document was generated and to compare results between prompt versions.
+
+If you ever need to regenerate metadata later, having that history becomes incredibly valuable.
+
+---
+
+# Don't Chase The Perfect Prompt
+
+One thing I learned while building this project is that there probably isn't a perfect prompt.
+
+Instead, there are prompts that are better suited for a particular task.
+
+Rather than endlessly tweaking wording, it's often more productive to improve the overall pipeline.
+
+Changing the architecture usually had a bigger impact than changing individual sentences.
+
+---
+
+# Models Will Change
+
+The prompts in this project were written for the models available at the time.
+
+Six months from now, you may choose different models.
+
+A year from now, they'll almost certainly be different.
+
+That's perfectly fine.
+
+The architecture stays the same.
+
+Understand the data.
+
+Structure the data.
+
+Store the data.
+
+Search the data.
+
+The specific model becomes an implementation detail.
+
+---
+
+# Experiment
+
+If you clone this repository, one of the first things I'd encourage you to do is experiment.
+
+Try different models.
+
+Rewrite the prompts.
+
+Generate different metadata.
+
+Compare the results.
+
+That's one of the reasons the prompts are kept separate from the application logic.
+
+They're meant to be explored.
+
+---
+
+# Final Thoughts
+
+Prompt engineering is an important part of modern AI applications, but it isn't the entire application.
+
+Good prompts matter.
+
+Good architecture matters even more.
+
+Once the metadata has been generated, the rest of the project is simply a MongoDB application built on top of well-structured documents.
+
+That's really the bigger lesson I hope people take away from this project.
