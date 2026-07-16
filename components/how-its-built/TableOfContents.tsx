@@ -67,14 +67,20 @@ export function TableOfContents({ items }: TableOfContentsProps) {
         </Box>
       </Box>
 
-      {/* Desktop: sticky sidebar */}
+      {/* Desktop: reserve horizontal space in the flex row */}
+      <Box display={{ base: 'none', lg: 'block' }} w="220px" flexShrink={0} aria-hidden />
+
+      {/* Desktop: fixed sidebar (sticky breaks under body overflow-x: hidden) */}
       <Box
         display={{ base: 'none', lg: 'block' }}
-        position="sticky"
-        top="72px"
-        alignSelf="start"
+        position="fixed"
+        top="64px"
+        left="max(32px, calc((100vw - 1100px) / 2 + 32px))"
         w="220px"
-        flexShrink={0}
+        maxH="calc(100vh - 80px)"
+        overflowY="auto"
+        zIndex={100}
+        pb={4}
       >
         <Text fontSize="sm" fontWeight="semibold" color="white" mb={3}>
           On this page
