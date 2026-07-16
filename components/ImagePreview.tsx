@@ -7,9 +7,10 @@ interface ImagePreviewProps {
   id: string;
   title: string;
   description?: string;
+  eager?: boolean;
 }
 
-const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
+const ImagePreview = ({ id, title, description, eager = false }: ImagePreviewProps) => {
   const slug = slugify(title, id);
   
   return (
@@ -22,7 +23,7 @@ const ImagePreview = ({ id, title, description }: ImagePreviewProps) => {
       width="100%"
       height="100%"
     >
-      <ImageCardThumbnail id={id} title={title} />
+      <ImageCardThumbnail id={id} title={title} eager={eager} />
       <Box p={3} color="white">
         <Text 
           fontWeight="bold" 

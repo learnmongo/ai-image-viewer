@@ -6,7 +6,8 @@
     "dev": "next dev -p 3111 --webpack",
     "build": "next build --webpack",
     "start": "next start -p 3111",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "generate-variants": "node scripts/generate-image-variants.mjs"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.21.1",
@@ -30,6 +31,7 @@
     "eslint-config-next": "^16.2.10",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.1.0",
+    "sharp": "^0.34.3",
     "typescript": "^5"
   }
 }

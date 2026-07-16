@@ -3,6 +3,9 @@ import { getLatestImages } from '@/lib/image/queries';
 import { toImageArray } from '@/lib/image/utils';
 import ImageGridWithSearch from '@/components/ImageGridWithSearch';
 
+/** Homepage reads from MongoDB — don't bake an empty grid at build time. */
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const images = await getLatestImages(25);
   const imageList = toImageArray(images);

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 import SearchBox from '@/components/SearchBox';
@@ -13,13 +13,14 @@ interface Props {
 
 export default function ImageGridWithSearch({ images }: Props) {
   const [searchActive, setSearchActive] = useState(false);
+  const eagerCount = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4 }) ?? 4;
 
   return (
     <Box maxW="1280px" mx="auto" w="100%">
       <SearchBox onActiveChange={setSearchActive} />
       {!searchActive && (
         <SimpleGrid w="100%" columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} mt={4}>
-          {images.map((img) => (
+          {images.map((img, index) => (
             <Box
               key={img._id}
               borderRadius="lg"
@@ -38,7 +39,12 @@ export default function ImageGridWithSearch({ images }: Props) {
                 borderColor: 'whiteAlpha.300',
               }}
             >
-              <ImagePreview id={img._id} title={img.title} description={img.description} />
+              <ImagePreview
+                id={img._id}
+                title={img.title}
+                description={img.description}
+                eager={index < eagerCount}
+              />
               <Box p={3} flexGrow={1}>
                 <ImageMetadata
                   tags={img.tags}

@@ -1,4 +1,5 @@
-import { Box, Heading, Image, Text, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, Text, SimpleGrid } from '@chakra-ui/react';
+import { BlurUpImage } from '@/components/BlurUpImage';
 import { notFound } from 'next/navigation';
 import fs from 'fs';
 import path from 'path';
@@ -56,19 +57,11 @@ export default async function ViewPage({ params }: ViewPageProps) {
         <Heading size="4xl" mb={{ base: 6, md: 8 }} textShadow="0 2px 8px rgba(0,0,0,0.4)" textAlign="center">
           {imageDoc.title}
         </Heading>
-        <Image
-          src={`/resources/${fileName}`}
+        <BlurUpImage
+          id={id}
           alt={imageDoc.title}
-          width="100%"
-          height="auto"
-          maxW="100%"
-          maxH="75vh"
-          rounded="2xl"
-          boxShadow="2xl"
           title={imageDoc.title}
-          mx="auto"
-          my={0}
-          mb={6}
+          variant="detail"
         />
         <ImageNarrativeCard description={imageDoc.description} summary={imageDoc.summary} />
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="100%" maxW={{ base: '100%', md: 'min(92vw, 90rem)' }} mx="auto" mt={4}>
