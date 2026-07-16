@@ -4,6 +4,7 @@ import { Box, SimpleGrid } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 import SearchBox from '@/components/SearchBox';
+import HowItsBuiltPromo from '@/components/HowItsBuiltPromo';
 import { ImageItem } from '@/types/image';
 
 interface Props {
@@ -52,6 +53,7 @@ export default function ImageGridWithSearch({ images }: Props) {
           ))}
         </SimpleGrid>
       )}
+      {!searchActive && <HowItsBuiltPromo />}
     </Box>
   );
 } 

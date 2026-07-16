@@ -41,7 +41,17 @@ export default function NavBar() {
           >
             <IconHamburger boxSize={6} style={{ marginRight: '0.375rem' }} />
           </Link>
-          {/* Add more navigation links here as needed */}
+          <Link
+            as={NextLink}
+            href="/how-its-built"
+            fontSize="sm"
+            fontWeight="medium"
+            _hover={{ color: 'teal.200', textDecoration: 'none' }}
+            _focus={{ boxShadow: 'none', outline: 'none' }}
+            color="whiteAlpha.800"
+          >
+            How it&apos;s built
+          </Link>
         </Flex>
         <Box flex={1} />
       </Flex>
