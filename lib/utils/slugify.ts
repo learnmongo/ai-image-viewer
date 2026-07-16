@@ -23,4 +23,3 @@ export function slugify(title: string, id: string): string {
 export function extractIdFromSlug(slug: string): string {
   return slug.split('-').pop() || slug;
 }
-

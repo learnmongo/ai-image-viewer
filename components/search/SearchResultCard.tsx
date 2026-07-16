@@ -1,10 +1,10 @@
+import { ImageCardThumbnail } from '@/components/ImageCardThumbnail';
+import { ImageGridCard } from '@/components/ImageGridCard';
+import { slugify } from '@/lib/utils/slugify';
 import { Badge, Box, Link as ChakraLink, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { ImageGridCard } from '@/components/ImageGridCard';
-import { ImageCardThumbnail } from '@/components/ImageCardThumbnail';
-import { slugify } from '@/lib/utils/slugify';
-import type { SearchResult } from './types';
 import { shouldShowTextSearchScoreBadge } from './searchScoreThresholds';
+import type { SearchResult } from './types';
 
 interface SearchResultCardProps {
   img: SearchResult;
@@ -37,7 +37,13 @@ export function SearchResultCard({ img, rankIndex, total, hybrid }: SearchResult
       <ImageGridCard>
         <ImageCardThumbnail id={img._id} title={img.title} />
         <Box p={3} color="white" flexGrow={1}>
-          <Text fontWeight="bold" fontSize="md" mb={1} color="white" textShadow="0 1px 3px rgba(0, 0, 0, 0.5)">
+          <Text
+            fontWeight="bold"
+            fontSize="md"
+            mb={1}
+            color="white"
+            textShadow="0 1px 3px rgba(0, 0, 0, 0.5)"
+          >
             {img.title}
           </Text>
           {img.summary && (

@@ -1,8 +1,8 @@
-import { Providers } from './providers';
-import { Rubik } from 'next/font/google';
-import './globals.css';
 import ConditionalNavBar from '@/components/ConditionalNavBar';
 import SiteFooter from '@/components/SiteFooter';
+import { Rubik } from 'next/font/google';
+import './globals.css';
+import { Providers } from './providers';
 
 const rubik = Rubik({ subsets: ['latin'], weight: ['300', '400', '700', '900'] });
 
@@ -19,4 +19,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-

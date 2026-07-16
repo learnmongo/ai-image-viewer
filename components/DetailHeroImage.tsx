@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Box, Image } from '@chakra-ui/react';
+import { useImagePreload } from '@/hooks/useImagePreload';
 import { DETAIL_HERO_IMAGE_PROPS } from '@/lib/image/display-styles';
 import { imageResourcePaths } from '@/lib/image/resource-paths';
-import { useImagePreload } from '@/hooks/useImagePreload';
+import { Box, Image } from '@chakra-ui/react';
+import { useMemo, useState } from 'react';
 
 interface DetailHeroImageProps {
   id: string;

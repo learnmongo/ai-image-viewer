@@ -1,6 +1,6 @@
-import { getCollection, DEFAULT_LIMIT, DEFAULT_SEARCH_INDEX } from './base';
-import { ATLAS_TEXT_SEARCH_PATHS } from './text-search-paths';
 import { ImageDoc } from '@/types/image';
+import { DEFAULT_LIMIT, DEFAULT_SEARCH_INDEX, getCollection } from './base';
+import { ATLAS_TEXT_SEARCH_PATHS } from './text-search-paths';
 
 /**
  * Text-only image search — aggregation shape:
@@ -14,7 +14,7 @@ import { ImageDoc } from '@/types/image';
 export async function searchImages(
   query: string,
   limit: number = DEFAULT_LIMIT,
-  textIndex: string = DEFAULT_SEARCH_INDEX
+  textIndex: string = DEFAULT_SEARCH_INDEX,
 ): Promise<(ImageDoc & { score: number })[]> {
   const q = query?.trim() ?? '';
   if (!q) return [];

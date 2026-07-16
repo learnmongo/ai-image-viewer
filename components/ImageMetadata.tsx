@@ -1,7 +1,7 @@
 import { Wrap } from '@chakra-ui/react';
-import Tags from './Tags';
-import Feelings from './Feelings';
 import Colors from './Colors';
+import Feelings from './Feelings';
+import Tags from './Tags';
 
 interface ImageMetadataProps {
   tags?: string[];
@@ -15,16 +15,16 @@ interface ImageMetadataProps {
   colorSize?: 'sm' | 'md' | 'lg';
 }
 
-const ImageMetadata = ({ 
-  tags, 
-  feelings, 
-  colors, 
-  tagLimit = 1, 
-  feelingLimit = 1, 
+const ImageMetadata = ({
+  tags,
+  feelings,
+  colors,
+  tagLimit = 1,
+  feelingLimit = 1,
   colorLimit = 3,
   tagSize = 'xs',
   feelingSize = 'xs',
-  colorSize = 'sm'
+  colorSize = 'sm',
 }: ImageMetadataProps) => {
   return (
     <Wrap gap={2} align="center">
@@ -35,4 +35,4 @@ const ImageMetadata = ({
   );
 };
 
-export default ImageMetadata; 
+export default ImageMetadata;

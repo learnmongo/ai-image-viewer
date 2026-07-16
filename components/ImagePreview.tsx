@@ -1,9 +1,9 @@
 'use client';
 
-import { Box, Text, Link as ChakraLink } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import { slugify } from '@/lib/utils/slugify';
 import { ImageCardThumbnail } from '@/components/ImageCardThumbnail';
+import { slugify } from '@/lib/utils/slugify';
+import { Box, Link as ChakraLink, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 interface ImagePreviewProps {
   id: string;
@@ -14,11 +14,11 @@ interface ImagePreviewProps {
 
 const ImagePreview = ({ id, title, description, eager = false }: ImagePreviewProps) => {
   const slug = slugify(title, id);
-  
+
   return (
-    <ChakraLink 
-      as={NextLink} 
-      href={`/view/${slug}`} 
+    <ChakraLink
+      as={NextLink}
+      href={`/view/${slug}`}
       _hover={{ textDecoration: 'none' }}
       aria-label={`View ${title}`}
       display="block"
@@ -27,11 +27,11 @@ const ImagePreview = ({ id, title, description, eager = false }: ImagePreviewPro
     >
       <ImageCardThumbnail id={id} title={title} eager={eager} />
       <Box p={3} color="white">
-        <Text 
-          fontWeight="bold" 
-          fontSize="md" 
-          overflow="hidden" 
-          textOverflow="ellipsis" 
+        <Text
+          fontWeight="bold"
+          fontSize="md"
+          overflow="hidden"
+          textOverflow="ellipsis"
           whiteSpace="nowrap"
           mb={1}
           color="white"
@@ -40,13 +40,13 @@ const ImagePreview = ({ id, title, description, eager = false }: ImagePreviewPro
           {title}
         </Text>
         {description && (
-          <Text 
-            fontSize="sm" 
-            color="whiteAlpha.900" 
-            overflow="hidden" 
-            textOverflow="ellipsis" 
-            whiteSpace="normal" 
-            maxH="2.5em" 
+          <Text
+            fontSize="sm"
+            color="whiteAlpha.900"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="normal"
+            maxH="2.5em"
             lineHeight="1.25em"
             textShadow="0 1px 2px rgba(0, 0, 0, 0.5)"
           >
@@ -58,4 +58,4 @@ const ImagePreview = ({ id, title, description, eager = false }: ImagePreviewPro
   );
 };
 
-export default ImagePreview; 
+export default ImagePreview;

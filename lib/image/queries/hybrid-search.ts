@@ -1,17 +1,17 @@
+import { embedSearchQuery } from '@/lib/image/voyage-embed-query';
+import { ImageDoc } from '@/types/image';
 import {
-  getCollection,
+  DEFAULT_HYBRID_BRANCH_LIMIT,
+  DEFAULT_HYBRID_MIN_BEST_VECTOR_SCORE,
+  DEFAULT_HYBRID_MIN_VECTOR_SIMILARITY,
+  DEFAULT_HYBRID_NUM_CANDIDATES,
+  DEFAULT_HYBRID_VECTOR_MAX_GAP_FROM_BEST,
   DEFAULT_LIMIT,
   DEFAULT_SEARCH_INDEX,
   DEFAULT_VECTOR_INDEX,
-  DEFAULT_HYBRID_NUM_CANDIDATES,
-  DEFAULT_HYBRID_BRANCH_LIMIT,
-  DEFAULT_HYBRID_MIN_VECTOR_SIMILARITY,
-  DEFAULT_HYBRID_VECTOR_MAX_GAP_FROM_BEST,
-  DEFAULT_HYBRID_MIN_BEST_VECTOR_SCORE,
+  getCollection,
 } from './base';
-import { embedSearchQuery } from '@/lib/image/voyage-embed-query';
 import { ATLAS_TEXT_SEARCH_PATHS } from './text-search-paths';
-import { ImageDoc } from '@/types/image';
 
 /**
  * Hybrid: `$rankFusion` (vector + text), then filter by real vector similarity.
@@ -61,7 +61,7 @@ export async function searchImagesHybrid(
   query: string,
   limit: number = DEFAULT_LIMIT,
   textIndex: string = DEFAULT_SEARCH_INDEX,
-  vectorIndex: string = DEFAULT_VECTOR_INDEX
+  vectorIndex: string = DEFAULT_VECTOR_INDEX,
 ): Promise<(ImageDoc & { score: number })[]> {
   const q = query?.trim() ?? '';
   if (!q) return [];
@@ -69,10 +69,19 @@ export async function searchImagesHybrid(
   const queryVector = await embedSearchQuery(q, EMBED_MODEL);
   const col = await getCollection();
 
-  const numCandidates = Math.min(2048, Math.max(32, num('HYBRID_NUM_CANDIDATES', DEFAULT_HYBRID_NUM_CANDIDATES)));
-  const branchLimit = Math.min(150, Math.max(16, num('HYBRID_BRANCH_LIMIT', DEFAULT_HYBRID_BRANCH_LIMIT)));
+  const numCandidates = Math.min(
+    2048,
+    Math.max(32, num('HYBRID_NUM_CANDIDATES', DEFAULT_HYBRID_NUM_CANDIDATES)),
+  );
+  const branchLimit = Math.min(
+    150,
+    Math.max(16, num('HYBRID_BRANCH_LIMIT', DEFAULT_HYBRID_BRANCH_LIMIT)),
+  );
   const minVectorSim = sim('HYBRID_MIN_VECTOR_SIMILARITY', DEFAULT_HYBRID_MIN_VECTOR_SIMILARITY);
-  const maxGapFromBest = sim('HYBRID_VECTOR_MAX_GAP_FROM_BEST', DEFAULT_HYBRID_VECTOR_MAX_GAP_FROM_BEST);
+  const maxGapFromBest = sim(
+    'HYBRID_VECTOR_MAX_GAP_FROM_BEST',
+    DEFAULT_HYBRID_VECTOR_MAX_GAP_FROM_BEST,
+  );
   const minBestVector = sim('HYBRID_MIN_BEST_VECTOR_SCORE', DEFAULT_HYBRID_MIN_BEST_VECTOR_SCORE);
 
   const overfetch = Math.min(100, Math.max(limit * 4, 24));
@@ -141,7 +150,10 @@ export async function searchImagesHybrid(
   // - fusedRows -> final hybrid rank candidates from rank fusion
   const [similarityRows, fusedRows] = await Promise.all([
     col
-      .aggregate<{ _id: ImageDoc['_id']; _vectorSearchSim?: unknown }>(vectorSimilarityLookupPipeline)
+      .aggregate<{
+        _id: ImageDoc['_id'];
+        _vectorSearchSim?: unknown;
+      }>(vectorSimilarityLookupPipeline)
       .toArray(),
     col.aggregate<ImageDoc & { score?: unknown }>(hybridFusionPipeline).toArray(),
   ]);
@@ -168,7 +180,8 @@ export async function searchImagesHybrid(
     const v = vectorSimilarityById.get(String(doc._id));
     if (v === undefined) return false;
     if (minVectorSim > 0 && v < minVectorSim) return false;
-    if (maxGapFromBest > 0 && bestVectorSimilarity > 0 && v < bestVectorSimilarity - maxGapFromBest) return false;
+    if (maxGapFromBest > 0 && bestVectorSimilarity > 0 && v < bestVectorSimilarity - maxGapFromBest)
+      return false;
     return true;
   });
 
@@ -176,7 +189,8 @@ export async function searchImagesHybrid(
   // prioritize stronger semantic neighbors (higher `vectorSearchScore`) first.
   filteredFused.sort(
     (a, b) =>
-      (vectorSimilarityById.get(String(b._id)) ?? 0) - (vectorSimilarityById.get(String(a._id)) ?? 0),
+      (vectorSimilarityById.get(String(b._id)) ?? 0) -
+      (vectorSimilarityById.get(String(a._id)) ?? 0),
   );
 
   return filteredFused.slice(0, limit).map((doc) => ({

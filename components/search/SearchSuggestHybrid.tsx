@@ -30,7 +30,11 @@ export function SearchSuggestHybrid({ onEnableHybrid }: SearchSuggestHybridProps
         m={0}
         verticalAlign="baseline"
         _hover={{ color: 'blue.200' }}
-        _focusVisible={{ outline: '2px solid', outlineColor: 'whiteAlpha.700', outlineOffset: '2px' }}
+        _focusVisible={{
+          outline: '2px solid',
+          outlineColor: 'whiteAlpha.700',
+          outlineOffset: '2px',
+        }}
         onClick={onEnableHybrid}
       >
         Enable vector + text search

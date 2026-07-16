@@ -1,5 +1,5 @@
-import { Box, SimpleGrid } from '@chakra-ui/react';
 import { IMAGE_GRID_COLUMNS } from '@/lib/layout/mobile';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import { SearchResultCard } from './SearchResultCard';
 import type { SearchResult } from './types';
 

@@ -7,10 +7,7 @@
 
 const VOYAGE_EMBEDDINGS_URL = 'https://api.voyageai.com/v1/embeddings';
 
-export async function embedSearchQuery(
-  text: string,
-  model: string
-): Promise<number[]> {
+export async function embedSearchQuery(text: string, model: string): Promise<number[]> {
   const res = await fetch(VOYAGE_EMBEDDINGS_URL, {
     method: 'POST',
     headers: {

@@ -1,5 +1,5 @@
 import { readdir, stat } from 'fs/promises';
-import { join, basename } from 'path';
+import { basename, join } from 'path';
 import sharp from 'sharp';
 
 const RESOURCES_DIR = join(process.cwd(), 'public', 'resources');

@@ -1,13 +1,13 @@
 'use client';
 
+import { GLASS_CARD_NESTED } from '@/components/glass-styles';
+import { resolveDocHref } from '@/lib/docs/registry';
 import { Box, Code, Heading, Link, List, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import type { ReactNode } from 'react';
+import type { Components } from 'react-markdown';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import type { Components } from 'react-markdown';
-import { GLASS_CARD_NESTED } from '@/components/glass-styles';
-import { resolveDocHref } from '@/lib/docs/registry';
 import {
   GlassTable,
   GlassTableBody,
@@ -31,13 +31,7 @@ function textFromChildren(children: ReactNode): string {
   return '';
 }
 
-function MarkdownLink({
-  href,
-  children,
-}: {
-  href?: string;
-  children?: ReactNode;
-}) {
+function MarkdownLink({ href, children }: { href?: string; children?: ReactNode }) {
   if (!href) {
     return <Text as="span">{children}</Text>;
   }
@@ -47,7 +41,13 @@ function MarkdownLink({
 
   if (isExternal) {
     return (
-      <Link href={resolved} color="teal.200" target="_blank" rel="noopener" _hover={{ color: 'teal.100' }}>
+      <Link
+        href={resolved}
+        color="teal.200"
+        target="_blank"
+        rel="noopener"
+        _hover={{ color: 'teal.100' }}
+      >
         {children}
       </Link>
     );
@@ -55,7 +55,12 @@ function MarkdownLink({
 
   if (resolved.startsWith('/')) {
     return (
-      <Link as={NextLink} href={resolved} color="teal.200" _hover={{ color: 'teal.100', textDecoration: 'underline' }}>
+      <Link
+        as={NextLink}
+        href={resolved}
+        color="teal.200"
+        _hover={{ color: 'teal.100', textDecoration: 'underline' }}
+      >
         {children}
       </Link>
     );
@@ -103,12 +108,26 @@ const markdownComponents: Components = {
   ),
   a: ({ href, children }) => <MarkdownLink href={href}>{children}</MarkdownLink>,
   ul: ({ children }) => (
-    <List.Root as="ul" gap={2} pl={5} mb={4} color="whiteAlpha.800" fontSize={{ base: 'md', md: 'lg' }}>
+    <List.Root
+      as="ul"
+      gap={2}
+      pl={5}
+      mb={4}
+      color="whiteAlpha.800"
+      fontSize={{ base: 'md', md: 'lg' }}
+    >
       {children}
     </List.Root>
   ),
   ol: ({ children }) => (
-    <List.Root as="ol" gap={2} pl={5} mb={4} color="whiteAlpha.800" fontSize={{ base: 'md', md: 'lg' }}>
+    <List.Root
+      as="ol"
+      gap={2}
+      pl={5}
+      mb={4}
+      color="whiteAlpha.800"
+      fontSize={{ base: 'md', md: 'lg' }}
+    >
       {children}
     </List.Root>
   ),

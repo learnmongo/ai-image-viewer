@@ -6,7 +6,7 @@ export const VERSION = '2.1.1';
  * @returns {string} Vision model prompt
  */
 export const getVisionModelPrompt = () => {
-    return `
+  return `
 You are analyzing an image and producing structured factual observations.
 
 IMPORTANT RULES:
@@ -67,4 +67,3 @@ Colors: "#XXXXXX", "#XXXXXX"
 Tags: "<tag>", "<tag>"
     `.trim();
 };
-

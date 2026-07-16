@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 /** Preload an image URL without adding a DOM node. Handles browser cache. */
 export function useImagePreload(src: string) {

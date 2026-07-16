@@ -7,7 +7,7 @@ export const VERSION = '2.1.0';
  * @returns {string} Instruction model prompt
  */
 export const getInstructionModelPrompt = (imageInfo) => {
-    return `
+  return `
 You are transforming structured image analysis into metadata.
 
 CRITICAL CONSTRAINTS:
@@ -47,4 +47,3 @@ ${imageInfo}
 [END]
     `.trim();
 };
-

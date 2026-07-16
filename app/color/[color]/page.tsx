@@ -1,14 +1,10 @@
-import { getImagesByColorFuzzy } from '@/lib/image/queries';
-import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import ImagePreview from '@/components/ImagePreview';
-import ImageMetadata from '@/components/ImageMetadata';
 import { ImageGridCard } from '@/components/ImageGridCard';
+import ImageMetadata from '@/components/ImageMetadata';
+import ImagePreview from '@/components/ImagePreview';
+import { getImagesByColorFuzzy } from '@/lib/image/queries';
 import { offsetColor } from '@/lib/image/utils';
-import {
-  IMAGE_GRID_COLUMNS,
-  MOBILE_CONTENT_PX,
-  MOBILE_PAGE_PX,
-} from '@/lib/layout/mobile';
+import { IMAGE_GRID_COLUMNS, MOBILE_CONTENT_PX, MOBILE_PAGE_PX } from '@/lib/layout/mobile';
+import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
 interface ColorPageProps {
   params: Promise<{ color: string }>;

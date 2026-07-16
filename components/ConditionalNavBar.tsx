@@ -1,8 +1,8 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import NavBar from '@/components/NavBar';
 import ViewHomeChrome from '@/components/ViewHomeChrome';
+import { usePathname } from 'next/navigation';
 
 /** `/` uses fixed search only; `/view/*` and `/how-its-built/*` use a glass home chip; other routes keep the full bar. */
 export default function ConditionalNavBar() {

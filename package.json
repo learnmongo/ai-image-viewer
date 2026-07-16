@@ -7,7 +7,13 @@
     "build": "next build --webpack",
     "start": "next start -p 3111",
     "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
     "generate-variants": "node scripts/generate-image-variants.mjs"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,css,md}": "prettier --write"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.21.1",
@@ -29,6 +35,8 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9",
     "eslint-config-next": "^16.2.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "sharp": "^0.34.3",

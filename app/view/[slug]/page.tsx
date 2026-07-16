@@ -1,19 +1,12 @@
-import { Box, Heading, Text, SimpleGrid } from '@chakra-ui/react';
+import Colors from '@/components/Colors';
 import { DetailHeroImage } from '@/components/DetailHeroImage';
-import { notFound } from 'next/navigation';
-import fs from 'fs';
-import path from 'path';
-import { getImageById } from '@/lib/image/queries';
-import { getModelResponseEntries } from '@/types/image';
-import { extractIdFromSlug } from '@/lib/utils/slugify';
-import { toImage } from '@/lib/image/utils';
-import Tags from '@/components/Tags';
 import Feelings from '@/components/Feelings';
 import Hues from '@/components/Hues';
-import Colors from '@/components/Colors';
-import ViewerActions from '@/components/ViewerActions';
 import { ImageNarrativeCard } from '@/components/ImageNarrativeCard';
-import { hexWithAlpha } from '@/lib/utils/hex-alpha';
+import Tags from '@/components/Tags';
+import ViewerActions from '@/components/ViewerActions';
+import { getImageById } from '@/lib/image/queries';
+import { toImage } from '@/lib/image/utils';
 import {
   MOBILE_CONTENT_PX,
   MOBILE_PAGE_PX,
@@ -21,6 +14,13 @@ import {
   VIEW_TITLE_MIN_H,
   VIEW_TITLE_PX,
 } from '@/lib/layout/mobile';
+import { hexWithAlpha } from '@/lib/utils/hex-alpha';
+import { extractIdFromSlug } from '@/lib/utils/slugify';
+import { getModelResponseEntries } from '@/types/image';
+import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import fs from 'fs';
+import { notFound } from 'next/navigation';
+import path from 'path';
 
 interface ViewPageProps {
   params: Promise<{ slug: string }>;

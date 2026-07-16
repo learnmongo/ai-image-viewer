@@ -1,9 +1,9 @@
 'use client';
 
-import { Box, Heading, Link, Text } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import { GLASS_CARD } from '@/components/glass-styles';
 import { DocEntry, docHref } from '@/lib/docs/registry';
+import { Box, Heading, Link, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { GuidePageShell } from './GuidePageShell';
 import { MarkdownContent } from './MarkdownContent';
 
@@ -28,7 +28,13 @@ export function DocPage({ doc, markdown }: DocPageProps) {
       </Box>
 
       <Box mb={8} {...GLASS_CARD} p={{ base: 5, md: 7 }}>
-        <Text fontSize="xs" letterSpacing="wider" textTransform="uppercase" color="whiteAlpha.700" mb={2}>
+        <Text
+          fontSize="xs"
+          letterSpacing="wider"
+          textTransform="uppercase"
+          color="whiteAlpha.700"
+          mb={2}
+        >
           {doc.fileName}
         </Text>
         <Heading size="2xl" color="white" mb={3}>

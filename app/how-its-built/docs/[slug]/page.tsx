@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation';
 import { DocPage } from '@/components/how-its-built/DocPage';
 import { readDocMarkdown } from '@/lib/docs/read-markdown';
 import { DOC_SLUGS, getDocBySlug } from '@/lib/docs/registry';
+import { notFound } from 'next/navigation';
 
 interface DocRouteProps {
   params: Promise<{ slug: string }>;

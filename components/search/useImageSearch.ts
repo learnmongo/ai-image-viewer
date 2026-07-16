@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SearchResult } from './types';
 
 const MIN_QUERY_LEN = 3;
@@ -32,25 +32,28 @@ export function useImageSearch(onActiveChange?: (active: boolean) => void) {
     onActiveChange?.(!!query && query.length >= MIN_QUERY_LEN && !!results);
   }, [query, results, onActiveChange]);
 
-  const performSearch = useCallback(async (searchQuery: string) => {
-    if (!searchQuery || searchQuery.length < MIN_QUERY_LEN) {
-      setResults(null);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: searchQuery, hybrid }),
-      });
-      const data: { results?: SearchResult[] } = await res.json();
-      setResults(Array.isArray(data.results) ? data.results : []);
-    } finally {
-      setLoading(false);
-    }
-  }, [hybrid]);
+  const performSearch = useCallback(
+    async (searchQuery: string) => {
+      if (!searchQuery || searchQuery.length < MIN_QUERY_LEN) {
+        setResults(null);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch('/api/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: searchQuery, hybrid }),
+        });
+        const data: { results?: SearchResult[] } = await res.json();
+        setResults(Array.isArray(data.results) ? data.results : []);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [hybrid],
+  );
 
   useEffect(() => {
     if (debounceTimer.current) {

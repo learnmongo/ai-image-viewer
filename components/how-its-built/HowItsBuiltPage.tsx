@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { HowItsBuiltContent } from './HowItsBuiltContent';
 import { GuidePageShell } from './GuidePageShell';
+import { HowItsBuiltContent } from './HowItsBuiltContent';
 import { TableOfContents, TocItem } from './TableOfContents';
 
 const TOC_ITEMS: TocItem[] = [

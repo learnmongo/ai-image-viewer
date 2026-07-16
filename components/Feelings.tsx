@@ -7,11 +7,7 @@ interface FeelingsProps {
   size?: 'xs' | 'sm' | 'md';
 }
 
-const Feelings = ({ 
-  feelings, 
-  limit, 
-  size = 'sm'
-}: FeelingsProps) => {
+const Feelings = ({ feelings, limit, size = 'sm' }: FeelingsProps) => {
   if (!feelings || feelings.length === 0) {
     return null;
   }
@@ -22,22 +18,21 @@ const Feelings = ({
     <Wrap gap={2} align="center">
       {displayFeelings.map((feeling: string) => (
         <Link key={feeling} href={`/feeling/${feeling.replace(/\s+/g, '-')}`}>
-          <Badge 
-            colorScheme="yellow" 
-            fontSize={size} 
-            px={3} 
-            py={1} 
-            cursor="pointer" 
-            _hover={{ bg: 'yellow.400' }} 
+          <Badge
+            colorScheme="yellow"
+            fontSize={size}
+            px={3}
+            py={1}
+            cursor="pointer"
+            _hover={{ bg: 'yellow.400' }}
             transition="background 0.2s"
           >
             {feeling}
           </Badge>
         </Link>
       ))}
-
     </Wrap>
   );
 };
 
-export default Feelings; 
+export default Feelings;

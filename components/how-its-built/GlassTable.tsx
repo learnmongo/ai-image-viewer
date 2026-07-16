@@ -1,6 +1,6 @@
+import { GLASS_CARD_NESTED } from '@/components/glass-styles';
 import { Box } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { GLASS_CARD_NESTED } from '@/components/glass-styles';
 
 const CELL_BORDER = 'whiteAlpha.150';
 const HEADER_BG = 'rgba(255, 255, 255, 0.08)';
@@ -23,13 +23,7 @@ export function GlassTable({ children, mb, my }: GlassTableProps) {
       css={{ WebkitOverflowScrolling: 'touch' }}
     >
       <Box {...GLASS_CARD_NESTED} display="inline-block" minW="max-content">
-        <Box
-          as="table"
-          minW="max-content"
-          borderCollapse="collapse"
-          bg="transparent"
-          fontSize="sm"
-        >
+        <Box as="table" minW="max-content" borderCollapse="collapse" bg="transparent" fontSize="sm">
           {children}
         </Box>
       </Box>
@@ -51,12 +45,7 @@ export function GlassTableBody({ children }: { children: ReactNode }) {
 
 export function GlassTableRow({ children }: { children: ReactNode }) {
   return (
-    <Box
-      as="tr"
-      bg="transparent"
-      _hover={{ bg: ROW_HOVER_BG }}
-      transition="background 0.15s ease"
-    >
+    <Box as="tr" bg="transparent" _hover={{ bg: ROW_HOVER_BG }} transition="background 0.15s ease">
       {children}
     </Box>
   );

@@ -1,8 +1,8 @@
-import { Box } from '@chakra-ui/react';
+import ImageGridWithSearch from '@/components/ImageGridWithSearch';
 import { getLatestImages } from '@/lib/image/queries';
 import { toImageArray } from '@/lib/image/utils';
-import ImageGridWithSearch from '@/components/ImageGridWithSearch';
 import { MOBILE_PAGE_PX } from '@/lib/layout/mobile';
+import { Box } from '@chakra-ui/react';
 
 /** Homepage reads from MongoDB — don't bake an empty grid at build time. */
 export const dynamic = 'force-dynamic';
@@ -15,10 +15,10 @@ export default async function HomePage() {
     'linear-gradient(155deg, #04060a 0%, #0a0f18 28%, #0d1524 52%, #080c14 78%, #05070c 100%)';
 
   return (
-    <Box 
+    <Box
       minH="100vh"
       bg={background}
-      px={MOBILE_PAGE_PX} 
+      px={MOBILE_PAGE_PX}
       pt={0}
       pb={{ base: 4, md: 8, lg: 12 }}
       position="relative"

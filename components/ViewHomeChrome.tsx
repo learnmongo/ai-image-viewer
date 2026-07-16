@@ -1,8 +1,8 @@
 'use client';
 
+import { IconHome } from '@/components/ui/inline-icons';
 import { Box, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { IconHome } from '@/components/ui/inline-icons';
 
 /** Visuals aligned with non-hybrid `SearchInputBar` outer shell (pill glass). */
 const SEARCH_PILL_GLASS = {
@@ -66,7 +66,13 @@ export default function ViewHomeChrome() {
             'inset 0 1px 0 rgba(255,255,255,0.65), 0 0 0 3px rgba(255,255,255,0.16), 0 12px 40px rgba(0,0,0,0.26)',
         }}
       >
-        <Box position="relative" zIndex={1} display="flex" alignItems="center" justifyContent="center">
+        <Box
+          position="relative"
+          zIndex={1}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
           <IconHome boxSize={6} />
         </Box>
       </Link>

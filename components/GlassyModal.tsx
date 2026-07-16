@@ -1,4 +1,4 @@
-import { Box, Button, Text, HStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Text } from '@chakra-ui/react';
 import { ReactNode, useEffect } from 'react';
 
 interface GlassyModalProps {
@@ -23,20 +23,20 @@ export default function GlassyModal({ isOpen, onClose, title, children }: Glassy
   if (!isOpen) return null;
 
   return (
-      <Box
-        position="fixed"
-        top={0}
-        left={0}
-        right={0}
-        bottom={0}
-        bg="blackAlpha.700"
-        zIndex={1000}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        p={{ base: 2, md: 4 }}
-        onClick={onClose}
-      >
+    <Box
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      bottom={0}
+      bg="blackAlpha.700"
+      zIndex={1000}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      p={{ base: 2, md: 4 }}
+      onClick={onClose}
+    >
       <Box
         bg="rgba(255,255,255,0.18)"
         style={{ backdropFilter: 'blur(24px) saturate(180%)' }}
@@ -53,7 +53,15 @@ export default function GlassyModal({ isOpen, onClose, title, children }: Glassy
         flexDirection="column"
         onClick={(e) => e.stopPropagation()}
       >
-        <HStack justify="space-between" align="center" px={6} py={4} borderBottom="1px" borderColor="gray.200" bg="transparent">
+        <HStack
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          borderBottom="1px"
+          borderColor="gray.200"
+          bg="transparent"
+        >
           <Text fontSize="xl" fontWeight="bold" letterSpacing="tight" color="white">
             {title}
           </Text>
@@ -87,4 +95,4 @@ export default function GlassyModal({ isOpen, onClose, title, children }: Glassy
       </Box>
     </Box>
   );
-} 
+}

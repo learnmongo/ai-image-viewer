@@ -1,9 +1,9 @@
 'use client';
 
-import { Box, Code, IconButton, HStack } from '@chakra-ui/react';
+import { Box, Code, HStack, IconButton } from '@chakra-ui/react';
+import { useState } from 'react';
 import { IconCopy } from './ui/inline-icons';
 import { Tooltip } from './ui/tooltip';
-import { useState } from 'react';
 
 interface JsonViewerProps {
   data: Record<string, unknown>;

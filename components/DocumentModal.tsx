@@ -1,7 +1,7 @@
+import type { ImageItem } from '@/types/image';
+import { Box } from '@chakra-ui/react';
 import GlassyModal from './GlassyModal';
 import JsonViewer from './JsonViewer';
-import { Box } from '@chakra-ui/react';
-import type { ImageItem } from '@/types/image';
 
 interface DocumentModalProps {
   isOpen: boolean;
@@ -10,12 +10,7 @@ interface DocumentModalProps {
 }
 
 /** Keys omitted from the JSON view (noise, huge vectors, duplicate traces). */
-const OMIT_FROM_DOCUMENT_VIEW = new Set([
-  'file',
-  'raw',
-  'prompt_debug',
-  'embedding',
-]);
+const OMIT_FROM_DOCUMENT_VIEW = new Set(['file', 'raw', 'prompt_debug', 'embedding']);
 
 export default function DocumentModal({ isOpen, onClose, data }: DocumentModalProps) {
   const cleanData: Record<string, unknown> = { ...data };

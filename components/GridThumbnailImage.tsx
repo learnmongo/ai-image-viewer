@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Box } from '@chakra-ui/react';
+import { useImageSrcFallback } from '@/hooks/useImageSrcFallback';
 import { GRID_THUMB_IMG_STYLE } from '@/lib/image/display-styles';
 import { imageResourcePaths } from '@/lib/image/resource-paths';
-import { useImageSrcFallback } from '@/hooks/useImageSrcFallback';
+import { Box } from '@chakra-ui/react';
+import { useMemo } from 'react';
 
 interface GridThumbnailImageProps {
   id: string;

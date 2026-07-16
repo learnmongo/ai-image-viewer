@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { Box, SimpleGrid } from '@chakra-ui/react';
-import ImagePreview from '@/components/ImagePreview';
-import ImageMetadata from '@/components/ImageMetadata';
-import { ImageGridCard } from '@/components/ImageGridCard';
-import SearchBox from '@/components/SearchBox';
 import HowItsBuiltPromo from '@/components/HowItsBuiltPromo';
+import { ImageGridCard } from '@/components/ImageGridCard';
+import ImageMetadata from '@/components/ImageMetadata';
+import ImagePreview from '@/components/ImagePreview';
+import SearchBox from '@/components/SearchBox';
 import { useEagerGridCount } from '@/hooks/useEagerGridCount';
 import { IMAGE_GRID_COLUMNS, MOBILE_CONTENT_PX } from '@/lib/layout/mobile';
 import { ImageItem } from '@/types/image';
+import { Box, SimpleGrid } from '@chakra-ui/react';
+import { useState } from 'react';
 
 interface Props {
   images: ImageItem[];

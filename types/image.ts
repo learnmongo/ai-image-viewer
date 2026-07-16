@@ -53,4 +53,4 @@ export function getModelResponseEntries(
  */
 export interface ImageItem extends Omit<ImageDoc, '_id'> {
   _id: string;
-} 
+}

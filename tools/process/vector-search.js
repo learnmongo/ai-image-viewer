@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * Demo: `$vectorSearch` on `embedding`, then a min score. 
- * 
+ * Demo: `$vectorSearch` on `embedding`, then a min score.
+ *
  * Prerequisites: `embedding` on documents (`npx generate-embeddings`) and an
  * Atlas vector index on `embedding` (here: name `vector_index`).
  */
 
-import { connect, close, getClient } from './services/database.js';
-import { DB_NAME, COLLECTION } from './config.js';
+import { COLLECTION, DB_NAME } from './config.js';
 import { embedText } from './services/ai/embeddings.js';
+import { close, connect, getClient } from './services/database.js';
 
 async function main() {
   const query = process.argv.slice(2).join(' ').trim();
@@ -64,9 +64,7 @@ async function main() {
     const rows = await coll.aggregate(pipeline).toArray();
 
     if (rows.length === 0) {
-      console.log(
-        'No results above the score min.'
-      );
+      console.log('No results above the score min.');
       return;
     }
 
@@ -75,11 +73,11 @@ async function main() {
         typeof doc.vectorSearchScore === 'number'
           ? doc.vectorSearchScore.toFixed(4)
           : String(doc.vectorSearchScore);
-      const oneLine =
-        (doc.summary && String(doc.summary).replace(/\s+/g, ' ').slice(0, 120)) || '';
+      const oneLine = (doc.summary && String(doc.summary).replace(/\s+/g, ' ').slice(0, 120)) || '';
       console.log(`${i + 1}. [${score}] ${doc.title || '(no title)'}`);
       if (doc.file) console.log(`   file: ${doc.file}`);
-      if (oneLine) console.log(`   ${oneLine}${doc.summary && doc.summary.length > 120 ? '…' : ''}`);
+      if (oneLine)
+        console.log(`   ${oneLine}${doc.summary && doc.summary.length > 120 ? '…' : ''}`);
       console.log('');
     });
   } finally {

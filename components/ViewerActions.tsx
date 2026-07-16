@@ -1,11 +1,11 @@
 'use client';
 
-import { HStack, Button } from '@chakra-ui/react';
-import { IconChat, IconEye } from './ui/inline-icons';
+import { ImageItem, RawModelResponse } from '@/types/image';
+import { Button, HStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import DocumentModal from './DocumentModal';
 import ModelResponsesModal from './ModelResponsesModal';
-import { RawModelResponse, ImageItem } from '@/types/image';
+import { IconChat, IconEye } from './ui/inline-icons';
 
 interface ViewerActionsProps {
   document: ImageItem;
@@ -44,11 +44,7 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
           Model Responses
         </Button>
       </HStack>
-      <DocumentModal
-        isOpen={isDocOpen}
-        onClose={() => setDocOpen(false)}
-        data={document}
-      />
+      <DocumentModal isOpen={isDocOpen} onClose={() => setDocOpen(false)} data={document} />
       <ModelResponsesModal
         isOpen={isResponsesOpen}
         onClose={() => setResponsesOpen(false)}
@@ -56,4 +52,4 @@ export default function ViewerActions({ document, responses }: ViewerActionsProp
       />
     </>
   );
-} 
+}

@@ -6,8 +6,8 @@
  * summary, tags). Index name must match Atlas (here: `ix_text`, same default as the app).
  */
 
-import { connect, close, getClient } from './services/database.js';
-import { DB_NAME, COLLECTION } from './config.js';
+import { COLLECTION, DB_NAME } from './config.js';
+import { close, connect, getClient } from './services/database.js';
 
 async function main() {
   const query = process.argv.slice(2).join(' ').trim();
@@ -49,17 +49,18 @@ async function main() {
     const rows = await coll.aggregate(pipeline).toArray();
 
     if (rows.length === 0) {
-      console.log('No results. Check MongoDB Search index name and mapped fields match this pipeline.');
+      console.log(
+        'No results. Check MongoDB Search index name and mapped fields match this pipeline.',
+      );
       return;
     }
 
     rows.forEach((doc, i) => {
-      const score =
-        typeof doc.score === 'number' ? doc.score.toFixed(4) : String(doc.score);
-      const oneLine =
-        (doc.summary && String(doc.summary).replace(/\s+/g, ' ').slice(0, 120)) || '';
+      const score = typeof doc.score === 'number' ? doc.score.toFixed(4) : String(doc.score);
+      const oneLine = (doc.summary && String(doc.summary).replace(/\s+/g, ' ').slice(0, 120)) || '';
       console.log(`${i + 1}. [score: ${score}] ${doc.title || '(no title)'}`);
-      if (oneLine) console.log(`   ${oneLine}${doc.summary && doc.summary.length > 120 ? '…' : ''}`);
+      if (oneLine)
+        console.log(`   ${oneLine}${doc.summary && doc.summary.length > 120 ? '…' : ''}`);
       console.log('');
     });
   } finally {

@@ -84,7 +84,7 @@ try searching for:
 ocean
 ```
 
-The word *ocean* may never appear anywhere inside the MongoDB document.
+The word _ocean_ may never appear anywhere inside the MongoDB document.
 
 Even so, MongoDB Vector Search can still identify relevant images because both the query and the document have been converted into vector embeddings.
 

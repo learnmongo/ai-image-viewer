@@ -1,9 +1,9 @@
 'use client';
 
-import { Box, Heading, Link, List, Text } from '@chakra-ui/react';
-import NextLink from 'next/link';
 import { GLASS_CARD, GLASS_CARD_NESTED } from '@/components/glass-styles';
 import { docHref, DocSlug, slugForFileName } from '@/lib/docs/registry';
+import { Box, Heading, Link, List, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { CodeSpotlight } from './CodeSpotlight';
 import {
   GlassTable,
@@ -44,14 +44,12 @@ const DEEPER_GUIDES: { slug: DocSlug; file: string; summary: string }[] = [
   {
     slug: 'code-guide',
     file: 'CODE-GUIDE.md',
-    summary:
-      'A guided tour of the repository and where to find the code shown in the tutorial.',
+    summary: 'A guided tour of the repository and where to find the code shown in the tutorial.',
   },
   {
     slug: 'search',
     file: 'SEARCH.md',
-    summary:
-      'Learn how MongoDB Search, MongoDB Vector Search, and Hybrid Search are implemented.',
+    summary: 'Learn how MongoDB Search, MongoDB Vector Search, and Hybrid Search are implemented.',
   },
   {
     slug: 'ollama',
@@ -105,7 +103,12 @@ function RepoCell({ repo }: { repo: string }) {
           <Text as="span" key={part}>
             {i > 0 && ', '}
             {slug ? (
-              <Link as={NextLink} href={docHref(slug)} color="teal.200" _hover={{ color: 'teal.100' }}>
+              <Link
+                as={NextLink}
+                href={docHref(slug)}
+                color="teal.200"
+                _hover={{ color: 'teal.100' }}
+              >
                 {part}
               </Link>
             ) : (
@@ -137,8 +140,8 @@ export function HowItsBuiltContent() {
       <Section id="start-here" title="Start here">
         <Text mb={4}>
           Most operating systems still rely heavily on filenames when searching images. Once your
-          collection grows into hundreds or thousands of photos, finding exactly what you are looking
-          for becomes surprisingly difficult.
+          collection grows into hundreds or thousands of photos, finding exactly what you are
+          looking for becomes surprisingly difficult.
         </Text>
         <Text mb={4}>
           This project explores a different approach. Instead of searching filenames, a vision model
@@ -151,13 +154,23 @@ export function HowItsBuiltContent() {
         <List.Root gap={2} pl={4}>
           <List.Item>
             Read README:{' '}
-            <Link as={NextLink} href={docHref('readme')} color="teal.200" _hover={{ color: 'teal.100' }}>
+            <Link
+              as={NextLink}
+              href={docHref('readme')}
+              color="teal.200"
+              _hover={{ color: 'teal.100' }}
+            >
               README.md
             </Link>
           </List.Item>
           <List.Item>
             Live example:{' '}
-            <Link href="https://images.seemongo.com" color="teal.200" target="_blank" rel="noopener">
+            <Link
+              href="https://images.seemongo.com"
+              color="teal.200"
+              target="_blank"
+              rel="noopener"
+            >
               images.seemongo.com
             </Link>
           </List.Item>
@@ -267,8 +280,8 @@ export function HowItsBuiltContent() {
             <Text as="span" fontWeight="semibold" color="white">
               Embeddings are generated separately.
             </Text>{' '}
-            They can be regenerated later without analyzing every image again, and experimenting with
-            different embedding models is much easier.
+            They can be regenerated later without analyzing every image again, and experimenting
+            with different embedding models is much easier.
           </List.Item>
           <List.Item>
             <Text as="span" fontWeight="semibold" color="white">
@@ -289,7 +302,8 @@ export function HowItsBuiltContent() {
 
       <Section id="repo-guide" title="Repository guide">
         <Text mb={4}>
-          If you are exploring the code after watching the video, these are the best places to start.
+          If you are exploring the code after watching the video, these are the best places to
+          start.
         </Text>
         <GlassTable mb={6}>
           <GlassTableHeader>
@@ -300,8 +314,14 @@ export function HowItsBuiltContent() {
           </GlassTableHeader>
           <GlassTableBody>
             {[
-              ['tools/process/', 'Image processing pipeline, Ollama integration, metadata generation, and embedding tools'],
-              ['lib/image/queries/', 'MongoDB aggregation pipelines for Search, Vector Search, and Hybrid Search'],
+              [
+                'tools/process/',
+                'Image processing pipeline, Ollama integration, metadata generation, and embedding tools',
+              ],
+              [
+                'lib/image/queries/',
+                'MongoDB aggregation pipelines for Search, Vector Search, and Hybrid Search',
+              ],
               ['app/api/', 'API routes connecting the frontend to MongoDB'],
               ['app/', 'Next.js application and user interface'],
             ].map(([location, purpose]) => (
@@ -331,8 +351,8 @@ export function HowItsBuiltContent() {
 
       <Section id="video-guide" title="Video guide">
         <Text mb={4}>
-          These sections map directly to the repository. Timestamps point to where each topic appears
-          in the tutorial.
+          These sections map directly to the repository. Timestamps point to where each topic
+          appears in the tutorial.
         </Text>
         <GlassTable>
           <GlassTableHeader>

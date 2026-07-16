@@ -7,11 +7,7 @@ interface HuesProps {
   size?: 'xs' | 'sm' | 'md';
 }
 
-const Hues = ({ 
-  hues, 
-  limit, 
-  size = 'sm'
-}: HuesProps) => {
+const Hues = ({ hues, limit, size = 'sm' }: HuesProps) => {
   if (!hues || hues.length === 0) {
     return null;
   }
@@ -22,22 +18,21 @@ const Hues = ({
     <Wrap gap={2} align="center">
       {displayHues.map((hue: string) => (
         <Link key={hue} href={`/hue/${hue.replace(/\s+/g, '-')}`}>
-          <Badge 
-            colorScheme="yellow" 
-            fontSize={size} 
-            px={3} 
-            py={1} 
-            cursor="pointer" 
-            _hover={{ bg: 'yellow.400' }} 
+          <Badge
+            colorScheme="yellow"
+            fontSize={size}
+            px={3}
+            py={1}
+            cursor="pointer"
+            _hover={{ bg: 'yellow.400' }}
             transition="background 0.2s"
           >
             {hue}
           </Badge>
         </Link>
       ))}
-
     </Wrap>
   );
 };
 
-export default Hues; 
+export default Hues;

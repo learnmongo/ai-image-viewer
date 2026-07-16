@@ -82,7 +82,7 @@ Now search for:
 ocean
 ```
 
-Even if the word *ocean* never appears anywhere in a document, MongoDB Vector Search can still return relevant images because it compares meaning instead of exact words.
+Even if the word _ocean_ never appears anywhere in a document, MongoDB Vector Search can still return relevant images because it compares meaning instead of exact words.
 
 ---
 
@@ -204,24 +204,24 @@ For many real-world applications, that's the experience users are actually looki
 
 If you're exploring the code after watching the video, these are the best places to start.
 
-| Location | Purpose |
-|----------|---------|
-| `tools/process/` | Image processing pipeline, Ollama integration, metadata generation, and embedding tools. |
-| `lib/image/queries/` | MongoDB aggregation pipelines for MongoDB Search, Vector Search, and Hybrid Search. |
-| `app/api/` | API routes connecting the frontend to MongoDB. |
-| `app/` | Next.js application and user interface. |
+| Location             | Purpose                                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| `tools/process/`     | Image processing pipeline, Ollama integration, metadata generation, and embedding tools. |
+| `lib/image/queries/` | MongoDB aggregation pipelines for MongoDB Search, Vector Search, and Hybrid Search.      |
+| `app/api/`           | API routes connecting the frontend to MongoDB.                                           |
+| `app/`               | Next.js application and user interface.                                                  |
 
 ## Explore the Project
 
 The README gives you the high-level overview. The documents below take a deeper look at individual parts of the project.
 
-| Guide | Description |
-|-------|-------------|
+| Guide                                 | Description                                                                                         |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | 📖 [ARCHITECTURE.md](ARCHITECTURE.md) | Understand the overall system, the processing pipeline, and why the project is structured this way. |
-| 🧭 [CODE-GUIDE.md](CODE-GUIDE.md) | A guided tour of the repository and where to find the code shown in the tutorial. |
-| 🔍 [SEARCH.md](SEARCH.md) | Learn how MongoDB Search, MongoDB Vector Search, and Hybrid Search are implemented. |
-| 🤖 [OLLAMA.md](OLLAMA.md) | Learn how Ollama fits into the processing pipeline and how to swap in other providers. |
-| 💬 [PROMPTS.md](PROMPTS.md) | Read about the prompt engineering decisions and lessons learned while building the project. |
+| 🧭 [CODE-GUIDE.md](CODE-GUIDE.md)     | A guided tour of the repository and where to find the code shown in the tutorial.                   |
+| 🔍 [SEARCH.md](SEARCH.md)             | Learn how MongoDB Search, MongoDB Vector Search, and Hybrid Search are implemented.                 |
+| 🤖 [OLLAMA.md](OLLAMA.md)             | Learn how Ollama fits into the processing pipeline and how to swap in other providers.              |
+| 💬 [PROMPTS.md](PROMPTS.md)           | Read about the prompt engineering decisions and lessons learned while building the project.         |
 
 ---
 
@@ -229,13 +229,13 @@ The README gives you the high-level overview. The documents below take a deeper 
 
 If you're following along with the tutorial, these sections map directly to the repository.
 
-| Video Section | Repository |
-|---------------|------------|
-| System Architecture | `ARCHITECTURE.md` |
-| Image Processing | `tools/process/` |
-| MongoDB Search | `SEARCH.md` |
+| Video Section         | Repository               |
+| --------------------- | ------------------------ |
+| System Architecture   | `ARCHITECTURE.md`        |
+| Image Processing      | `tools/process/`         |
+| MongoDB Search        | `SEARCH.md`              |
 | MongoDB Vector Search | `generate-embeddings.js` |
-| Hybrid Search | `lib/image/queries/` |
+| Hybrid Search         | `lib/image/queries/`     |
 
 ---
 

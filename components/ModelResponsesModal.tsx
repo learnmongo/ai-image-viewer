@@ -1,9 +1,9 @@
 'use client';
 
+import { RawModelResponse } from '@/types/image';
+import { Box, Tabs, Text } from '@chakra-ui/react';
 import type { ReactNode } from 'react';
 import GlassyModal from './GlassyModal';
-import { RawModelResponse } from '@/types/image';
-import { Box, Text, Tabs } from '@chakra-ui/react';
 
 interface ModelResponsesModalProps {
   isOpen: boolean;
@@ -47,7 +47,11 @@ function SectionLabel({ children }: { children: ReactNode }) {
   );
 }
 
-export default function ModelResponsesModal({ isOpen, onClose, responses }: ModelResponsesModalProps) {
+export default function ModelResponsesModal({
+  isOpen,
+  onClose,
+  responses,
+}: ModelResponsesModalProps) {
   return (
     <GlassyModal isOpen={isOpen} onClose={onClose} title="Model Responses">
       <Box w="100%" display="flex" justifyContent="center">

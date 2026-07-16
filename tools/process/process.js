@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import { existsSync } from 'fs';
-import { join, basename } from 'path';
+import { basename, join } from 'path';
 import { ASSETS_DIR, INSTRUCT_MODEL, LLAMA_VISION_IMAGE_MODEL } from './config.js';
-import { connect, close, insertImage } from './services/database.js';
 import { generateInfoForImage, generateStructuredMetadata } from './services/ai/index.js';
-import { VISION_VERSION, INSTRUCT_VERSION } from './services/ai/prompts/index.js';
+import { INSTRUCT_VERSION, VISION_VERSION } from './services/ai/prompts/index.js';
+import { close, connect, insertImage } from './services/database.js';
 import { getGPSData } from './services/metadata.js';
 
 const usage = () => `${basename(process.argv[1] || 'process')} <image-name>`;
@@ -20,12 +20,12 @@ const buildImageDoc = async (imageName) => {
   // First: Use Llama Vision to anylize image
   const { prompt: imageInfoPrompt, response: imageInfo } = await generateInfoForImage(
     imageName,
-    LLAMA_VISION_IMAGE_MODEL
+    LLAMA_VISION_IMAGE_MODEL,
   );
 
   // Second: Make the output structured using Mistral Instruct
   const { parsed, prompt: descriptionPrompt } = await generateStructuredMetadata(imageInfo);
-  
+
   const location = await getGPSData(imageName);
 
   return {
@@ -33,7 +33,7 @@ const buildImageDoc = async (imageName) => {
     file: imageName,
     location,
     prompt_debug: [
-       {
+      {
         model: LLAMA_VISION_IMAGE_MODEL,
         version: VISION_VERSION,
         prompt: imageInfoPrompt,

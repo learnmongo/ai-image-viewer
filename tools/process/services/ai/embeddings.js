@@ -1,6 +1,6 @@
 /**
  * Voyage AI embeddings helper.
- * 
+ *
  * Creates vector embeddings for text using Voyage AI.
  * See MongoDB Vector Search — create embeddings: https://www.mongodb.com/docs/atlas/atlas-vector-search/create-embeddings/
  */
@@ -13,7 +13,7 @@ const DEFAULT_INPUT_TYPE = process.env.VOYAGE_EMBED_INPUT_TYPE || 'document';
 
 /**
  * Create an embedding for a text string.
- * 
+ *
  * @param {string} text - The text to embed
  * @param {{ model?: string, inputType?: 'document' | 'query' }} options
  * @returns {Promise<number[]>} The embedding vector

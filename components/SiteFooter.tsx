@@ -15,7 +15,17 @@ export default function SiteFooter() {
       fontSize="sm"
     >
       <Text>
-        Created by <Link as={NextLink} href="https://justinjenkins.net" color="whiteAlpha.700" textDecoration="underline" _hover={{ color: 'white' }} target="_blank">Justin Jenkins</Link>
+        Created by{' '}
+        <Link
+          as={NextLink}
+          href="https://justinjenkins.net"
+          color="whiteAlpha.700"
+          textDecoration="underline"
+          _hover={{ color: 'white' }}
+          target="_blank"
+        >
+          Justin Jenkins
+        </Link>
         <Text as="span" mx={2} color="whiteAlpha.400">
           |
         </Text>

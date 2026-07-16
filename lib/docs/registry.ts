@@ -1,10 +1,4 @@
-export type DocSlug =
-  | 'readme'
-  | 'architecture'
-  | 'code-guide'
-  | 'search'
-  | 'ollama'
-  | 'prompts';
+export type DocSlug = 'readme' | 'architecture' | 'code-guide' | 'search' | 'ollama' | 'prompts';
 
 export interface DocEntry {
   slug: DocSlug;

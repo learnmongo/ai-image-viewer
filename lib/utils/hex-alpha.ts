@@ -9,6 +9,12 @@ export function hexWithAlpha(hex: string | undefined, fallback: string, alphaHex
   }
   if (h.length === 6) return `#${h}${alphaHex}`;
   const fb = fallback.replace(/^#/, '');
-  const core = fb.length === 3 ? fb.split('').map((c) => c + c).join('') : fb.slice(0, 6).padEnd(6, '0');
+  const core =
+    fb.length === 3
+      ? fb
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : fb.slice(0, 6).padEnd(6, '0');
   return `#${core}${alphaHex}`;
 }

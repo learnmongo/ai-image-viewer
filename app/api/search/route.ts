@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { searchImages, searchImagesHybrid } from '@/lib/image/queries';
 import { toImageArray } from '@/lib/image/utils';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * POST body: `{ query: string, hybrid?: boolean }`
@@ -10,8 +10,7 @@ import { toImageArray } from '@/lib/image/utils';
  */
 export async function POST(req: NextRequest) {
   const { query, hybrid } = await req.json();
-  const results =
-    hybrid === true ? await searchImagesHybrid(query) : await searchImages(query);
+  const results = hybrid === true ? await searchImagesHybrid(query) : await searchImages(query);
   const images = toImageArray(results).map((img, i) => ({
     ...img,
     score: results[i]?.score,

@@ -1,6 +1,6 @@
+import { GLASS_CARD } from '@/components/glass-styles';
 import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { GLASS_CARD } from '@/components/glass-styles';
 
 const TUTORIAL_EMBED_URL = 'https://www.youtube.com/embed/yYoxQLufWYw?si=icCPYPXKtVayiVVc';
 

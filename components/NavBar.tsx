@@ -1,7 +1,7 @@
 'use client';
 import { Box, Flex, Link } from '@chakra-ui/react';
-import { IconHamburger } from './ui/inline-icons';
 import NextLink from 'next/link';
+import { IconHamburger } from './ui/inline-icons';
 
 const NAV_HEIGHT = '48px';
 

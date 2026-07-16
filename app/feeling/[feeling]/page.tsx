@@ -1,13 +1,9 @@
-import { getImagesByFeeling } from '@/lib/image/queries';
-import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import ImagePreview from '@/components/ImagePreview';
-import ImageMetadata from '@/components/ImageMetadata';
 import { ImageGridCard } from '@/components/ImageGridCard';
-import {
-  IMAGE_GRID_COLUMNS,
-  MOBILE_CONTENT_PX,
-  MOBILE_PAGE_PX,
-} from '@/lib/layout/mobile';
+import ImageMetadata from '@/components/ImageMetadata';
+import ImagePreview from '@/components/ImagePreview';
+import { getImagesByFeeling } from '@/lib/image/queries';
+import { IMAGE_GRID_COLUMNS, MOBILE_CONTENT_PX, MOBILE_PAGE_PX } from '@/lib/layout/mobile';
+import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
 interface FeelingPageProps {
   params: Promise<{ feeling: string }>;

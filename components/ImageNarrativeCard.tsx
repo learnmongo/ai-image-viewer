@@ -4,9 +4,9 @@
  * Image view narrative block. Icon-only glass CTA — no teal (or loud accent fills); see README.
  */
 
+import { IconChevronDown } from '@/components/ui/inline-icons';
 import { Box, Button, Text } from '@chakra-ui/react';
 import { useState } from 'react';
-import { IconChevronDown } from '@/components/ui/inline-icons';
 
 interface ImageNarrativeCardProps {
   description?: string | null;

@@ -1,5 +1,5 @@
-import { Box, Code, Text } from '@chakra-ui/react';
 import { GLASS_CARD_NESTED } from '@/components/glass-styles';
+import { Box, Code, Text } from '@chakra-ui/react';
 
 interface CodeSpotlightProps {
   filePath: string;

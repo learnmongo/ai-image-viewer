@@ -18,11 +18,11 @@ tools/
 
 Each serves a different purpose.
 
-| Directory | Purpose |
-|-----------|---------|
-| `tools/` | Offline processing and command-line tools. |
-| `lib/` | Shared application logic and MongoDB query pipelines. |
-| `app/` | Next.js frontend and API routes. |
+| Directory | Purpose                                               |
+| --------- | ----------------------------------------------------- |
+| `tools/`  | Offline processing and command-line tools.            |
+| `lib/`    | Shared application logic and MongoDB query pipelines. |
+| `app/`    | Next.js frontend and API routes.                      |
 
 If you're following the tutorial, we'll move through these in roughly that order.
 

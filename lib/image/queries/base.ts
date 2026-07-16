@@ -1,6 +1,6 @@
+import { ImageDoc } from '@/types/image';
 import { Collection } from 'mongodb';
 import clientPromise from '../../mongo';
-import { ImageDoc } from '@/types/image';
 
 /**
  * MongoDB database and collection configuration.
@@ -9,14 +9,10 @@ import { ImageDoc } from '@/types/image';
 const databaseName = process.env.MONGO_DATABASE;
 const collectionName = process.env.MONGO_COLLECTION;
 if (!databaseName) {
-  throw new Error(
-    'Missing MONGO_DATABASE: set it in .env.local (e.g. MONGO_DATABASE=seevector).'
-  );
+  throw new Error('Missing MONGO_DATABASE: set it in .env.local (e.g. MONGO_DATABASE=seevector).');
 }
 if (!collectionName) {
-  throw new Error(
-    'Missing MONGO_COLLECTION: set it in .env.local (e.g. MONGO_COLLECTION=images).'
-  );
+  throw new Error('Missing MONGO_COLLECTION: set it in .env.local (e.g. MONGO_COLLECTION=images).');
 }
 export const DATABASE_NAME = databaseName;
 export const COLLECTION_NAME = collectionName;
@@ -28,8 +24,7 @@ export const DEFAULT_LIMIT = 25;
 export const DEFAULT_SEARCH_INDEX = 'ix_text';
 
 /** Vector index name passed to `$vectorSearch.index` on field `embedding`. Env: `MONGODB_VECTOR_INDEX`. */
-export const DEFAULT_VECTOR_INDEX =
-  process.env.MONGODB_VECTOR_INDEX ?? 'vector_index';
+export const DEFAULT_VECTOR_INDEX = process.env.MONGODB_VECTOR_INDEX ?? 'vector_index';
 
 /** Fuzzy color queries only — unrelated to search pipelines above. */
 export const DEFAULT_COLOR_THRESHOLD = 60;
