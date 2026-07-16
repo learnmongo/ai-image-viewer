@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { BlurUpImage } from '@/components/BlurUpImage';
+import { GridThumbnailImage } from '@/components/GridThumbnailImage';
 
 /** Shared by homepage and search so image area scales identically with grid column width. */
 export const IMAGE_CARD_ASPECT_RATIO = 16 / 9;
@@ -19,7 +19,7 @@ export function ImageCardThumbnail({ id, title, eager = false }: ImageCardThumbn
       flexShrink={0}
       borderTopRadius="lg"
     >
-      <BlurUpImage id={id} alt={title} variant="grid" eager={eager} />
+      <GridThumbnailImage id={id} alt={title} eager={eager} />
     </Box>
   );
 }

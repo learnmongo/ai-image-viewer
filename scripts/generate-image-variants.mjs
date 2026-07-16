@@ -8,8 +8,13 @@ const GRID_QUALITY = 85;
 const PLACEHOLDER_WIDTH = 24;
 const PLACEHOLDER_QUALITY = 20;
 
-async function fileSize(path) {
-  return (await stat(path)).size;
+async function exists(filePath) {
+  try {
+    await stat(filePath);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 async function main() {
@@ -27,22 +32,8 @@ async function main() {
     const gridPath = join(RESOURCES_DIR, `${id}-grid.webp`);
     const phPath = join(RESOURCES_DIR, `${id}-ph.webp`);
 
-    let gridExists = false;
-    let phExists = false;
-
-    try {
-      await stat(gridPath);
-      gridExists = true;
-    } catch {
-      // missing
-    }
-
-    try {
-      await stat(phPath);
-      phExists = true;
-    } catch {
-      // missing
-    }
+    const gridExists = await exists(gridPath);
+    const phExists = await exists(phPath);
 
     if (gridExists && phExists) {
       skipped++;
@@ -54,7 +45,7 @@ async function main() {
         .resize({ width: GRID_WIDTH, withoutEnlargement: true })
         .webp({ quality: GRID_QUALITY })
         .toFile(gridPath);
-      gridBytes += await fileSize(gridPath);
+      gridBytes += (await stat(gridPath)).size;
     }
 
     if (!phExists) {
@@ -62,7 +53,7 @@ async function main() {
         .resize({ width: PLACEHOLDER_WIDTH, withoutEnlargement: true })
         .webp({ quality: PLACEHOLDER_QUALITY })
         .toFile(phPath);
-      phBytes += await fileSize(phPath);
+      phBytes += (await stat(phPath)).size;
     }
 
     processed++;
