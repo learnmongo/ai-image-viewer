@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { Box, Image } from '@chakra-ui/react';
-import { DETAIL_IMAGE_PROPS } from '@/lib/image/display-styles';
+import { DETAIL_HERO_IMAGE_PROPS } from '@/lib/image/display-styles';
 import { imageResourcePaths } from '@/lib/image/resource-paths';
 import { useImagePreload } from '@/hooks/useImagePreload';
 
@@ -20,22 +20,13 @@ export function DetailHeroImage({ id, alt, title }: DetailHeroImageProps) {
   return (
     <Box width="100%" mb={{ base: 4, md: 6 }}>
       {loaded ? (
-        <Image
-          src={paths.full}
-          alt={alt}
-          title={title}
-          {...DETAIL_IMAGE_PROPS}
-          rounded={{ base: 0, md: '2xl' }}
-          boxShadow={{ base: 'none', md: '2xl' }}
-        />
+        <Image src={paths.full} alt={alt} title={title} {...DETAIL_HERO_IMAGE_PROPS} />
       ) : !placeholderFailed ? (
         <Image
           src={paths.placeholder}
           alt=""
           aria-hidden
-          {...DETAIL_IMAGE_PROPS}
-          rounded={{ base: 0, md: '2xl' }}
-          boxShadow={{ base: 'none', md: '2xl' }}
+          {...DETAIL_HERO_IMAGE_PROPS}
           filter="blur(12px)"
           transform="scale(1.05)"
           onError={() => setPlaceholderFailed(true)}

@@ -1,7 +1,8 @@
 import { Badge, Box, Link as ChakraLink, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { slugify } from '@/lib/utils/slugify';
+import { ImageGridCard } from '@/components/ImageGridCard';
 import { ImageCardThumbnail } from '@/components/ImageCardThumbnail';
+import { slugify } from '@/lib/utils/slugify';
 import type { SearchResult } from './types';
 import { shouldShowTextSearchScoreBadge } from './searchScoreThresholds';
 
@@ -33,23 +34,7 @@ export function SearchResultCard({ img, rankIndex, total, hybrid }: SearchResult
       h="100%"
       aria-label={`View ${img.title}`}
     >
-      <Box
-        borderRadius={{ base: 0, sm: 'lg' }}
-        overflow="hidden"
-        bg="rgba(255, 255, 255, 0.18)"
-        backdropFilter="blur(24px) saturate(180%)"
-        borderWidth={{ base: '0 0 1px 0', sm: '1px' }}
-        borderColor="whiteAlpha.200"
-        boxShadow={{ base: 'none', sm: '2xl' }}
-        h="100%"
-        display="flex"
-        flexDirection="column"
-        transition="all 0.2s ease"
-        _hover={{
-          boxShadow: '2xl',
-          borderColor: 'whiteAlpha.300',
-        }}
-      >
+      <ImageGridCard>
         <ImageCardThumbnail id={img._id} title={img.title} />
         <Box p={3} color="white" flexGrow={1}>
           <Text fontWeight="bold" fontSize="md" mb={1} color="white" textShadow="0 1px 3px rgba(0, 0, 0, 0.5)">
@@ -93,7 +78,7 @@ export function SearchResultCard({ img, rankIndex, total, hybrid }: SearchResult
             </Badge>
           )}
         </Box>
-      </Box>
+      </ImageGridCard>
     </ChakraLink>
   );
 }

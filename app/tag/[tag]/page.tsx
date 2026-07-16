@@ -2,6 +2,12 @@ import { getImagesByTag } from '@/lib/image/queries';
 import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
+import { ImageGridCard } from '@/components/ImageGridCard';
+import {
+  IMAGE_GRID_COLUMNS,
+  MOBILE_CONTENT_PX,
+  MOBILE_PAGE_PX,
+} from '@/lib/layout/mobile';
 
 interface TagPageProps {
   params: Promise<{ tag: string }>;
@@ -13,38 +19,23 @@ export default async function TagPage({ params }: TagPageProps) {
   const images = await getImagesByTag(tag);
 
   return (
-    <Box px={{ base: 2, md: 4, lg: 8 }} py={{ base: 4, md: 8, lg: 12 }}>
-      <Heading size="lg" mb={6}>Images tagged &quot;{tag}&quot;</Heading>
+    <Box px={MOBILE_PAGE_PX} py={{ base: 4, md: 8, lg: 12 }}>
+      <Heading size="lg" mb={6} px={MOBILE_CONTENT_PX}>
+        Images tagged &quot;{tag}&quot;
+      </Heading>
       {images.length === 0 ? (
-        <Text>No images found for this tag.</Text>
+        <Text px={MOBILE_CONTENT_PX}>No images found for this tag.</Text>
       ) : (
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} mx={{ base: -2, sm: 0 }}>
+        <SimpleGrid columns={IMAGE_GRID_COLUMNS} gap={6}>
           {images.map((img) => (
-            <Box 
-              key={img._id.toString()} 
-              borderRadius={{ base: 0, sm: 'lg' }}
-              overflow="hidden"
-              bg="rgba(255, 255, 255, 0.18)"
-              backdropFilter="blur(24px) saturate(180%)"
-              borderWidth={{ base: '0 0 1px 0', sm: '1px' }}
-              borderColor="whiteAlpha.200"
-              boxShadow={{ base: 'none', sm: '2xl' }}
-              height="100%"
-              display="flex"
-              flexDirection="column"
-              transition="all 0.2s ease"
-              _hover={{
-                boxShadow: '2xl',
-                borderColor: 'whiteAlpha.300',
-              }}
-            >
+            <ImageGridCard key={img._id.toString()}>
               <ImagePreview
                 id={img._id.toString()}
                 title={img.title}
                 description={img.description}
               />
               <Box p={3} flexGrow={1}>
-                <ImageMetadata 
+                <ImageMetadata
                   tags={img.tags}
                   feelings={img.feelings}
                   colors={img.colors}
@@ -53,10 +44,10 @@ export default async function TagPage({ params }: TagPageProps) {
                   colorLimit={3}
                 />
               </Box>
-            </Box>
+            </ImageGridCard>
           ))}
         </SimpleGrid>
       )}
     </Box>
   );
-} 
+}

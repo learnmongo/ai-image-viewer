@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Text, Link as ChakraLink } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { slugify } from '@/lib/utils/slugify';

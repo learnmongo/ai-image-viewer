@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { getLatestImages } from '@/lib/image/queries';
 import { toImageArray } from '@/lib/image/utils';
 import ImageGridWithSearch from '@/components/ImageGridWithSearch';
+import { MOBILE_PAGE_PX } from '@/lib/layout/mobile';
 
 /** Homepage reads from MongoDB — don't bake an empty grid at build time. */
 export const dynamic = 'force-dynamic';
@@ -17,7 +18,7 @@ export default async function HomePage() {
     <Box 
       minH="100vh"
       bg={background}
-      px={{ base: 0, md: 4, lg: 8 }} 
+      px={MOBILE_PAGE_PX} 
       pt={0}
       pb={{ base: 4, md: 8, lg: 12 }}
       position="relative"

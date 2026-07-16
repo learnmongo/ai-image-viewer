@@ -1,4 +1,5 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
+import { IMAGE_GRID_COLUMNS } from '@/lib/layout/mobile';
 import { SearchResultCard } from './SearchResultCard';
 import type { SearchResult } from './types';
 
@@ -14,7 +15,7 @@ export function SearchResultsGrid({ results, hybrid }: SearchResultsGridProps) {
 
   return (
     <Box w="100%" mt={8} alignSelf="stretch">
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} w="100%">
+      <SimpleGrid columns={IMAGE_GRID_COLUMNS} gap={6} w="100%">
         {results.map((img, rankIndex) => (
           <SearchResultCard
             key={img._id}
