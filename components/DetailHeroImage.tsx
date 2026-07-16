@@ -1,18 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, Image } from '@chakra-ui/react';
+import { DETAIL_IMAGE_PROPS } from '@/lib/image/display-styles';
 import { imageResourcePaths } from '@/lib/image/resource-paths';
-
-const DETAIL_IMAGE_PROPS = {
-  w: '100%',
-  h: 'auto',
-  maxW: '100%',
-  maxH: '75vh',
-  mx: 'auto',
-  my: 0,
-  rounded: '2xl' as const,
-};
+import { useImagePreload } from '@/hooks/useImagePreload';
 
 interface DetailHeroImageProps {
   id: string;
@@ -21,17 +13,9 @@ interface DetailHeroImageProps {
 }
 
 export function DetailHeroImage({ id, alt, title }: DetailHeroImageProps) {
-  const paths = imageResourcePaths(id);
-  const [loaded, setLoaded] = useState(false);
+  const paths = useMemo(() => imageResourcePaths(id), [id]);
+  const loaded = useImagePreload(paths.full);
   const [placeholderFailed, setPlaceholderFailed] = useState(false);
-  const preloadRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const img = preloadRef.current;
-    if (img?.complete && img.naturalWidth > 0) {
-      setLoaded(true);
-    }
-  }, [paths.full]);
 
   return (
     <Box width="100%" mb={6}>
@@ -48,19 +32,6 @@ export function DetailHeroImage({ id, alt, title }: DetailHeroImageProps) {
           onError={() => setPlaceholderFailed(true)}
         />
       ) : null}
-      {!loaded && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          ref={preloadRef}
-          src={paths.full}
-          alt=""
-          aria-hidden
-          fetchPriority="high"
-          decoding="async"
-          onLoad={() => setLoaded(true)}
-          style={{ position: 'absolute', width: 0, height: 0, opacity: 0, pointerEvents: 'none' }}
-        />
-      )}
     </Box>
   );
 }

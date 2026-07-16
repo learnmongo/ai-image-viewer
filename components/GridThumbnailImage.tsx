@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { Box } from '@chakra-ui/react';
+import { GRID_THUMB_IMG_STYLE } from '@/lib/image/display-styles';
 import { imageResourcePaths } from '@/lib/image/resource-paths';
+import { useImageSrcFallback } from '@/hooks/useImageSrcFallback';
 
 interface GridThumbnailImageProps {
   id: string;
@@ -11,8 +13,8 @@ interface GridThumbnailImageProps {
 }
 
 export function GridThumbnailImage({ id, alt, eager = false }: GridThumbnailImageProps) {
-  const paths = imageResourcePaths(id);
-  const [src, setSrc] = useState(paths.grid);
+  const paths = useMemo(() => imageResourcePaths(id), [id]);
+  const { src, onError } = useImageSrcFallback(paths.grid, paths.full);
 
   return (
     <Box position="relative" width="100%" height="100%" overflow="hidden" borderTopRadius="lg">
@@ -23,15 +25,8 @@ export function GridThumbnailImage({ id, alt, eager = false }: GridThumbnailImag
         loading={eager ? 'eager' : 'lazy'}
         fetchPriority={eager ? 'high' : 'auto'}
         decoding="async"
-        onError={() => setSrc(paths.full)}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          display: 'block',
-          borderTopLeftRadius: 'var(--chakra-radii-lg)',
-          borderTopRightRadius: 'var(--chakra-radii-lg)',
-        }}
+        onError={onError}
+        style={GRID_THUMB_IMG_STYLE}
       />
     </Box>
   );
