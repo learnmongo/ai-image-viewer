@@ -17,7 +17,7 @@ export default function HowItsBuiltPromo() {
         MongoDB tutorial
       </Text>
       <Heading size="2xl" color="white" mb={{ base: 5, md: 6 }}>
-        Project guide
+        How it's built
       </Heading>
 
       <Flex
