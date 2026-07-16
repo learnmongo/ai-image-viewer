@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { Box, SimpleGrid, useBreakpointValue } from '@chakra-ui/react';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 import ImagePreview from '@/components/ImagePreview';
 import ImageMetadata from '@/components/ImageMetadata';
 import SearchBox from '@/components/SearchBox';
 import HowItsBuiltPromo from '@/components/HowItsBuiltPromo';
+import { useEagerGridCount } from '@/hooks/useEagerGridCount';
 import { ImageItem } from '@/types/image';
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 
 export default function ImageGridWithSearch({ images }: Props) {
   const [searchActive, setSearchActive] = useState(false);
-  const eagerCount = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4 }) ?? 4;
+  const eagerCount = useEagerGridCount();
 
   return (
     <Box maxW="1280px" mx="auto" w="100%">
