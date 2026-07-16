@@ -1,5 +1,18 @@
-import { Box, Heading, Link, List, Table, Text } from '@chakra-ui/react';
+'use client';
+
+import { Box, Heading, Link, List, Text } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import { GLASS_CARD, GLASS_CARD_NESTED } from '@/components/glass-styles';
+import { docHref, DocSlug, slugForFileName } from '@/lib/docs/registry';
 import { CodeSpotlight } from './CodeSpotlight';
+import {
+  GlassTable,
+  GlassTableBody,
+  GlassTableCell,
+  GlassTableColumnHeader,
+  GlassTableHeader,
+  GlassTableRow,
+} from './GlassTable';
 import { Section } from './Section';
 
 const ARCHITECTURE_DIAGRAM = `Images
@@ -21,38 +34,96 @@ MongoDB Documents
             ▼
       Next.js Application`;
 
-const DEEPER_GUIDES = [
+const DEEPER_GUIDES: { slug: DocSlug; file: string; summary: string }[] = [
   {
+    slug: 'architecture',
     file: 'ARCHITECTURE.md',
     summary:
-      'Understand the overall system, the processing pipeline step by step, and why the project is structured this way.',
+      'Understand the overall system, the processing pipeline, and why the project is structured this way.',
   },
   {
+    slug: 'code-guide',
     file: 'CODE-GUIDE.md',
     summary:
-      'A guided tour of the repository. Find the code shown in each section of the tutorial.',
+      'A guided tour of the repository and where to find the code shown in the tutorial.',
   },
   {
+    slug: 'search',
     file: 'SEARCH.md',
     summary:
-      'How MongoDB Search, Vector Search, and Hybrid Search are implemented in the query layer.',
+      'Learn how MongoDB Search, MongoDB Vector Search, and Hybrid Search are implemented.',
   },
   {
+    slug: 'ollama',
     file: 'OLLAMA.md',
     summary:
-      'How Ollama fits into the processing pipeline and how to swap in other model providers.',
+      'Learn how Ollama fits into the processing pipeline and how to swap in other providers.',
   },
   {
+    slug: 'prompts',
     file: 'PROMPTS.md',
     summary:
-      'Prompt engineering decisions, versioning, and lessons learned while building the pipeline.',
+      'Read about the prompt engineering decisions and lessons learned while building the project.',
   },
 ];
+
+const READING_ORDER = [
+  'README.md',
+  'ARCHITECTURE.md',
+  'tools/process/',
+  'MongoDB documents',
+  'generate-embeddings.js',
+  'lib/image/queries/',
+  'SEARCH.md',
+  'OLLAMA.md',
+  'PROMPTS.md',
+] as const;
+
+function DocReadingLink({ item }: { item: string }) {
+  const slug = slugForFileName(item);
+  if (!slug) {
+    return (
+      <Text as="span" color="whiteAlpha.800">
+        {item}
+      </Text>
+    );
+  }
+  return (
+    <Link as={NextLink} href={docHref(slug)} color="teal.200" _hover={{ color: 'teal.100' }}>
+      {item}
+    </Link>
+  );
+}
+
+function RepoCell({ repo }: { repo: string }) {
+  const parts = repo.split(',').map((p) => p.trim());
+  return (
+    <Text as="span" fontFamily="mono" fontSize="sm">
+      {parts.map((part, i) => {
+        const slug = slugForFileName(part);
+        return (
+          <Text as="span" key={part}>
+            {i > 0 && ', '}
+            {slug ? (
+              <Link as={NextLink} href={docHref(slug)} color="teal.200" _hover={{ color: 'teal.100' }}>
+                {part}
+              </Link>
+            ) : (
+              <Text as="span" color="white">
+                {part}
+              </Text>
+            )}
+          </Text>
+        );
+      })}
+    </Text>
+  );
+}
 
 export function HowItsBuiltContent() {
   return (
     <Box>
-      <Box mb={10}>
+      <Box mb={10} {...GLASS_CARD} p={{ base: 5, md: 7 }}>
         <Heading size="3xl" color="white" mb={4} lineHeight="shorter">
           Project guide
         </Heading>
@@ -78,6 +149,12 @@ export function HowItsBuiltContent() {
           Helpful links
         </Text>
         <List.Root gap={2} pl={4}>
+          <List.Item>
+            Read README:{' '}
+            <Link as={NextLink} href={docHref('readme')} color="teal.200" _hover={{ color: 'teal.100' }}>
+              README.md
+            </Link>
+          </List.Item>
           <List.Item>
             Live example:{' '}
             <Link href="https://images.seemongo.com" color="teal.200" target="_blank" rel="noopener">
@@ -118,52 +195,46 @@ export function HowItsBuiltContent() {
           of understanding what is actually inside each image. The search experience grows one layer
           at a time.
         </Text>
-        <Table.Root size="sm" variant="outline">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader color="whiteAlpha.700">Step</Table.ColumnHeader>
-              <Table.ColumnHeader color="whiteAlpha.700">Try searching</Table.ColumnHeader>
-              <Table.ColumnHeader color="whiteAlpha.700">What happens</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell color="white" fontWeight="medium">
+        <GlassTable>
+          <GlassTableHeader>
+            <GlassTableRow>
+              <GlassTableColumnHeader>Step</GlassTableColumnHeader>
+              <GlassTableColumnHeader>Try searching</GlassTableColumnHeader>
+              <GlassTableColumnHeader>What happens</GlassTableColumnHeader>
+            </GlassTableRow>
+          </GlassTableHeader>
+          <GlassTableBody>
+            <GlassTableRow>
+              <GlassTableCell color="white" fontWeight="medium">
                 MongoDB Search
-              </Table.Cell>
-              <Table.Cell color="whiteAlpha.800" fontFamily="mono" fontSize="sm">
-                beach
-              </Table.Cell>
-              <Table.Cell color="whiteAlpha.800">
+              </GlassTableCell>
+              <GlassTableCell fontFamily="mono">beach</GlassTableCell>
+              <GlassTableCell>
                 Keyword match across titles, descriptions, summaries, tags, and other metadata
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell color="white" fontWeight="medium">
+              </GlassTableCell>
+            </GlassTableRow>
+            <GlassTableRow>
+              <GlassTableCell color="white" fontWeight="medium">
                 MongoDB Vector Search
-              </Table.Cell>
-              <Table.Cell color="whiteAlpha.800" fontFamily="mono" fontSize="sm">
-                ocean
-              </Table.Cell>
-              <Table.Cell color="whiteAlpha.800">
+              </GlassTableCell>
+              <GlassTableCell fontFamily="mono">ocean</GlassTableCell>
+              <GlassTableCell>
                 Finds relevant images by meaning, even when the exact word never appears in a
                 document
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell color="white" fontWeight="medium">
+              </GlassTableCell>
+            </GlassTableRow>
+            <GlassTableRow>
+              <GlassTableCell color="white" fontWeight="medium">
                 Hybrid Search
-              </Table.Cell>
-              <Table.Cell color="whiteAlpha.800" fontFamily="mono" fontSize="sm">
-                wild flying animals
-              </Table.Cell>
-              <Table.Cell color="whiteAlpha.800">
+              </GlassTableCell>
+              <GlassTableCell fontFamily="mono">wild flying animals</GlassTableCell>
+              <GlassTableCell>
                 MongoDB Search and Vector Search combined with $rankFusion for keyword precision
                 plus semantic understanding
-              </Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
+              </GlassTableCell>
+            </GlassTableRow>
+          </GlassTableBody>
+        </GlassTable>
       </Section>
 
       <Section id="architecture" title="Architecture">
@@ -220,46 +291,36 @@ export function HowItsBuiltContent() {
         <Text mb={4}>
           If you are exploring the code after watching the video, these are the best places to start.
         </Text>
-        <Table.Root size="sm" variant="outline" mb={6}>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader color="whiteAlpha.700">Location</Table.ColumnHeader>
-              <Table.ColumnHeader color="whiteAlpha.700">Purpose</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
+        <GlassTable mb={6}>
+          <GlassTableHeader>
+            <GlassTableRow>
+              <GlassTableColumnHeader>Location</GlassTableColumnHeader>
+              <GlassTableColumnHeader>Purpose</GlassTableColumnHeader>
+            </GlassTableRow>
+          </GlassTableHeader>
+          <GlassTableBody>
             {[
               ['tools/process/', 'Image processing pipeline, Ollama integration, metadata generation, and embedding tools'],
               ['lib/image/queries/', 'MongoDB aggregation pipelines for Search, Vector Search, and Hybrid Search'],
               ['app/api/', 'API routes connecting the frontend to MongoDB'],
               ['app/', 'Next.js application and user interface'],
             ].map(([location, purpose]) => (
-              <Table.Row key={location}>
-                <Table.Cell color="white" fontFamily="mono" fontSize="sm" fontWeight="medium">
+              <GlassTableRow key={location}>
+                <GlassTableCell color="white" fontFamily="mono" fontWeight="medium">
                   {location}
-                </Table.Cell>
-                <Table.Cell color="whiteAlpha.800">{purpose}</Table.Cell>
-              </Table.Row>
+                </GlassTableCell>
+                <GlassTableCell>{purpose}</GlassTableCell>
+              </GlassTableRow>
             ))}
-          </Table.Body>
-        </Table.Root>
+          </GlassTableBody>
+        </GlassTable>
         <Text fontWeight="semibold" color="white" mb={2}>
           Suggested reading order
         </Text>
         <List.Root gap={2} pl={4} fontSize="sm">
-          {[
-            'README.md',
-            'ARCHITECTURE.md',
-            'tools/process/',
-            'MongoDB documents',
-            'generate-embeddings.js',
-            'lib/image/queries/',
-            'SEARCH.md',
-            'OLLAMA.md',
-            'PROMPTS.md',
-          ].map((item) => (
-            <List.Item key={item} color="whiteAlpha.800">
-              {item}
+          {READING_ORDER.map((item) => (
+            <List.Item key={item}>
+              <DocReadingLink item={item} />
             </List.Item>
           ))}
         </List.Root>
@@ -273,15 +334,15 @@ export function HowItsBuiltContent() {
           These sections map directly to the repository. Timestamps point to where each topic appears
           in the tutorial.
         </Text>
-        <Table.Root size="sm" variant="outline">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader color="whiteAlpha.700">Video section</Table.ColumnHeader>
-              <Table.ColumnHeader color="whiteAlpha.700">Timestamp</Table.ColumnHeader>
-              <Table.ColumnHeader color="whiteAlpha.700">Repository</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
+        <GlassTable>
+          <GlassTableHeader>
+            <GlassTableRow>
+              <GlassTableColumnHeader>Video section</GlassTableColumnHeader>
+              <GlassTableColumnHeader>Timestamp</GlassTableColumnHeader>
+              <GlassTableColumnHeader>Repository</GlassTableColumnHeader>
+            </GlassTableRow>
+          </GlassTableHeader>
+          <GlassTableBody>
             {[
               ['System architecture & local LLM processing', '2:05', 'ARCHITECTURE.md'],
               ['Generating structured metadata JSON', '3:19', 'tools/process/'],
@@ -290,18 +351,18 @@ export function HowItsBuiltContent() {
               ['Creating a vector search index', '13:09', 'generate-embeddings.js'],
               ['Implementing hybrid search with rank fusion', '20:25', 'lib/image/queries/'],
             ].map(([section, time, repo]) => (
-              <Table.Row key={section}>
-                <Table.Cell color="whiteAlpha.800">{section}</Table.Cell>
-                <Table.Cell color="whiteAlpha.700" fontFamily="mono" fontSize="sm" whiteSpace="nowrap">
+              <GlassTableRow key={section}>
+                <GlassTableCell>{section}</GlassTableCell>
+                <GlassTableCell color="whiteAlpha.700" fontFamily="mono" whiteSpace="nowrap">
                   {time}
-                </Table.Cell>
-                <Table.Cell color="white" fontFamily="mono" fontSize="sm">
-                  {repo}
-                </Table.Cell>
-              </Table.Row>
+                </GlassTableCell>
+                <GlassTableCell>
+                  <RepoCell repo={repo} />
+                </GlassTableCell>
+              </GlassTableRow>
             ))}
-          </Table.Body>
-        </Table.Root>
+          </GlassTableBody>
+        </GlassTable>
       </Section>
 
       <Section id="go-deeper" title="Go deeper">
@@ -309,23 +370,33 @@ export function HowItsBuiltContent() {
           The README gives you the high-level overview. These documents take a deeper look at
           individual parts of the project.
         </Text>
-        {DEEPER_GUIDES.map(({ file, summary }) => (
-          <Box
+        {DEEPER_GUIDES.map(({ slug, file, summary }) => (
+          <Link
             key={file}
+            as={NextLink}
+            href={docHref(slug)}
+            display="block"
             mb={4}
-            p={4}
-            borderRadius="lg"
-            bg="rgba(0, 0, 0, 0.2)"
-            borderWidth="1px"
-            borderColor="whiteAlpha.100"
+            textDecoration="none"
+            _hover={{ textDecoration: 'none' }}
           >
-            <Text fontWeight="semibold" color="white" fontFamily="mono" fontSize="sm" mb={1}>
-              {file}
-            </Text>
-            <Text fontSize="md" color="whiteAlpha.800">
-              {summary}
-            </Text>
-          </Box>
+            <Box
+              p={4}
+              {...GLASS_CARD_NESTED}
+              transition="border-color 0.2s ease"
+              _hover={{ borderColor: 'whiteAlpha.300' }}
+            >
+              <Text fontWeight="semibold" color="white" fontFamily="mono" fontSize="sm" mb={1}>
+                {file}
+              </Text>
+              <Text fontSize="md" color="whiteAlpha.800" mb={2}>
+                {summary}
+              </Text>
+              <Text fontSize="sm" color="teal.200" fontWeight="medium">
+                Read guide →
+              </Text>
+            </Box>
+          </Link>
         ))}
       </Section>
 

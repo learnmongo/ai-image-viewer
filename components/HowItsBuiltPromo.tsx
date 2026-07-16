@@ -1,14 +1,6 @@
 import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
-
-const GLASS_CARD = {
-  bg: 'rgba(255, 255, 255, 0.18)',
-  backdropFilter: 'blur(24px) saturate(180%)',
-  borderWidth: '1px',
-  borderColor: 'whiteAlpha.200',
-  borderRadius: '2xl',
-  boxShadow: '2xl',
-} as const;
+import { GLASS_CARD } from '@/components/glass-styles';
 
 const TUTORIAL_EMBED_URL = 'https://www.youtube.com/embed/yYoxQLufWYw?si=icCPYPXKtVayiVVc';
 

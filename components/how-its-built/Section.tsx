@@ -1,5 +1,6 @@
 import { Box, Heading } from '@chakra-ui/react';
 import { ReactNode } from 'react';
+import { GLASS_CARD } from '@/components/glass-styles';
 
 interface SectionProps {
   id: string;
@@ -14,11 +15,7 @@ export function Section({ id, title, children }: SectionProps) {
       id={id}
       scrollMarginTop="24px"
       mb={12}
-      bg="rgba(255, 255, 255, 0.10)"
-      backdropFilter="blur(16px) saturate(160%)"
-      borderWidth="1px"
-      borderColor="whiteAlpha.150"
-      borderRadius="xl"
+      {...GLASS_CARD}
       p={{ base: 5, md: 7 }}
     >
       <Heading size="xl" color="white" mb={5}>

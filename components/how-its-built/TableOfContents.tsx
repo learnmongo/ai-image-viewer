@@ -2,6 +2,7 @@
 
 import { Box, Link, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { GLASS_CARD } from '@/components/glass-styles';
 
 export interface TocItem {
   id: string;
@@ -52,14 +53,7 @@ export function TableOfContents({ items }: TableOfContentsProps) {
     <>
       {/* Mobile: collapsible */}
       <Box display={{ base: 'block', lg: 'none' }} mb={6} mt={12}>
-        <Box
-          as="details"
-          bg="rgba(255, 255, 255, 0.10)"
-          borderWidth="1px"
-          borderColor="whiteAlpha.200"
-          borderRadius="lg"
-          p={4}
-        >
+        <Box as="details" {...GLASS_CARD} borderRadius="lg" p={4}>
           <Box as="summary" cursor="pointer" fontWeight="semibold" color="white" listStyleType="none">
             On this page
           </Box>

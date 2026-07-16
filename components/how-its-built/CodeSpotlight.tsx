@@ -1,4 +1,5 @@
 import { Box, Code, Text } from '@chakra-ui/react';
+import { GLASS_CARD_NESTED } from '@/components/glass-styles';
 
 interface CodeSpotlightProps {
   filePath: string;
@@ -7,16 +8,8 @@ interface CodeSpotlightProps {
 
 export function CodeSpotlight({ filePath, code }: CodeSpotlightProps) {
   return (
-    <Box
-      mt={4}
-      mb={4}
-      borderRadius="lg"
-      overflow="hidden"
-      borderWidth="1px"
-      borderColor="whiteAlpha.200"
-      bg="rgba(0, 0, 0, 0.35)"
-    >
-      <Box px={4} py={2} bg="rgba(0, 0, 0, 0.25)" borderBottom="1px solid" borderColor="whiteAlpha.100">
+    <Box mt={4} mb={4} overflow="hidden" {...GLASS_CARD_NESTED}>
+      <Box px={4} py={2} borderBottom="1px solid" borderColor="whiteAlpha.200">
         <Text fontSize="xs" color="whiteAlpha.600" fontFamily="mono">
           {filePath}
         </Text>
