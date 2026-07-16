@@ -25,7 +25,7 @@ export default function SiteFooter() {
           color="whiteAlpha.700"
           _hover={{ color: 'white', textDecoration: 'underline' }}
         >
-          How it&apos;s built
+          Project guide
         </Link>
       </Text>
     </Box>

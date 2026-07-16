@@ -10,7 +10,7 @@ const GLASS_CARD = {
   boxShadow: '2xl',
 } as const;
 
-const TUTORIAL_EMBED_URL = 'https://www.youtube.com/embed/yYoxQLufWYw';
+const TUTORIAL_EMBED_URL = 'https://www.youtube.com/embed/yYoxQLufWYw?si=icCPYPXKtVayiVVc';
 
 export default function HowItsBuiltPromo() {
   return (
@@ -22,10 +22,10 @@ export default function HowItsBuiltPromo() {
         color="whiteAlpha.700"
         mb={2}
       >
-        For developers
+        MongoDB tutorial
       </Text>
       <Heading size="2xl" color="white" mb={{ base: 5, md: 6 }}>
-        How it&apos;s built
+        Project guide
       </Heading>
 
       <Flex
@@ -35,9 +35,9 @@ export default function HowItsBuiltPromo() {
       >
         <Box flex={1}>
           <Text color="whiteAlpha.800" lineHeight="tall" mb={6}>
-            Architecture, MongoDB search layers, the processing pipeline, and an honest note on
-            how LLMs fit into the workflow. A behind-the-scenes tour if you are evaluating the
-            engineering.
+            Companion to the 25-minute MongoDB tutorial. Turn a folder of images into a search
+            application with keyword search, vector search, and hybrid search, and see how the
+            repository is organized along the way.
           </Text>
           <Button
             asChild
@@ -49,7 +49,7 @@ export default function HowItsBuiltPromo() {
             px={6}
             _hover={{ bg: 'whiteAlpha.300', borderColor: 'whiteAlpha.400' }}
           >
-            <NextLink href="/how-its-built">Take the tour</NextLink>
+            <NextLink href="/how-its-built">Read the guide</NextLink>
           </Button>
         </Box>
 
@@ -64,10 +64,11 @@ export default function HowItsBuiltPromo() {
         >
           <iframe
             src={TUTORIAL_EMBED_URL}
-            title="Building an AI-Powered Image Search Application with MongoDB"
+            title="YouTube video player"
             style={{ width: '100%', height: '100%', border: 'none' }}
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           />
         </Box>

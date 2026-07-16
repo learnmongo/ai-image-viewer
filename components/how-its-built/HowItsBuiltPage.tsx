@@ -3,15 +3,14 @@ import { HowItsBuiltContent } from './HowItsBuiltContent';
 import { TableOfContents, TocItem } from './TableOfContents';
 
 const TOC_ITEMS: TocItem[] = [
-  { id: 'philosophy', label: 'Philosophy' },
-  { id: 'did-i-use-ai', label: 'Did I use AI?' },
-  { id: 'stack', label: 'Stack' },
+  { id: 'start-here', label: 'Start here' },
+  { id: 'what-youll-build', label: "What you'll build" },
   { id: 'architecture', label: 'Architecture' },
-  { id: 'database', label: 'The MongoDB document' },
-  { id: 'search-modes', label: 'Three search modes' },
-  { id: 'code-spotlights', label: 'Code spotlights' },
-  { id: 'pipeline', label: 'Processing pipeline' },
-  { id: 'funny-things', label: 'Funny things that happened' },
+  { id: 'why-its-built', label: "Why it's built this way" },
+  { id: 'repo-guide', label: 'Repository guide' },
+  { id: 'video-guide', label: 'Video guide' },
+  { id: 'go-deeper', label: 'Go deeper' },
+  { id: 'where-next', label: 'Where to go next' },
 ];
 
 const PAGE_BACKGROUND =

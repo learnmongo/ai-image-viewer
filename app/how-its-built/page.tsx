@@ -1,9 +1,9 @@
 import { HowItsBuiltPage } from '@/components/how-its-built/HowItsBuiltPage';
 
 export const metadata = {
-  title: "How it's built | AI Image Viewer",
+  title: 'Project guide | AI Image Viewer',
   description:
-    'Architecture, MongoDB search layers, processing pipeline, and an honest note on how LLMs fit into the workflow.',
+    'Companion to the MongoDB tutorial. Learn how the repository is organized and what each layer of search does.',
 };
 
 export default function HowItsBuiltRoute() {

@@ -50,7 +50,7 @@ export default function NavBar() {
             _focus={{ boxShadow: 'none', outline: 'none' }}
             color="whiteAlpha.800"
           >
-            How it&apos;s built
+            Project guide
           </Link>
         </Flex>
         <Box flex={1} />
