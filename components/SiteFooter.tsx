@@ -25,6 +25,17 @@ export default function SiteFooter() {
           target="_blank"
         >
           Justin Jenkins
+        </Link>{' '}
+        via{' '}
+        <Link
+          as={NextLink}
+          href="https://learnmongo.com"
+          color="whiteAlpha.700"
+          textDecoration="underline"
+          _hover={{ color: 'white' }}
+          target="_blank"
+        >
+          LearnMongo
         </Link>
         <Text as="span" mx={2} color="whiteAlpha.400">
           |

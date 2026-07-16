@@ -17,7 +17,9 @@ export async function generateMetadata({ params }: DocRouteProps) {
   if (!doc) return { title: 'Not found' };
 
   return {
-    title: `${doc.title} | Project guide`,
+    title: {
+      absolute: `${doc.title} | Project guide`,
+    },
     description: doc.description,
   };
 }
