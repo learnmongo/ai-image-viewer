@@ -18,6 +18,7 @@ import {
   MOBILE_CONTENT_PX,
   MOBILE_PAGE_PX,
   VIEW_PAGE_TOP_PT,
+  VIEW_TITLE_MIN_H,
   VIEW_TITLE_PX,
 } from '@/lib/layout/mobile';
 
@@ -57,16 +58,24 @@ export default async function ViewPage({ params }: ViewPageProps) {
         flexDirection="column"
         alignItems="center"
       >
-        <Heading
-          size={{ base: '2xl', md: '4xl' }}
-          mb={{ base: 4, md: 8 }}
+        <Box
+          w="100%"
+          display="flex"
+          alignItems="center"
+          minH={VIEW_TITLE_MIN_H}
           px={VIEW_TITLE_PX}
-          textShadow="0 2px 8px rgba(0,0,0,0.4)"
-          textAlign="center"
-          lineHeight="shorter"
+          mb={{ base: 2, md: 8 }}
         >
-          {imageDoc.title}
-        </Heading>
+          <Heading
+            size={{ base: 'xl', md: '4xl' }}
+            textShadow="0 2px 8px rgba(0,0,0,0.4)"
+            textAlign="center"
+            lineHeight="shorter"
+            w="100%"
+          >
+            {imageDoc.title}
+          </Heading>
+        </Box>
         <DetailHeroImage id={id} alt={imageDoc.title} title={imageDoc.title} />
         <Box
           w="100%"
