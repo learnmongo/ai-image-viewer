@@ -9,7 +9,7 @@ const rubik = Rubik({ subsets: ['latin'], weight: ['300', '400', '700', '900'] }
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={rubik.className} suppressHydrationWarning>
-      <body>
+      <body suppressHydrationWarning>
         <Providers>
           <ConditionalNavBar />
           {children}
