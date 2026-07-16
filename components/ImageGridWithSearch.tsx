@@ -20,17 +20,22 @@ export default function ImageGridWithSearch({ images }: Props) {
     <Box maxW="1280px" mx="auto" w="100%">
       <SearchBox onActiveChange={setSearchActive} />
       {!searchActive && (
-        <SimpleGrid w="100%" columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} mt={4}>
+        <SimpleGrid
+          w="100%"
+          columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+          gap={6}
+          mt={4}
+        >
           {images.map((img, index) => (
             <Box
               key={img._id}
-              borderRadius="lg"
+              borderRadius={{ base: 0, sm: 'lg' }}
               overflow="hidden"
               bg="rgba(255, 255, 255, 0.18)"
               backdropFilter="blur(24px) saturate(180%)"
-              borderWidth="1px"
+              borderWidth={{ base: '0 0 1px 0', sm: '1px' }}
               borderColor="whiteAlpha.200"
-              boxShadow="2xl"
+              boxShadow={{ base: 'none', sm: '2xl' }}
               height="100%"
               display="flex"
               flexDirection="column"
@@ -60,7 +65,11 @@ export default function ImageGridWithSearch({ images }: Props) {
           ))}
         </SimpleGrid>
       )}
-      {!searchActive && <HowItsBuiltPromo />}
+      {!searchActive && (
+        <Box px={{ base: 3, md: 0 }}>
+          <HowItsBuiltPromo />
+        </Box>
+      )}
     </Box>
   );
 } 

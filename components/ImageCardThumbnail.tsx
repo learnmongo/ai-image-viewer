@@ -17,7 +17,7 @@ export function ImageCardThumbnail({ id, title, eager = false }: ImageCardThumbn
       aspectRatio={IMAGE_CARD_ASPECT_RATIO}
       overflow="hidden"
       flexShrink={0}
-      borderTopRadius="lg"
+      borderTopRadius={{ base: 0, sm: 'lg' }}
     >
       <GridThumbnailImage id={id} alt={title} eager={eager} />
     </Box>

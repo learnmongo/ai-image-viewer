@@ -17,7 +17,7 @@ export function GridThumbnailImage({ id, alt, eager = false }: GridThumbnailImag
   const { src, onError } = useImageSrcFallback(paths.grid, paths.full);
 
   return (
-    <Box position="relative" width="100%" height="100%" overflow="hidden" borderTopRadius="lg">
+    <Box position="relative" width="100%" height="100%" overflow="hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}

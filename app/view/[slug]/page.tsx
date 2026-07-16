@@ -37,8 +37,8 @@ export default async function ViewPage({ params }: ViewPageProps) {
       minH="100vh" 
       bg={background} 
       color="white" 
-      px={{ base: 2, md: 4, lg: 8 }} 
-      pt={{ base: 5, md: 6 }}
+      px={{ base: 0, md: 4, lg: 8 }} 
+      pt={{ base: 'calc(44px + max(10px, env(safe-area-inset-top, 0px)) + 12px)', md: 6 }}
       pb={{ base: 10, md: 12, lg: 14 }}
       display="flex" 
       flexDirection="column" 
@@ -51,12 +51,29 @@ export default async function ViewPage({ params }: ViewPageProps) {
         flexDirection="column"
         alignItems="center"
       >
-        <Heading size="4xl" mb={{ base: 6, md: 8 }} textShadow="0 2px 8px rgba(0,0,0,0.4)" textAlign="center">
+        <Heading
+          size={{ base: '2xl', md: '4xl' }}
+          mb={{ base: 4, md: 8 }}
+          px={{
+            base: 'max(12px, calc(44px + env(safe-area-inset-left, 0px) + 12px))',
+            md: 0,
+          }}
+          textShadow="0 2px 8px rgba(0,0,0,0.4)"
+          textAlign="center"
+          lineHeight="shorter"
+        >
           {imageDoc.title}
         </Heading>
         <DetailHeroImage id={id} alt={imageDoc.title} title={imageDoc.title} />
-        <ImageNarrativeCard description={imageDoc.description} summary={imageDoc.summary} />
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="100%" maxW={{ base: '100%', md: 'min(92vw, 90rem)' }} mx="auto" mt={4}>
+        <Box
+          w="100%"
+          px={{ base: 3, md: 0 }}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <ImageNarrativeCard description={imageDoc.description} summary={imageDoc.summary} />
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="100%" maxW={{ base: '100%', md: 'min(92vw, 90rem)' }} mx="auto" mt={4}>
           <Box>
             <Text fontWeight="bold" mb={1} fontSize="sm">Tags</Text>
             {imageDoc.tags && imageDoc.tags.length > 0 ? (
@@ -94,6 +111,7 @@ export default async function ViewPage({ params }: ViewPageProps) {
           document={toImage(imageDoc)}
           responses={getModelResponseEntries(imageDoc)}
         />
+        </Box>
       </Box>
     </Box>
   );

@@ -16,6 +16,4 @@ export const GRID_THUMB_IMG_STYLE: CSSProperties = {
   height: '100%',
   objectFit: 'cover',
   display: 'block',
-  borderTopLeftRadius: 'var(--chakra-radii-lg)',
-  borderTopRightRadius: 'var(--chakra-radii-lg)',
 };

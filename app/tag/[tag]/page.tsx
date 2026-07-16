@@ -18,17 +18,17 @@ export default async function TagPage({ params }: TagPageProps) {
       {images.length === 0 ? (
         <Text>No images found for this tag.</Text>
       ) : (
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} gap={6} mx={{ base: -2, sm: 0 }}>
           {images.map((img) => (
             <Box 
               key={img._id.toString()} 
-              borderRadius="lg" 
-              overflow="hidden" 
+              borderRadius={{ base: 0, sm: 'lg' }}
+              overflow="hidden"
               bg="rgba(255, 255, 255, 0.18)"
               backdropFilter="blur(24px) saturate(180%)"
-              borderWidth="1px"
+              borderWidth={{ base: '0 0 1px 0', sm: '1px' }}
               borderColor="whiteAlpha.200"
-              boxShadow="2xl"
+              boxShadow={{ base: 'none', sm: '2xl' }}
               height="100%"
               display="flex"
               flexDirection="column"

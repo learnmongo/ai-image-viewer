@@ -17,7 +17,7 @@ export default async function HomePage() {
     <Box 
       minH="100vh"
       bg={background}
-      px={{ base: 2, md: 4, lg: 8 }} 
+      px={{ base: 0, md: 4, lg: 8 }} 
       pt={0}
       pb={{ base: 4, md: 8, lg: 12 }}
       position="relative"

@@ -18,15 +18,24 @@ export function DetailHeroImage({ id, alt, title }: DetailHeroImageProps) {
   const [placeholderFailed, setPlaceholderFailed] = useState(false);
 
   return (
-    <Box width="100%" mb={6}>
+    <Box width="100%" mb={{ base: 4, md: 6 }}>
       {loaded ? (
-        <Image src={paths.full} alt={alt} title={title} {...DETAIL_IMAGE_PROPS} boxShadow="2xl" />
+        <Image
+          src={paths.full}
+          alt={alt}
+          title={title}
+          {...DETAIL_IMAGE_PROPS}
+          rounded={{ base: 0, md: '2xl' }}
+          boxShadow={{ base: 'none', md: '2xl' }}
+        />
       ) : !placeholderFailed ? (
         <Image
           src={paths.placeholder}
           alt=""
           aria-hidden
           {...DETAIL_IMAGE_PROPS}
+          rounded={{ base: 0, md: '2xl' }}
+          boxShadow={{ base: 'none', md: '2xl' }}
           filter="blur(12px)"
           transform="scale(1.05)"
           onError={() => setPlaceholderFailed(true)}

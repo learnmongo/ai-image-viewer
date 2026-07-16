@@ -28,19 +28,19 @@ export function SearchResultCard({ img, rankIndex, total, hybrid }: SearchResult
       as={NextLink}
       href={`/view/${slug}`}
       _hover={{ textDecoration: 'none', bg: 'whiteAlpha.200' }}
-      borderRadius="lg"
+      borderRadius={{ base: 0, sm: 'lg' }}
       display="block"
       h="100%"
       aria-label={`View ${img.title}`}
     >
       <Box
-        borderRadius="lg"
+        borderRadius={{ base: 0, sm: 'lg' }}
         overflow="hidden"
         bg="rgba(255, 255, 255, 0.18)"
         backdropFilter="blur(24px) saturate(180%)"
-        borderWidth="1px"
+        borderWidth={{ base: '0 0 1px 0', sm: '1px' }}
         borderColor="whiteAlpha.200"
-        boxShadow="2xl"
+        boxShadow={{ base: 'none', sm: '2xl' }}
         h="100%"
         display="flex"
         flexDirection="column"
