@@ -18,12 +18,15 @@ export function HowItsBuiltPage() {
   return (
     <GuidePageShell>
       <Flex
+        w="100%"
+        minW={0}
+        maxW="100%"
         gap={{ base: 0, lg: 10 }}
         align="flex-start"
         direction={{ base: 'column', lg: 'row' }}
       >
         <TableOfContents items={TOC_ITEMS} />
-        <Box flex={1} minW={0} maxW={{ lg: '720px' }}>
+        <Box w="100%" flex={1} minW={0} maxW={{ lg: '720px' }}>
           <HowItsBuiltContent />
         </Box>
       </Flex>

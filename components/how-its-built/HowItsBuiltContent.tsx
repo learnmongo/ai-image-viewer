@@ -122,7 +122,7 @@ function RepoCell({ repo }: { repo: string }) {
 
 export function HowItsBuiltContent() {
   return (
-    <Box>
+    <Box w="100%" minW={0} maxW="100%" overflowWrap="anywhere">
       <Box mb={10} {...GLASS_CARD} p={{ base: 5, md: 7 }}>
         <Heading size="3xl" color="white" mb={4} lineHeight="shorter">
           Project guide

@@ -90,7 +90,14 @@ const markdownComponents: Components = {
     </Heading>
   ),
   p: ({ children }) => (
-    <Text color="whiteAlpha.800" lineHeight="tall" mb={4} fontSize={{ base: 'md', md: 'lg' }}>
+    <Text
+      color="whiteAlpha.800"
+      lineHeight="tall"
+      mb={4}
+      fontSize={{ base: 'md', md: 'lg' }}
+      overflowWrap="anywhere"
+      wordBreak="break-word"
+    >
       {children}
     </Text>
   ),
@@ -105,7 +112,11 @@ const markdownComponents: Components = {
       {children}
     </List.Root>
   ),
-  li: ({ children }) => <List.Item>{children}</List.Item>,
+  li: ({ children }) => (
+    <List.Item overflowWrap="anywhere" wordBreak="break-word">
+      {children}
+    </List.Item>
+  ),
   hr: () => <Box as="hr" border="none" borderTop="1px solid" borderColor="whiteAlpha.200" my={8} />,
   blockquote: ({ children }) => (
     <Box
@@ -178,7 +189,7 @@ const markdownComponents: Components = {
 
 export function MarkdownContent({ source }: MarkdownContentProps) {
   return (
-    <Box className="markdown-content">
+    <Box className="markdown-content" w="100%" minW={0} maxW="100%" overflowWrap="anywhere">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
         {source}
       </ReactMarkdown>

@@ -14,11 +14,18 @@ interface GlassTableProps {
 
 export function GlassTable({ children, mb, my }: GlassTableProps) {
   return (
-    <Box overflowX="auto" mb={mb} my={my}>
-      <Box overflow="hidden" {...GLASS_CARD_NESTED}>
+    <Box
+      w="100%"
+      maxW="100%"
+      overflowX="auto"
+      mb={mb}
+      my={my}
+      css={{ WebkitOverflowScrolling: 'touch' }}
+    >
+      <Box {...GLASS_CARD_NESTED} display="inline-block" minW="max-content">
         <Box
           as="table"
-          w="100%"
+          minW="max-content"
           borderCollapse="collapse"
           bg="transparent"
           fontSize="sm"

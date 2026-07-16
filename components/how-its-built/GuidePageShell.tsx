@@ -13,9 +13,15 @@ export function GuidePageShell({ children, maxW = '1100px' }: GuidePageShellProp
   return (
     <Box
       minH="100vh"
+      w="100%"
+      maxW="100%"
       bg={GUIDE_PAGE_BACKGROUND}
       color="white"
-      px={{ base: 3, md: 6, lg: 8 }}
+      px={{
+        base: 'max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right))',
+        md: 6,
+        lg: 8,
+      }}
       pt={{ base: 5, md: 6 }}
       pb={{ base: 8, md: 12 }}
       position="relative"
@@ -32,7 +38,7 @@ export function GuidePageShell({ children, maxW = '1100px' }: GuidePageShellProp
         zIndex: 0,
       }}
     >
-      <Box position="relative" zIndex={1} maxW={maxW} mx="auto">
+      <Box position="relative" zIndex={1} w="100%" minW={0} maxW={maxW} mx="auto">
         {children}
       </Box>
     </Box>

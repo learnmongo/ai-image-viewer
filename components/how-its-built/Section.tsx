@@ -13,7 +13,7 @@ export function Section({ id, title, children }: SectionProps) {
     <Box
       as="section"
       id={id}
-      scrollMarginTop="24px"
+      scrollMarginTop="56px"
       mb={12}
       {...GLASS_CARD}
       p={{ base: 5, md: 7 }}
@@ -21,7 +21,13 @@ export function Section({ id, title, children }: SectionProps) {
       <Heading size="xl" color="white" mb={5}>
         {title}
       </Heading>
-      <Box color="whiteAlpha.850" lineHeight="tall" fontSize={{ base: 'md', md: 'lg' }}>
+      <Box
+        color="whiteAlpha.850"
+        lineHeight="tall"
+        fontSize={{ base: 'md', md: 'lg' }}
+        overflowWrap="anywhere"
+        wordBreak="break-word"
+      >
         {children}
       </Box>
     </Box>
